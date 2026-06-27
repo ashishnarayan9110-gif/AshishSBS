@@ -1,0 +1,456 @@
+// Ashish.sbs Platform — Database Schema
+// Content-first architecture: every public page renders one or more of these
+// objects. No production content is hardcoded (PRD SYS-003).
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// ---------------------------------------------------------------------------
+// Shared enums
+// ---------------------------------------------------------------------------
+
+enum ContentStatus {
+  DRAFT
+  SCHEDULED
+  PUBLISHED
+  ARCHIVED
+}
+
+enum VentureStatus {
+  RESEARCH
+  ACTIVE
+  PAUSED
+  SUNSET
+}
+
+enum Role {
+  FOUNDER
+  ADMINISTRATOR
+  EDITOR
+  CONTRIBUTOR
+  VIEWER
+  GUEST
+}
+
+enum ContactReason {
+  COLLABORATION
+  CONSULTING
+  SPEAKING
+  PARTNERSHIP
+  GENERAL_INQUIRY
+  MEDIA
+}
+
+// ---------------------------------------------------------------------------
+// Auth / CMS users
+// ---------------------------------------------------------------------------
+
+model User {
+  id        String   @id @default(cuid())
+  email     String   @unique
+  name      String
+  role      Role     @default(VIEWER)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  authoredVentures   Venture[]
+  authoredProjects   Project[]
+  authoredLabNotes   LabNote[]
+  authoredPrinciples Principle[]
+  authoredResources  Resource[]
+  authoredArticles   Article[]
+  authoredReviews    MonthlyReview[]
+
+  @@map("users")
+}
+
+// ---------------------------------------------------------------------------
+// Core content objects (Volume I Ch.6, Personal OS Part VI)
+// ---------------------------------------------------------------------------
+
+model Venture {
+  id          String        @id @default(cuid())
+  slug        String        @unique
+  name        String
+  logoUrl     String?
+  status      VentureStatus @default(RESEARCH)
+  industry    String?
+  summary     String
+  problem     String?
+  solution    String?
+  story       String?
+  currentStage String?
+  websiteUrl  String?
+  repoUrl     String?
+  featured    Boolean       @default(false)
+  contentStatus ContentStatus @default(DRAFT)
+  publishedAt DateTime?
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime      @updatedAt
+
+  authorId String?
+  author   User?  @relation(fields: [authorId], references: [id])
+
+  timelineEvents TimelineEvent[]
+  lessons        Lesson[]
+  projects       Project[]
+  externalLinks  ExternalLink[]
+  media          Media[]
+  tags           TagOnVenture[]
+
+  @@index([status, contentStatus])
+  @@map("ventures")
+}
+
+model Project {
+  id           String        @id @default(cuid())
+  slug         String        @unique
+  title        String
+  summary      String
+  background   String?
+  objectives   String?
+  process      String?
+  deliverables String?
+  outcome      String?
+  industry     String?
+  technology   String?
+  year         Int?
+  featured     Boolean       @default(false)
+  contentStatus ContentStatus @default(DRAFT)
+  publishedAt  DateTime?
+  createdAt    DateTime      @default(now())
+  updatedAt    DateTime      @updatedAt
+
+  authorId String?
+  author   User?  @relation(fields: [authorId], references: [id])
+
+  ventureId String?
+  venture   Venture? @relation(fields: [ventureId], references: [id])
+
+  lessons       Lesson[]
+  relatedPrinciples ProjectPrinciple[]
+  relatedResources  ProjectResource[]
+  media         Media[]
+  tags          TagOnProject[]
+
+  @@index([ventureId])
+  @@map("projects")
+}
+
+model LabNote {
+  id           String        @id @default(cuid())
+  slug         String        @unique
+  title        String
+  category     String?
+  pinned       Boolean       @default(false)
+  body         String
+  contentStatus ContentStatus @default(DRAFT)
+  publishedAt  DateTime?
+  createdAt    DateTime      @default(now())
+  updatedAt    DateTime      @updatedAt
+
+  authorId String?
+  author   User?  @relation(fields: [authorId], references: [id])
+
+  tags TagOnLabNote[]
+
+  @@map("lab_notes")
+}
+
+model Principle {
+  id           String        @id @default(cuid())
+  slug         String        @unique
+  title        String
+  statement    String
+  explanation  String?
+  examples     String?
+  contentStatus ContentStatus @default(DRAFT)
+  publishedAt  DateTime?
+  createdAt    DateTime      @default(now())
+  updatedAt    DateTime      @updatedAt
+
+  authorId String?
+  author   User?  @relation(fields: [authorId], references: [id])
+
+  projects ProjectPrinciple[]
+
+  @@map("principles")
+}
+
+model Resource {
+  id           String        @id @default(cuid())
+  slug         String        @unique
+  title        String
+  category     String?
+  format       String?
+  difficulty   String?
+  description  String?
+  downloadUrl  String?
+  contentStatus ContentStatus @default(DRAFT)
+  publishedAt  DateTime?
+  createdAt    DateTime      @default(now())
+  updatedAt    DateTime      @updatedAt
+
+  authorId String?
+  author   User?  @relation(fields: [authorId], references: [id])
+
+  projects ProjectResource[]
+
+  @@map("resources")
+}
+
+model Service {
+  id           String        @id @default(cuid())
+  slug         String        @unique
+  name         String
+  problem      String?
+  idealClient  String?
+  approach     String?
+  deliverables String?
+  timeline     String?
+  faq          Json?
+  contentStatus ContentStatus @default(DRAFT)
+  publishedAt  DateTime?
+  createdAt    DateTime      @default(now())
+  updatedAt    DateTime      @updatedAt
+
+  @@map("services")
+}
+
+model CareerEntry {
+  id           String   @id @default(cuid())
+  project      String
+  organisation String
+  role         String
+  startDate    DateTime
+  endDate      DateTime?
+  overview     String
+  publicOutcome String?
+  lessons      String?
+  links        Json?
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  @@map("career_entries")
+}
+
+model MonthlyReview {
+  id           String        @id @default(cuid())
+  slug         String        @unique
+  month        DateTime
+  whatIBuilt   String?
+  whatILearned String?
+  problems     String?
+  failures     String?
+  reading      String?
+  nextMonth    String?
+  contentStatus ContentStatus @default(DRAFT)
+  publishedAt  DateTime?
+  createdAt    DateTime      @default(now())
+  updatedAt    DateTime      @updatedAt
+
+  authorId String?
+  author   User?  @relation(fields: [authorId], references: [id])
+
+  @@map("monthly_reviews")
+}
+
+model Article {
+  id           String        @id @default(cuid())
+  slug         String        @unique
+  title        String
+  summary      String?
+  body         String
+  readingTime  Int?
+  contentStatus ContentStatus @default(DRAFT)
+  publishedAt  DateTime?
+  createdAt    DateTime      @default(now())
+  updatedAt    DateTime      @updatedAt
+
+  authorId String?
+  author   User?  @relation(fields: [authorId], references: [id])
+
+  tags TagOnArticle[]
+
+  @@map("articles")
+}
+
+model Book {
+  id          String   @id @default(cuid())
+  title       String
+  author      String
+  startedAt   DateTime?
+  finishedAt  DateTime?
+  summary     String?
+  lessons     String?
+  quotes      String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@map("books")
+}
+
+// ---------------------------------------------------------------------------
+// Supporting / relational entities
+// ---------------------------------------------------------------------------
+
+model TimelineEvent {
+  id          String   @id @default(cuid())
+  date        DateTime
+  title       String
+  description String?
+
+  ventureId String?
+  venture   Venture? @relation(fields: [ventureId], references: [id])
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("timeline_events")
+}
+
+model Lesson {
+  id   String @id @default(cuid())
+  text String
+
+  ventureId String?
+  venture   Venture? @relation(fields: [ventureId], references: [id])
+
+  projectId String?
+  project   Project? @relation(fields: [projectId], references: [id])
+
+  @@map("lessons")
+}
+
+model ExternalLink {
+  id    String @id @default(cuid())
+  label String
+  url   String
+
+  ventureId String?
+  venture   Venture? @relation(fields: [ventureId], references: [id])
+
+  @@map("external_links")
+}
+
+model Media {
+  id       String  @id @default(cuid())
+  url      String
+  alt      String?
+  caption  String?
+
+  ventureId String?
+  venture   Venture? @relation(fields: [ventureId], references: [id])
+
+  projectId String?
+  project   Project? @relation(fields: [projectId], references: [id])
+
+  createdAt DateTime @default(now())
+
+  @@map("media")
+}
+
+model Tag {
+  id   String @id @default(cuid())
+  name String @unique
+  slug String @unique
+
+  ventures TagOnVenture[]
+  projects TagOnProject[]
+  labNotes TagOnLabNote[]
+  articles TagOnArticle[]
+
+  @@map("tags")
+}
+
+// Join tables (explicit, per "no implicit relations" engineering convention)
+
+model TagOnVenture {
+  ventureId String
+  tagId     String
+
+  venture Venture @relation(fields: [ventureId], references: [id], onDelete: Cascade)
+  tag     Tag     @relation(fields: [tagId], references: [id], onDelete: Cascade)
+
+  @@id([ventureId, tagId])
+  @@map("tags_on_ventures")
+}
+
+model TagOnProject {
+  projectId String
+  tagId     String
+
+  project Project @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  tag     Tag     @relation(fields: [tagId], references: [id], onDelete: Cascade)
+
+  @@id([projectId, tagId])
+  @@map("tags_on_projects")
+}
+
+model TagOnLabNote {
+  labNoteId String
+  tagId     String
+
+  labNote LabNote @relation(fields: [labNoteId], references: [id], onDelete: Cascade)
+  tag     Tag     @relation(fields: [tagId], references: [id], onDelete: Cascade)
+
+  @@id([labNoteId, tagId])
+  @@map("tags_on_lab_notes")
+}
+
+model TagOnArticle {
+  articleId String
+  tagId     String
+
+  article Article @relation(fields: [articleId], references: [id], onDelete: Cascade)
+  tag     Tag     @relation(fields: [tagId], references: [id], onDelete: Cascade)
+
+  @@id([articleId, tagId])
+  @@map("tags_on_articles")
+}
+
+model ProjectPrinciple {
+  projectId   String
+  principleId String
+
+  project   Project   @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  principle Principle @relation(fields: [principleId], references: [id], onDelete: Cascade)
+
+  @@id([projectId, principleId])
+  @@map("project_principles")
+}
+
+model ProjectResource {
+  projectId  String
+  resourceId String
+
+  project  Project  @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  resource Resource @relation(fields: [resourceId], references: [id], onDelete: Cascade)
+
+  @@id([projectId, resourceId])
+  @@map("project_resources")
+}
+
+// ---------------------------------------------------------------------------
+// Contact
+// ---------------------------------------------------------------------------
+
+model ContactSubmission {
+  id        String        @id @default(cuid())
+  name      String
+  email     String
+  reason    ContactReason
+  message   String
+  company   String?
+  website   String?
+  phone     String?
+  createdAt DateTime      @default(now())
+
+  @@map("contact_submissions")
+}

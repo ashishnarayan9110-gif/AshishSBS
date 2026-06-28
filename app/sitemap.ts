@@ -1,6 +1,10 @@
 import type { MetadataRoute } from "next";
 import { prisma } from "@/lib/prisma";
 
+// Avoid querying the database during the build (Vercel's build environment
+// cannot reach Supabase's direct connection host); generate at request time.
+export const dynamic = "force-dynamic";
+
 const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "https://ashish.sbs";
 
 const STATIC_ROUTES = [

@@ -1,5 +1,7 @@
+import Link from "next/link";
 import { PageHeader } from "@/components/shared/page-header";
 import { EmptyState } from "@/components/shared/empty-state";
+import { Container } from "@/components/ui/container";
 import { prisma } from "@/lib/prisma";
 
 export const dynamic = "force-dynamic";
@@ -49,14 +51,14 @@ export default async function SearchPage({
   return (
     <>
       <PageHeader title="Search" description="Search ventures, projects, lab notes, principles and resources." />
-      <div className="mx-auto max-w-(--layout-max-width) px-6 pb-24">
+      <Container className="pb-24">
         <form className="mb-10" action="/search">
           <input
             type="search"
             name="q"
             defaultValue={q}
             placeholder="Search the platform…"
-            className="border-border w-full rounded-md border px-4 py-3 text-sm"
+            className="field-input py-3"
           />
         </form>
 
@@ -83,7 +85,7 @@ export default async function SearchPage({
             )}
           </div>
         )}
-      </div>
+      </Container>
     </>
   );
 }
@@ -95,9 +97,9 @@ function ResultGroup({ label, items }: { label: string; items: { href: string; l
       <ul className="mt-3 space-y-2">
         {items.map((item) => (
           <li key={item.href}>
-            <a href={item.href} className="underline">
+            <Link href={item.href} className="underline">
               {item.label}
-            </a>
+            </Link>
           </li>
         ))}
       </ul>

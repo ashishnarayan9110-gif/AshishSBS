@@ -1,5 +1,7 @@
 import { notFound } from "next/navigation";
 import { PageHeader } from "@/components/shared/page-header";
+import { Breadcrumbs } from "@/components/shared/breadcrumbs";
+import { Container } from "@/components/ui/container";
 import { getMonthlyReviewBySlug } from "@/lib/content";
 
 export const dynamic = "force-dynamic";
@@ -21,8 +23,11 @@ export default async function MonthlyReviewDetailPage({
 
   return (
     <>
+      <Container width="content" className="pt-8">
+        <Breadcrumbs items={[{ href: "/monthly", label: "Monthly Builder Review" }, { href: `/monthly/${review.slug}`, label: title }]} />
+      </Container>
       <PageHeader title={title} />
-      <div className="mx-auto max-w-(--content-max-width) space-y-8 px-6 pb-24">
+      <Container width="content" className="space-y-8 pb-24">
         {review.whatIBuilt ? (
           <section>
             <h2 className="font-medium">What I Built</h2>
@@ -47,7 +52,7 @@ export default async function MonthlyReviewDetailPage({
             <p className="text-muted mt-2">{review.nextMonth}</p>
           </section>
         ) : null}
-      </div>
+      </Container>
     </>
   );
 }

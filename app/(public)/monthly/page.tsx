@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { PageHeader } from "@/components/shared/page-header";
 import { EmptyState } from "@/components/shared/empty-state";
+import { Container } from "@/components/ui/container";
 import { getMonthlyReviews } from "@/lib/content";
 
 export const dynamic = "force-dynamic";
@@ -14,7 +15,7 @@ export default async function MonthlyReviewsPage() {
         title="Monthly Builder Review"
         description="A public progress log — what was built, what was learned, what failed."
       />
-      <div className="mx-auto max-w-(--layout-max-width) px-6 pb-24">
+      <Container className="pb-24">
         {reviews.length === 0 ? (
           <EmptyState
             title="No reviews published yet."
@@ -24,7 +25,7 @@ export default async function MonthlyReviewsPage() {
           <ul className="space-y-4">
             {reviews.map((review) => (
               <li key={review.id} className="border-border border-b pb-4">
-                <Link href={`/monthly/${review.slug}`} className="font-medium">
+                <Link href={`/monthly/${review.slug}`} className="font-medium hover:underline">
                   {review.month.toLocaleDateString("en-US", {
                     month: "long",
                     year: "numeric",
@@ -34,7 +35,7 @@ export default async function MonthlyReviewsPage() {
             ))}
           </ul>
         )}
-      </div>
+      </Container>
     </>
   );
 }

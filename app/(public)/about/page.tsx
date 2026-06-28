@@ -1,10 +1,11 @@
 import { PageHeader } from "@/components/shared/page-header";
+import { Container } from "@/components/ui/container";
 
 export default function AboutPage() {
   return (
     <>
       <PageHeader title="About" description="How I think, not just what I've built." />
-      <div className="mx-auto max-w-(--content-max-width) space-y-8 px-6 pb-24">
+      <Container width="content" className="space-y-8 pb-24">
         <section>
           <h2 className="font-medium">Mission</h2>
           <p className="text-muted mt-2">
@@ -20,7 +21,7 @@ export default function AboutPage() {
             or a company — the discipline remains the same.
           </p>
         </section>
-      </div>
+      </Container>
     </>
   );
 }

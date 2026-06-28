@@ -1,4 +1,5 @@
 import { PageHeader } from "@/components/shared/page-header";
+import { Container } from "@/components/ui/container";
 import { ContactForm } from "@/features/contact/contact-form";
 
 export default function ContactPage() {
@@ -8,9 +9,9 @@ export default function ContactPage() {
         title="Contact"
         description="The beginning of a conversation — not a lead form."
       />
-      <div className="mx-auto max-w-(--content-max-width) px-6 pb-24">
+      <Container width="content" className="pb-24">
         <ContactForm />
-      </div>
+      </Container>
     </>
   );
 }

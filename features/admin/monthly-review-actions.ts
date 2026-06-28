@@ -10,7 +10,10 @@ const monthlyReviewSchema = z.object({
   slug: z
     .string()
     .min(1)
-    .regex(/^[a-z0-9]+(-[a-z0-9]+)*$/, "Use lowercase letters, numbers and hyphens only."),
+    .regex(
+      /^[a-z0-9]+(-[a-z0-9]+)*$/,
+      "Use lowercase letters, numbers and hyphens only.",
+    ),
   month: z.string().min(1),
   whatIBuilt: z.string().optional().or(z.literal("")),
   whatILearned: z.string().optional().or(z.literal("")),
@@ -76,7 +79,9 @@ export async function updateMonthlyReview(id: string, formData: FormData) {
       reading: data.reading || null,
       nextMonth: data.nextMonth || null,
       publishedAt:
-        data.contentStatus === "PUBLISHED" ? existing?.publishedAt ?? new Date() : existing?.publishedAt ?? null,
+        data.contentStatus === "PUBLISHED"
+          ? (existing?.publishedAt ?? new Date())
+          : (existing?.publishedAt ?? null),
     },
   });
 

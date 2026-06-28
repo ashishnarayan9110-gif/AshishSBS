@@ -50,7 +50,10 @@ export default async function SearchPage({
 
   return (
     <>
-      <PageHeader title="Search" description="Search ventures, projects, lab notes, principles and resources." />
+      <PageHeader
+        title="Search"
+        description="Search ventures, projects, lab notes, principles and resources."
+      />
       <Container className="pb-24">
         <form className="mb-10" action="/search">
           <input
@@ -65,23 +68,56 @@ export default async function SearchPage({
         {!q ? (
           <EmptyState title="Start typing to search." />
         ) : totalResults === 0 ? (
-          <EmptyState title={`No results for "${q}".`} description="Try a different term." />
+          <EmptyState
+            title={`No results for "${q}".`}
+            description="Try a different term."
+          />
         ) : (
           <div className="space-y-8">
             {results.ventures.length > 0 && (
-              <ResultGroup label="Ventures" items={results.ventures.map((v) => ({ href: `/ventures/${v.slug}`, label: v.name }))} />
+              <ResultGroup
+                label="Ventures"
+                items={results.ventures.map((v) => ({
+                  href: `/ventures/${v.slug}`,
+                  label: v.name,
+                }))}
+              />
             )}
             {results.projects.length > 0 && (
-              <ResultGroup label="Projects" items={results.projects.map((p) => ({ href: `/projects/${p.slug}`, label: p.title }))} />
+              <ResultGroup
+                label="Projects"
+                items={results.projects.map((p) => ({
+                  href: `/projects/${p.slug}`,
+                  label: p.title,
+                }))}
+              />
             )}
             {results.labNotes.length > 0 && (
-              <ResultGroup label="Lab Notes" items={results.labNotes.map((n) => ({ href: `/lab/${n.slug}`, label: n.title }))} />
+              <ResultGroup
+                label="Lab Notes"
+                items={results.labNotes.map((n) => ({
+                  href: `/lab/${n.slug}`,
+                  label: n.title,
+                }))}
+              />
             )}
             {results.principles.length > 0 && (
-              <ResultGroup label="Principles" items={results.principles.map((p) => ({ href: `/principles/${p.slug}`, label: p.title }))} />
+              <ResultGroup
+                label="Principles"
+                items={results.principles.map((p) => ({
+                  href: `/principles/${p.slug}`,
+                  label: p.title,
+                }))}
+              />
             )}
             {results.resources.length > 0 && (
-              <ResultGroup label="Resources" items={results.resources.map((r) => ({ href: `/resources/${r.slug}`, label: r.title }))} />
+              <ResultGroup
+                label="Resources"
+                items={results.resources.map((r) => ({
+                  href: `/resources/${r.slug}`,
+                  label: r.title,
+                }))}
+              />
             )}
           </div>
         )}
@@ -90,7 +126,13 @@ export default async function SearchPage({
   );
 }
 
-function ResultGroup({ label, items }: { label: string; items: { href: string; label: string }[] }) {
+function ResultGroup({
+  label,
+  items,
+}: {
+  label: string;
+  items: { href: string; label: string }[];
+}) {
   return (
     <section>
       <h2 className="text-muted text-xs font-medium tracking-wide uppercase">{label}</h2>

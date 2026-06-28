@@ -24,7 +24,12 @@ export default async function MonthlyReviewDetailPage({
   return (
     <>
       <Container width="content" className="pt-8">
-        <Breadcrumbs items={[{ href: "/monthly", label: "Monthly Builder Review" }, { href: `/monthly/${review.slug}`, label: title }]} />
+        <Breadcrumbs
+          items={[
+            { href: "/monthly", label: "Monthly Builder Review" },
+            { href: `/monthly/${review.slug}`, label: title },
+          ]}
+        />
       </Container>
       <PageHeader title={title} />
       <Container width="content" className="space-y-8 pb-24">

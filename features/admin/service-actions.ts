@@ -10,7 +10,10 @@ const serviceSchema = z.object({
   slug: z
     .string()
     .min(1)
-    .regex(/^[a-z0-9]+(-[a-z0-9]+)*$/, "Use lowercase letters, numbers and hyphens only."),
+    .regex(
+      /^[a-z0-9]+(-[a-z0-9]+)*$/,
+      "Use lowercase letters, numbers and hyphens only.",
+    ),
   name: z.string().min(1),
   problem: z.string().optional().or(z.literal("")),
   idealClient: z.string().optional().or(z.literal("")),
@@ -69,7 +72,9 @@ export async function updateService(id: string, formData: FormData) {
       deliverables: data.deliverables || null,
       timeline: data.timeline || null,
       publishedAt:
-        data.contentStatus === "PUBLISHED" ? existing?.publishedAt ?? new Date() : existing?.publishedAt ?? null,
+        data.contentStatus === "PUBLISHED"
+          ? (existing?.publishedAt ?? new Date())
+          : (existing?.publishedAt ?? null),
     },
   });
 

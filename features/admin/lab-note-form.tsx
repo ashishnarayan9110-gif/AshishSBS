@@ -12,13 +12,27 @@ export function LabNoteForm({
   return (
     <form action={action} className="space-y-5">
       <Field label="Slug">
-        <input name="slug" defaultValue={labNote?.slug} required className="field-input" />
+        <input
+          name="slug"
+          defaultValue={labNote?.slug}
+          required
+          className="field-input"
+        />
       </Field>
       <Field label="Title">
-        <input name="title" defaultValue={labNote?.title} required className="field-input" />
+        <input
+          name="title"
+          defaultValue={labNote?.title}
+          required
+          className="field-input"
+        />
       </Field>
       <Field label="Category (optional)">
-        <input name="category" defaultValue={labNote?.category ?? ""} className="field-input" />
+        <input
+          name="category"
+          defaultValue={labNote?.category ?? ""}
+          className="field-input"
+        />
       </Field>
       <Field label="Body">
         <textarea

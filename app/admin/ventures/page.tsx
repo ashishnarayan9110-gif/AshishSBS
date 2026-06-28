@@ -37,7 +37,11 @@ export default async function AdminVenturesPage() {
                 <Link href={`/admin/ventures/${venture.id}`} className="underline">
                   Edit
                 </Link>
-                <DeleteButton id={venture.id} name={venture.name} action={deleteVenture} />
+                <DeleteButton
+                  id={venture.id}
+                  name={venture.name}
+                  action={deleteVenture}
+                />
               </td>
             </tr>
           ))}

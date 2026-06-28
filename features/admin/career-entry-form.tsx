@@ -17,7 +17,12 @@ export function CareerEntryForm({
   return (
     <form action={action} className="space-y-5">
       <Field label="Project">
-        <input name="project" defaultValue={entry?.project} required className="field-input" />
+        <input
+          name="project"
+          defaultValue={entry?.project}
+          required
+          className="field-input"
+        />
       </Field>
       <Field label="Organisation">
         <input
@@ -65,7 +70,11 @@ export function CareerEntryForm({
         />
       </Field>
       <Field label="Lessons (optional)">
-        <textarea name="lessons" defaultValue={entry?.lessons ?? ""} className="field-input" />
+        <textarea
+          name="lessons"
+          defaultValue={entry?.lessons ?? ""}
+          className="field-input"
+        />
       </Field>
       <Button type="submit">{entry ? "Save changes" : "Create entry"}</Button>
     </form>

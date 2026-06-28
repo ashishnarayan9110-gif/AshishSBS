@@ -20,7 +20,11 @@ export default async function EditProjectPage({
     <div className="mx-auto max-w-(--content-max-width) px-6 py-16">
       <h1 className="text-2xl font-medium">Edit {project.title}</h1>
       <div className="mt-8">
-        <ProjectForm project={project} ventures={ventures} action={updateProject.bind(null, id)} />
+        <ProjectForm
+          project={project}
+          ventures={ventures}
+          action={updateProject.bind(null, id)}
+        />
       </div>
     </div>
   );

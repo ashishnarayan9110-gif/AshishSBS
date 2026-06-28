@@ -10,7 +10,10 @@ const projectSchema = z.object({
   slug: z
     .string()
     .min(1)
-    .regex(/^[a-z0-9]+(-[a-z0-9]+)*$/, "Use lowercase letters, numbers and hyphens only."),
+    .regex(
+      /^[a-z0-9]+(-[a-z0-9]+)*$/,
+      "Use lowercase letters, numbers and hyphens only.",
+    ),
   title: z.string().min(1),
   summary: z.string().min(1),
   background: z.string().optional().or(z.literal("")),
@@ -70,7 +73,9 @@ export async function updateProject(id: string, formData: FormData) {
       outcome: data.outcome || null,
       ventureId: data.ventureId || null,
       publishedAt:
-        data.contentStatus === "PUBLISHED" ? existing?.publishedAt ?? new Date() : existing?.publishedAt ?? null,
+        data.contentStatus === "PUBLISHED"
+          ? (existing?.publishedAt ?? new Date())
+          : (existing?.publishedAt ?? null),
     },
   });
 

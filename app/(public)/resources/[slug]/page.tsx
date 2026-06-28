@@ -27,7 +27,10 @@ export default async function ResourceDetailPage({
           ]}
         />
       </Container>
-      <PageHeader title={resource.title} description={resource.description ?? undefined} />
+      <PageHeader
+        title={resource.title}
+        description={resource.description ?? undefined}
+      />
       <Container width="content" className="pb-24">
         {resource.downloadUrl ? (
           <LinkButton href={resource.downloadUrl} variant="secondary">

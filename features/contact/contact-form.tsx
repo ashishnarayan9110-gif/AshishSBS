@@ -3,7 +3,11 @@
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { contactFormSchema, contactReasons, type ContactFormValues } from "@/lib/schemas/contact";
+import {
+  contactFormSchema,
+  contactReasons,
+  type ContactFormValues,
+} from "@/lib/schemas/contact";
 import { Button } from "@/components/ui/button";
 
 const REASON_LABELS: Record<(typeof contactReasons)[number], string> = {
@@ -44,18 +48,20 @@ export function ContactForm() {
   }
 
   if (status === "success") {
-    return (
-      <p className="text-sm">
-        Message received. Expect a reply within a few days.
-      </p>
-    );
+    return <p className="text-sm">Message received. Expect a reply within a few days.</p>;
   }
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="space-y-5" noValidate>
       <div className="hidden" aria-hidden="true">
         <label htmlFor="fax">Fax</label>
-        <input id="fax" type="text" tabIndex={-1} autoComplete="off" {...register("fax")} />
+        <input
+          id="fax"
+          type="text"
+          tabIndex={-1}
+          autoComplete="off"
+          {...register("fax")}
+        />
       </div>
 
       <Field label="Name" error={errors.name?.message}>

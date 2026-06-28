@@ -12,10 +12,20 @@ export function ServiceForm({
   return (
     <form action={action} className="space-y-5">
       <Field label="Slug">
-        <input name="slug" defaultValue={service?.slug} required className="field-input" />
+        <input
+          name="slug"
+          defaultValue={service?.slug}
+          required
+          className="field-input"
+        />
       </Field>
       <Field label="Name">
-        <input name="name" defaultValue={service?.name} required className="field-input" />
+        <input
+          name="name"
+          defaultValue={service?.name}
+          required
+          className="field-input"
+        />
       </Field>
       <Field label="Problem (optional)">
         <textarea
@@ -46,7 +56,11 @@ export function ServiceForm({
         />
       </Field>
       <Field label="Timeline (optional)">
-        <input name="timeline" defaultValue={service?.timeline ?? ""} className="field-input" />
+        <input
+          name="timeline"
+          defaultValue={service?.timeline ?? ""}
+          className="field-input"
+        />
       </Field>
       <Field label="Content status">
         <select

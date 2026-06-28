@@ -12,10 +12,20 @@ export function PrincipleForm({
   return (
     <form action={action} className="space-y-5">
       <Field label="Slug">
-        <input name="slug" defaultValue={principle?.slug} required className="field-input" />
+        <input
+          name="slug"
+          defaultValue={principle?.slug}
+          required
+          className="field-input"
+        />
       </Field>
       <Field label="Title">
-        <input name="title" defaultValue={principle?.title} required className="field-input" />
+        <input
+          name="title"
+          defaultValue={principle?.title}
+          required
+          className="field-input"
+        />
       </Field>
       <Field label="Statement">
         <textarea

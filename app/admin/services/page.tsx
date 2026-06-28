@@ -33,14 +33,20 @@ export default async function AdminServicesPage() {
                 <Link href={`/admin/services/${service.id}`} className="underline">
                   Edit
                 </Link>
-                <DeleteButton id={service.id} name={service.name} action={deleteService} />
+                <DeleteButton
+                  id={service.id}
+                  name={service.name}
+                  action={deleteService}
+                />
               </td>
             </tr>
           ))}
         </tbody>
       </table>
 
-      {services.length === 0 ? <p className="text-muted mt-8 text-sm">No services yet.</p> : null}
+      {services.length === 0 ? (
+        <p className="text-muted mt-8 text-sm">No services yet.</p>
+      ) : null}
     </div>
   );
 }

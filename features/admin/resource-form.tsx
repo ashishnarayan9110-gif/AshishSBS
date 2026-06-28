@@ -12,20 +12,42 @@ export function ResourceForm({
   return (
     <form action={action} className="space-y-5">
       <Field label="Slug">
-        <input name="slug" defaultValue={resource?.slug} required className="field-input" />
+        <input
+          name="slug"
+          defaultValue={resource?.slug}
+          required
+          className="field-input"
+        />
       </Field>
       <Field label="Title">
-        <input name="title" defaultValue={resource?.title} required className="field-input" />
+        <input
+          name="title"
+          defaultValue={resource?.title}
+          required
+          className="field-input"
+        />
       </Field>
       <div className="grid grid-cols-3 gap-4">
         <Field label="Category (optional)">
-          <input name="category" defaultValue={resource?.category ?? ""} className="field-input" />
+          <input
+            name="category"
+            defaultValue={resource?.category ?? ""}
+            className="field-input"
+          />
         </Field>
         <Field label="Format (optional)">
-          <input name="format" defaultValue={resource?.format ?? ""} className="field-input" />
+          <input
+            name="format"
+            defaultValue={resource?.format ?? ""}
+            className="field-input"
+          />
         </Field>
         <Field label="Difficulty (optional)">
-          <input name="difficulty" defaultValue={resource?.difficulty ?? ""} className="field-input" />
+          <input
+            name="difficulty"
+            defaultValue={resource?.difficulty ?? ""}
+            className="field-input"
+          />
         </Field>
       </div>
       <Field label="Description (optional)">

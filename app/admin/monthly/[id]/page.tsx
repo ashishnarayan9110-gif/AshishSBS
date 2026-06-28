@@ -16,7 +16,8 @@ export default async function EditMonthlyReviewPage({
   return (
     <div className="mx-auto max-w-(--content-max-width) px-6 py-16">
       <h1 className="text-2xl font-medium">
-        Edit {review.month.toLocaleDateString("en-US", { month: "long", year: "numeric" })}
+        Edit{" "}
+        {review.month.toLocaleDateString("en-US", { month: "long", year: "numeric" })}
       </h1>
       <div className="mt-8">
         <MonthlyReviewForm review={review} action={updateMonthlyReview.bind(null, id)} />

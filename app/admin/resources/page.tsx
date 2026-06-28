@@ -33,14 +33,20 @@ export default async function AdminResourcesPage() {
                 <Link href={`/admin/resources/${resource.id}`} className="underline">
                   Edit
                 </Link>
-                <DeleteButton id={resource.id} name={resource.title} action={deleteResource} />
+                <DeleteButton
+                  id={resource.id}
+                  name={resource.title}
+                  action={deleteResource}
+                />
               </td>
             </tr>
           ))}
         </tbody>
       </table>
 
-      {resources.length === 0 ? <p className="text-muted mt-8 text-sm">No resources yet.</p> : null}
+      {resources.length === 0 ? (
+        <p className="text-muted mt-8 text-sm">No resources yet.</p>
+      ) : null}
     </div>
   );
 }

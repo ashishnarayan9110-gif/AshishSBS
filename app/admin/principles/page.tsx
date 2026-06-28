@@ -33,14 +33,20 @@ export default async function AdminPrinciplesPage() {
                 <Link href={`/admin/principles/${principle.id}`} className="underline">
                   Edit
                 </Link>
-                <DeleteButton id={principle.id} name={principle.title} action={deletePrinciple} />
+                <DeleteButton
+                  id={principle.id}
+                  name={principle.title}
+                  action={deletePrinciple}
+                />
               </td>
             </tr>
           ))}
         </tbody>
       </table>
 
-      {principles.length === 0 ? <p className="text-muted mt-8 text-sm">No principles yet.</p> : null}
+      {principles.length === 0 ? (
+        <p className="text-muted mt-8 text-sm">No principles yet.</p>
+      ) : null}
     </div>
   );
 }

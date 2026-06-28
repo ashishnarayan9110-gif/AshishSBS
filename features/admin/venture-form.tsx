@@ -21,7 +21,12 @@ export function VentureForm({
         />
       </Field>
       <Field label="Name">
-        <input name="name" defaultValue={venture?.name} required className="field-input" />
+        <input
+          name="name"
+          defaultValue={venture?.name}
+          required
+          className="field-input"
+        />
       </Field>
       <Field label="Summary">
         <textarea
@@ -33,7 +38,11 @@ export function VentureForm({
       </Field>
       <div className="grid grid-cols-2 gap-4">
         <Field label="Status">
-          <select name="status" defaultValue={venture?.status ?? "RESEARCH"} className="field-input">
+          <select
+            name="status"
+            defaultValue={venture?.status ?? "RESEARCH"}
+            className="field-input"
+          >
             <option value="RESEARCH">Research</option>
             <option value="ACTIVE">Active</option>
             <option value="PAUSED">Paused</option>
@@ -53,7 +62,11 @@ export function VentureForm({
         </Field>
       </div>
       <Field label="Industry (optional)">
-        <input name="industry" defaultValue={venture?.industry ?? ""} className="field-input" />
+        <input
+          name="industry"
+          defaultValue={venture?.industry ?? ""}
+          className="field-input"
+        />
       </Field>
       <Field label="Problem (optional)">
         <textarea

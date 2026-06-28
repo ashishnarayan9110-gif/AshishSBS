@@ -20,12 +20,14 @@ async function main() {
       name: "Savison Life",
       status: "ACTIVE",
       industry: "Pharmaceutical Marketplace",
-      summary: "A compliance-first pharmaceutical marketplace connecting manufacturers and buyers.",
+      summary:
+        "A compliance-first pharmaceutical marketplace connecting manufacturers and buyers.",
       problem:
         "Traditional pharmaceutical brokerage depended heavily on a limited number of manufacturers. Regulatory changes reduced supplier availability and exposed weaknesses in the existing relationship-based model.",
       solution:
         "Transform Savison Life into a technology-enabled marketplace connecting compliant manufacturers and buyers, with NLEM drug catalog enforcement, deal-room price negotiation, SLA automation, and transparent payouts.",
-      currentStage: "Active — billing, deal rooms, and approved-product enforcement operational.",
+      currentStage:
+        "Active — billing, deal rooms, and approved-product enforcement operational.",
       contentStatus: "PUBLISHED",
       publishedAt: new Date(),
       featured: true,
@@ -100,7 +102,12 @@ async function main() {
   // Principles (Personal OS Part I §5 + Part II "Values")
   // ---------------------------------------------------------------------
 
-  const principles: { slug: string; title: string; statement: string; explanation: string }[] = [
+  const principles: {
+    slug: string;
+    title: string;
+    statement: string;
+    explanation: string;
+  }[] = [
     {
       slug: "simplicity",
       title: "Simplicity",
@@ -130,7 +137,8 @@ async function main() {
       slug: "human-centred",
       title: "Human-Centred",
       statement: "People are not interruptions. They are the reason the system exists.",
-      explanation: "Whenever automation reduces empathy, the automation should be reconsidered.",
+      explanation:
+        "Whenever automation reduces empathy, the automation should be reconsidered.",
     },
     {
       slug: "build-in-public",
@@ -148,7 +156,8 @@ async function main() {
     {
       slug: "long-term-thinking",
       title: "Long-Term Thinking",
-      statement: "Every decision should optimize for the next decade rather than the next quarter.",
+      statement:
+        "Every decision should optimize for the next decade rather than the next quarter.",
       explanation: "Quick wins are welcome. Short-term thinking is not.",
     },
   ];
@@ -165,34 +174,45 @@ async function main() {
   // Services (Personal OS Part VIII — Layer 1 — Time)
   // ---------------------------------------------------------------------
 
-  const services: { slug: string; name: string; problem: string; idealClient: string; approach: string }[] = [
+  const services: {
+    slug: string;
+    name: string;
+    problem: string;
+    idealClient: string;
+    approach: string;
+  }[] = [
     {
       slug: "systems-design",
       name: "Systems Design",
       problem: "Operations have grown organically and no longer scale cleanly.",
       idealClient: "Founders and operators who need clarity before more software.",
-      approach: "Map the current process, find the friction, design the system before recommending any tooling.",
+      approach:
+        "Map the current process, find the friction, design the system before recommending any tooling.",
     },
     {
       slug: "business-audit",
       name: "Business Audit",
       problem: "Unclear where time, trust, or money is leaking in the business.",
       idealClient: "SME owners considering digital transformation.",
-      approach: "A structured review of operations, technology, and trust gaps with a prioritized action plan.",
+      approach:
+        "A structured review of operations, technology, and trust gaps with a prioritized action plan.",
     },
     {
       slug: "ai-readiness",
       name: "AI Readiness",
       problem: "Uncertainty about where AI creates real value versus novelty.",
       idealClient: "Teams evaluating AI adoption without a clear use case yet.",
-      approach: "Identify measurable use cases, avoid AI-for-its-own-sake, and treat AI as infrastructure.",
+      approach:
+        "Identify measurable use cases, avoid AI-for-its-own-sake, and treat AI as infrastructure.",
     },
     {
       slug: "marketplace-strategy",
       name: "Marketplace Strategy",
-      problem: "Building trust between strangers in a two-sided market is hard to get right.",
+      problem:
+        "Building trust between strangers in a two-sided market is hard to get right.",
       idealClient: "Founders building or pivoting toward a marketplace model.",
-      approach: "Design incentives and trust mechanisms first; reduce transactional friction second.",
+      approach:
+        "Design incentives and trust mechanisms first; reduce transactional friction second.",
     },
   ];
 
@@ -208,12 +228,18 @@ async function main() {
   // Career Archive (Personal OS Appendix C)
   // ---------------------------------------------------------------------
 
-  const careerEntries: { project: string; organisation: string; role: string; overview: string }[] = [
+  const careerEntries: {
+    project: string;
+    organisation: string;
+    role: string;
+    overview: string;
+  }[] = [
     {
       project: "Savison Life",
       organisation: "Savison Life",
       role: "Founder",
-      overview: "Built and operate a compliance-first pharmaceutical marketplace from brokerage origins.",
+      overview:
+        "Built and operate a compliance-first pharmaceutical marketplace from brokerage origins.",
     },
     {
       project: "GetPharm",

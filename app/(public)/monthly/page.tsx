@@ -25,7 +25,10 @@ export default async function MonthlyReviewsPage() {
           <ul className="space-y-4">
             {reviews.map((review) => (
               <li key={review.id} className="border-border border-b pb-4">
-                <Link href={`/monthly/${review.slug}`} className="font-medium hover:underline">
+                <Link
+                  href={`/monthly/${review.slug}`}
+                  className="font-medium hover:underline"
+                >
                   {review.month.toLocaleDateString("en-US", {
                     month: "long",
                     year: "numeric",

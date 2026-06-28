@@ -40,7 +40,9 @@ export default async function AdminLabNotesPage() {
         </tbody>
       </table>
 
-      {notes.length === 0 ? <p className="text-muted mt-8 text-sm">No lab notes yet.</p> : null}
+      {notes.length === 0 ? (
+        <p className="text-muted mt-8 text-sm">No lab notes yet.</p>
+      ) : null}
     </div>
   );
 }

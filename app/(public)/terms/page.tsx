@@ -7,10 +7,9 @@ export default function TermsPage() {
       <PageHeader title="Terms" />
       <Container width="content" className="pb-24">
         <p className="text-muted">
-          Content on this platform is published for documentation and
-          educational purposes. It is provided as-is without warranty.
-          Reuse with attribution is welcome; commercial redistribution
-          requires permission.
+          Content on this platform is published for documentation and educational
+          purposes. It is provided as-is without warranty. Reuse with attribution is
+          welcome; commercial redistribution requires permission.
         </p>
       </Container>
     </>

@@ -9,6 +9,7 @@ export function Container({
   width?: "layout" | "content";
   className?: string;
 }) {
-  const maxWidth = width === "layout" ? "max-w-(--layout-max-width)" : "max-w-(--content-max-width)";
+  const maxWidth =
+    width === "layout" ? "max-w-(--layout-max-width)" : "max-w-(--content-max-width)";
   return <div className={`mx-auto ${maxWidth} px-6 ${className}`}>{children}</div>;
 }

@@ -17,7 +17,8 @@ export default async function AdminContactSubmissionsPage() {
             <div className="flex items-start justify-between gap-3">
               <div>
                 <p className="font-medium">
-                  {submission.name} · <span className="text-muted">{submission.email}</span>
+                  {submission.name} ·{" "}
+                  <span className="text-muted">{submission.email}</span>
                 </p>
                 <p className="text-muted text-xs">
                   {submission.reason} · {submission.createdAt.toLocaleString("en-US")}

@@ -14,10 +14,20 @@ export function ProjectForm({
   return (
     <form action={action} className="space-y-5">
       <Field label="Slug">
-        <input name="slug" defaultValue={project?.slug} required className="field-input" />
+        <input
+          name="slug"
+          defaultValue={project?.slug}
+          required
+          className="field-input"
+        />
       </Field>
       <Field label="Title">
-        <input name="title" defaultValue={project?.title} required className="field-input" />
+        <input
+          name="title"
+          defaultValue={project?.title}
+          required
+          className="field-input"
+        />
       </Field>
       <Field label="Summary">
         <textarea
@@ -28,7 +38,11 @@ export function ProjectForm({
         />
       </Field>
       <Field label="Venture (optional)">
-        <select name="ventureId" defaultValue={project?.ventureId ?? ""} className="field-input">
+        <select
+          name="ventureId"
+          defaultValue={project?.ventureId ?? ""}
+          className="field-input"
+        >
           <option value="">None</option>
           {ventures.map((venture) => (
             <option key={venture.id} value={venture.id}>

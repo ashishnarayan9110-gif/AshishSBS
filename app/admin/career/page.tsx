@@ -33,14 +33,20 @@ export default async function AdminCareerPage() {
                 <Link href={`/admin/career/${entry.id}`} className="underline">
                   Edit
                 </Link>
-                <DeleteButton id={entry.id} name={entry.project} action={deleteCareerEntry} />
+                <DeleteButton
+                  id={entry.id}
+                  name={entry.project}
+                  action={deleteCareerEntry}
+                />
               </td>
             </tr>
           ))}
         </tbody>
       </table>
 
-      {entries.length === 0 ? <p className="text-muted mt-8 text-sm">No entries yet.</p> : null}
+      {entries.length === 0 ? (
+        <p className="text-muted mt-8 text-sm">No entries yet.</p>
+      ) : null}
     </div>
   );
 }

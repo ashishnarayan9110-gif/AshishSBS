@@ -43,10 +43,7 @@ export function SiteFooter() {
             <ul className="mt-4 space-y-2">
               {group.links.map((link) => (
                 <li key={link.href}>
-                  <Link
-                    href={link.href}
-                    className="text-sm hover:underline"
-                  >
+                  <Link href={link.href} className="text-sm hover:underline">
                     {link.label}
                   </Link>
                 </li>

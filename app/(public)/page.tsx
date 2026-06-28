@@ -31,12 +31,12 @@ export default async function HomePage() {
       <Container width="content" className="py-24">
         <p className="text-muted text-sm">Systems Designer</p>
         <h1 className="mt-3 text-4xl font-medium tracking-tight">
-          I design systems that help businesses operate with greater clarity,
-          trust and efficiency.
+          I design systems that help businesses operate with greater clarity, trust and
+          efficiency.
         </h1>
         <p className="text-muted mt-6 text-lg">
-          This platform documents ventures, projects and research as they
-          happen — not a portfolio, a living operating system.
+          This platform documents ventures, projects and research as they happen — not a
+          portfolio, a living operating system.
         </p>
         <div className="mt-8 flex gap-4">
           <LinkButton href="/about">Read the philosophy</LinkButton>

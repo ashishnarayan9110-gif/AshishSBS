@@ -19,7 +19,10 @@ export function Button({
   ...props
 }: ButtonHTMLAttributes<HTMLButtonElement> & { variant?: Variant; children: ReactNode }) {
   return (
-    <button className={`${BASE_CLASSES} ${VARIANT_CLASSES[variant]} ${className}`} {...props}>
+    <button
+      className={`${BASE_CLASSES} ${VARIANT_CLASSES[variant]} ${className}`}
+      {...props}
+    >
       {children}
     </button>
   );
@@ -37,7 +40,10 @@ export function LinkButton({
   children: ReactNode;
 }) {
   return (
-    <Link href={href} className={`${BASE_CLASSES} ${VARIANT_CLASSES[variant]} ${className}`}>
+    <Link
+      href={href}
+      className={`${BASE_CLASSES} ${VARIANT_CLASSES[variant]} ${className}`}
+    >
       {children}
     </Link>
   );

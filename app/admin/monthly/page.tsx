@@ -28,7 +28,10 @@ export default async function AdminMonthlyReviewsPage() {
           {reviews.map((review) => (
             <tr key={review.id} className="border-border border-b">
               <td className="py-3">
-                {review.month.toLocaleDateString("en-US", { month: "long", year: "numeric" })}
+                {review.month.toLocaleDateString("en-US", {
+                  month: "long",
+                  year: "numeric",
+                })}
               </td>
               <td className="text-muted py-3">{review.contentStatus}</td>
               <td className="py-3 text-right">
@@ -37,7 +40,10 @@ export default async function AdminMonthlyReviewsPage() {
                 </Link>
                 <DeleteButton
                   id={review.id}
-                  name={review.month.toLocaleDateString("en-US", { month: "long", year: "numeric" })}
+                  name={review.month.toLocaleDateString("en-US", {
+                    month: "long",
+                    year: "numeric",
+                  })}
                   action={deleteMonthlyReview}
                 />
               </td>
@@ -46,7 +52,9 @@ export default async function AdminMonthlyReviewsPage() {
         </tbody>
       </table>
 
-      {reviews.length === 0 ? <p className="text-muted mt-8 text-sm">No reviews yet.</p> : null}
+      {reviews.length === 0 ? (
+        <p className="text-muted mt-8 text-sm">No reviews yet.</p>
+      ) : null}
     </div>
   );
 }

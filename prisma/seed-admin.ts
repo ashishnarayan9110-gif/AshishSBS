@@ -15,7 +15,9 @@ async function main() {
   const password = process.env.ADMIN_PASSWORD;
 
   if (!email || !password) {
-    throw new Error("Set ADMIN_EMAIL and ADMIN_PASSWORD env vars before running this script.");
+    throw new Error(
+      "Set ADMIN_EMAIL and ADMIN_PASSWORD env vars before running this script.",
+    );
   }
 
   const passwordHash = await bcrypt.hash(password, 12);

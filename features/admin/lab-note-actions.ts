@@ -10,7 +10,10 @@ const labNoteSchema = z.object({
   slug: z
     .string()
     .min(1)
-    .regex(/^[a-z0-9]+(-[a-z0-9]+)*$/, "Use lowercase letters, numbers and hyphens only."),
+    .regex(
+      /^[a-z0-9]+(-[a-z0-9]+)*$/,
+      "Use lowercase letters, numbers and hyphens only.",
+    ),
   title: z.string().min(1),
   category: z.string().optional().or(z.literal("")),
   body: z.string().min(1),
@@ -58,7 +61,9 @@ export async function updateLabNote(id: string, formData: FormData) {
       ...data,
       category: data.category || null,
       publishedAt:
-        data.contentStatus === "PUBLISHED" ? existing?.publishedAt ?? new Date() : existing?.publishedAt ?? null,
+        data.contentStatus === "PUBLISHED"
+          ? (existing?.publishedAt ?? new Date())
+          : (existing?.publishedAt ?? null),
     },
   });
 

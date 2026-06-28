@@ -7,11 +7,23 @@ const CONTENT_MODELS = [
   { label: "Ventures", href: "/admin/ventures", count: () => prisma.venture.count() },
   { label: "Projects", href: "/admin/projects", count: () => prisma.project.count() },
   { label: "Lab Notes", href: "/admin/lab", count: () => prisma.labNote.count() },
-  { label: "Principles", href: "/admin/principles", count: () => prisma.principle.count() },
+  {
+    label: "Principles",
+    href: "/admin/principles",
+    count: () => prisma.principle.count(),
+  },
   { label: "Resources", href: "/admin/resources", count: () => prisma.resource.count() },
   { label: "Services", href: "/admin/services", count: () => prisma.service.count() },
-  { label: "Career Archive", href: "/admin/career", count: () => prisma.careerEntry.count() },
-  { label: "Monthly Reviews", href: "/admin/monthly", count: () => prisma.monthlyReview.count() },
+  {
+    label: "Career Archive",
+    href: "/admin/career",
+    count: () => prisma.careerEntry.count(),
+  },
+  {
+    label: "Monthly Reviews",
+    href: "/admin/monthly",
+    count: () => prisma.monthlyReview.count(),
+  },
   {
     label: "Contact submissions",
     href: "/admin/contact",

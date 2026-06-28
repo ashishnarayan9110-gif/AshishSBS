@@ -23,7 +23,13 @@ export function MonthlyReviewForm({
         />
       </Field>
       <Field label="Month">
-        <input name="month" type="month" defaultValue={monthValue} required className="field-input" />
+        <input
+          name="month"
+          type="month"
+          defaultValue={monthValue}
+          required
+          className="field-input"
+        />
       </Field>
       <Field label="What I Built (optional)">
         <textarea
@@ -40,16 +46,32 @@ export function MonthlyReviewForm({
         />
       </Field>
       <Field label="Interesting Problems (optional)">
-        <textarea name="problems" defaultValue={review?.problems ?? ""} className="field-input" />
+        <textarea
+          name="problems"
+          defaultValue={review?.problems ?? ""}
+          className="field-input"
+        />
       </Field>
       <Field label="Failures (optional)">
-        <textarea name="failures" defaultValue={review?.failures ?? ""} className="field-input" />
+        <textarea
+          name="failures"
+          defaultValue={review?.failures ?? ""}
+          className="field-input"
+        />
       </Field>
       <Field label="Reading (optional)">
-        <textarea name="reading" defaultValue={review?.reading ?? ""} className="field-input" />
+        <textarea
+          name="reading"
+          defaultValue={review?.reading ?? ""}
+          className="field-input"
+        />
       </Field>
       <Field label="Next Month (optional)">
-        <textarea name="nextMonth" defaultValue={review?.nextMonth ?? ""} className="field-input" />
+        <textarea
+          name="nextMonth"
+          defaultValue={review?.nextMonth ?? ""}
+          className="field-input"
+        />
       </Field>
       <Field label="Content status">
         <select

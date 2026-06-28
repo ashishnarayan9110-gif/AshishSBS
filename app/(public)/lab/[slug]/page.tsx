@@ -19,7 +19,12 @@ export default async function LabNoteDetailPage({
   return (
     <>
       <Container width="content" className="pt-8">
-        <Breadcrumbs items={[{ href: "/lab", label: "Lab" }, { href: `/lab/${note.slug}`, label: note.title }]} />
+        <Breadcrumbs
+          items={[
+            { href: "/lab", label: "Lab" },
+            { href: `/lab/${note.slug}`, label: note.title },
+          ]}
+        />
       </Container>
       <PageHeader title={note.title} />
       <Container width="content" className="pb-24">

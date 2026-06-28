@@ -26,15 +26,15 @@ Open http://localhost:3000.
 
 ## Scripts
 
-| Script | Purpose |
-| --- | --- |
-| `pnpm dev` | Start the dev server |
-| `pnpm build` | Production build |
-| `pnpm lint` | ESLint |
-| `pnpm typecheck` | `tsc --noEmit` |
-| `pnpm format` | Prettier write |
+| Script                | Purpose                        |
+| --------------------- | ------------------------------ |
+| `pnpm dev`            | Start the dev server           |
+| `pnpm build`          | Production build               |
+| `pnpm lint`           | ESLint                         |
+| `pnpm typecheck`      | `tsc --noEmit`                 |
+| `pnpm format`         | Prettier write                 |
 | `pnpm prisma:migrate` | Create/apply a local migration |
-| `pnpm prisma:studio` | Browse the database |
+| `pnpm prisma:studio`  | Browse the database            |
 
 ## Project structure
 

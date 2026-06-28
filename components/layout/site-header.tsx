@@ -49,7 +49,13 @@ export function SiteHeader() {
 
         <div className="flex items-center gap-3 sm:hidden">
           <Link href="/search" aria-label="Search" className="text-muted">
-            <svg viewBox="0 0 24 24" className="h-5 w-5" fill="none" stroke="currentColor" aria-hidden="true">
+            <svg
+              viewBox="0 0 24 24"
+              className="h-5 w-5"
+              fill="none"
+              stroke="currentColor"
+              aria-hidden="true"
+            >
               <circle cx="11" cy="11" r="7" strokeWidth={1.5} />
               <path d="m20 20-3.5-3.5" strokeWidth={1.5} strokeLinecap="round" />
             </svg>

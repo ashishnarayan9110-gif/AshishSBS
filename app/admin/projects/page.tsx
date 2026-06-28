@@ -38,14 +38,20 @@ export default async function AdminProjectsPage() {
                 <Link href={`/admin/projects/${project.id}`} className="underline">
                   Edit
                 </Link>
-                <DeleteButton id={project.id} name={project.title} action={deleteProject} />
+                <DeleteButton
+                  id={project.id}
+                  name={project.title}
+                  action={deleteProject}
+                />
               </td>
             </tr>
           ))}
         </tbody>
       </table>
 
-      {projects.length === 0 ? <p className="text-muted mt-8 text-sm">No projects yet.</p> : null}
+      {projects.length === 0 ? (
+        <p className="text-muted mt-8 text-sm">No projects yet.</p>
+      ) : null}
     </div>
   );
 }

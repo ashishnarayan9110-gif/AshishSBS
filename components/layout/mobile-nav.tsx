@@ -3,11 +3,7 @@
 import Link from "next/link";
 import { useEffect, useState } from "react";
 
-export function MobileNav({
-  items,
-}: {
-  items: { href: string; label: string }[];
-}) {
+export function MobileNav({ items }: { items: { href: string; label: string }[] }) {
   const [open, setOpen] = useState(false);
 
   useEffect(() => {
@@ -28,11 +24,23 @@ export function MobileNav({
         className="flex h-9 w-9 items-center justify-center"
       >
         {open ? (
-          <svg viewBox="0 0 24 24" className="h-5 w-5" fill="none" stroke="currentColor" aria-hidden="true">
+          <svg
+            viewBox="0 0 24 24"
+            className="h-5 w-5"
+            fill="none"
+            stroke="currentColor"
+            aria-hidden="true"
+          >
             <path d="M18 6 6 18M6 6l12 12" strokeWidth={1.5} strokeLinecap="round" />
           </svg>
         ) : (
-          <svg viewBox="0 0 24 24" className="h-5 w-5" fill="none" stroke="currentColor" aria-hidden="true">
+          <svg
+            viewBox="0 0 24 24"
+            className="h-5 w-5"
+            fill="none"
+            stroke="currentColor"
+            aria-hidden="true"
+          >
             <path d="M4 7h16M4 12h16M4 17h16" strokeWidth={1.5} strokeLinecap="round" />
           </svg>
         )}

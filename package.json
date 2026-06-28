@@ -12,7 +12,8 @@
     "format:check": "prettier --check .",
     "prisma:generate": "prisma generate",
     "prisma:migrate": "prisma migrate dev",
-    "prisma:studio": "prisma studio"
+    "prisma:studio": "prisma studio",
+    "prisma:seed": "tsx --env-file=.env prisma/seed.ts"
   },
   "dependencies": {
     "@hookform/resolvers": "^5.4.0",
@@ -34,6 +35,7 @@
     "prettier": "^3.8.5",
     "prettier-plugin-tailwindcss": "^0.8.0",
     "tailwindcss": "^4",
+    "tsx": "^4.22.4",
     "typescript": "^5"
   }
 }

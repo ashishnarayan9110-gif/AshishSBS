@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { ThemeToggle } from "@/components/layout/theme-toggle";
 
 const NAV_ITEMS = [
   { href: "/about", label: "About" },
@@ -37,6 +38,9 @@ export function SiteHeader() {
               >
                 Search
               </Link>
+            </li>
+            <li>
+              <ThemeToggle />
             </li>
           </ul>
         </nav>

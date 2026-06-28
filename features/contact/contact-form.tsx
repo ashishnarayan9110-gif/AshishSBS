@@ -4,6 +4,7 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { contactFormSchema, contactReasons, type ContactFormValues } from "@/lib/schemas/contact";
+import { Button } from "@/components/ui/button";
 
 const REASON_LABELS: Record<(typeof contactReasons)[number], string> = {
   COLLABORATION: "Collaboration",
@@ -83,13 +84,9 @@ export function ContactForm() {
         <input className="field-input" {...register("company")} />
       </Field>
 
-      <button
-        type="submit"
-        disabled={isSubmitting}
-        className="bg-accent text-accent-foreground rounded-md px-5 py-2.5 text-sm font-medium disabled:opacity-50"
-      >
+      <Button type="submit" disabled={isSubmitting}>
         {isSubmitting ? "Sending…" : "Send message"}
-      </button>
+      </Button>
 
       {status === "error" ? (
         <p className="text-danger text-sm">Something went wrong. Please try again.</p>

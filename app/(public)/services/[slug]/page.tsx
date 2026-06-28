@@ -1,6 +1,8 @@
-import Link from "next/link";
 import { notFound } from "next/navigation";
 import { PageHeader } from "@/components/shared/page-header";
+import { Breadcrumbs } from "@/components/shared/breadcrumbs";
+import { Container } from "@/components/ui/container";
+import { LinkButton } from "@/components/ui/button";
 import { getServiceBySlug } from "@/lib/content";
 
 export const dynamic = "force-dynamic";
@@ -17,8 +19,22 @@ export default async function ServiceDetailPage({
 
   return (
     <>
+      <Container width="content" className="pt-8">
+        <Breadcrumbs
+          items={[
+            { href: "/services", label: "Services" },
+            { href: `/services/${service.slug}`, label: service.name },
+          ]}
+        />
+      </Container>
       <PageHeader title={service.name} description={service.problem ?? undefined} />
-      <div className="mx-auto max-w-(--content-max-width) space-y-8 px-6 pb-24">
+      <Container width="content" className="space-y-8 pb-24">
+        {service.idealClient ? (
+          <section>
+            <h2 className="font-medium">Ideal Client</h2>
+            <p className="text-muted mt-2">{service.idealClient}</p>
+          </section>
+        ) : null}
         {service.approach ? (
           <section>
             <h2 className="font-medium">Approach</h2>
@@ -31,10 +47,8 @@ export default async function ServiceDetailPage({
             <p className="text-muted mt-2">{service.deliverables}</p>
           </section>
         ) : null}
-        <Link href="/contact" className="underline">
-          Start a conversation
-        </Link>
-      </div>
+        <LinkButton href="/contact">Start a conversation</LinkButton>
+      </Container>
     </>
   );
 }

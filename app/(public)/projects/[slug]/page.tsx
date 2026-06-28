@@ -1,5 +1,7 @@
 import { notFound } from "next/navigation";
 import { PageHeader } from "@/components/shared/page-header";
+import { Breadcrumbs } from "@/components/shared/breadcrumbs";
+import { Container } from "@/components/ui/container";
 import { getProjectBySlug } from "@/lib/content";
 
 export const dynamic = "force-dynamic";
@@ -16,8 +18,16 @@ export default async function ProjectDetailPage({
 
   return (
     <>
+      <Container width="content" className="pt-8">
+        <Breadcrumbs
+          items={[
+            { href: "/projects", label: "Projects" },
+            { href: `/projects/${project.slug}`, label: project.title },
+          ]}
+        />
+      </Container>
       <PageHeader title={project.title} description={project.summary} />
-      <div className="mx-auto max-w-(--content-max-width) space-y-8 px-6 pb-24">
+      <Container width="content" className="space-y-8 pb-24">
         {project.background ? (
           <section>
             <h2 className="font-medium">Background</h2>
@@ -46,7 +56,7 @@ export default async function ProjectDetailPage({
             </ul>
           </section>
         ) : null}
-      </div>
+      </Container>
     </>
   );
 }

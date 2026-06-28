@@ -1,5 +1,8 @@
 import { notFound } from "next/navigation";
 import { PageHeader } from "@/components/shared/page-header";
+import { Breadcrumbs } from "@/components/shared/breadcrumbs";
+import { Container } from "@/components/ui/container";
+import { LinkButton } from "@/components/ui/button";
 import { getResourceBySlug } from "@/lib/content";
 
 export const dynamic = "force-dynamic";
@@ -16,14 +19,22 @@ export default async function ResourceDetailPage({
 
   return (
     <>
+      <Container width="content" className="pt-8">
+        <Breadcrumbs
+          items={[
+            { href: "/resources", label: "Resources" },
+            { href: `/resources/${resource.slug}`, label: resource.title },
+          ]}
+        />
+      </Container>
       <PageHeader title={resource.title} description={resource.description ?? undefined} />
-      <div className="mx-auto max-w-(--content-max-width) px-6 pb-24">
+      <Container width="content" className="pb-24">
         {resource.downloadUrl ? (
-          <a href={resource.downloadUrl} className="underline">
+          <LinkButton href={resource.downloadUrl} variant="secondary">
             Download
-          </a>
+          </LinkButton>
         ) : null}
-      </div>
+      </Container>
     </>
   );
 }

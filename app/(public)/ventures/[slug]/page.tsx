@@ -1,5 +1,8 @@
 import { notFound } from "next/navigation";
 import { PageHeader } from "@/components/shared/page-header";
+import { Breadcrumbs } from "@/components/shared/breadcrumbs";
+import { Container } from "@/components/ui/container";
+import { VentureStatusBadge } from "@/components/ui/badge";
 import { getVentureBySlug } from "@/lib/content";
 
 export const dynamic = "force-dynamic";
@@ -16,8 +19,20 @@ export default async function VentureDetailPage({
 
   return (
     <>
-      <PageHeader title={venture.name} description={venture.summary} />
-      <div className="mx-auto max-w-(--content-max-width) space-y-8 px-6 pb-24">
+      <Container width="content" className="pt-8">
+        <Breadcrumbs
+          items={[
+            { href: "/ventures", label: "Ventures" },
+            { href: `/ventures/${venture.slug}`, label: venture.name },
+          ]}
+        />
+      </Container>
+      <PageHeader
+        title={venture.name}
+        description={venture.summary}
+        badge={<VentureStatusBadge status={venture.status} />}
+      />
+      <Container width="content" className="space-y-8 pb-24">
         {venture.problem ? (
           <section>
             <h2 className="font-medium">Problem</h2>
@@ -30,6 +45,12 @@ export default async function VentureDetailPage({
             <p className="text-muted mt-2">{venture.solution}</p>
           </section>
         ) : null}
+        {venture.currentStage ? (
+          <section>
+            <h2 className="font-medium">Current Status</h2>
+            <p className="text-muted mt-2">{venture.currentStage}</p>
+          </section>
+        ) : null}
         {venture.lessons.length > 0 ? (
           <section>
             <h2 className="font-medium">Lessons</h2>
@@ -40,7 +61,7 @@ export default async function VentureDetailPage({
             </ul>
           </section>
         ) : null}
-      </div>
+      </Container>
     </>
   );
 }

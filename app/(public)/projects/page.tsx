@@ -1,6 +1,7 @@
-import Link from "next/link";
 import { PageHeader } from "@/components/shared/page-header";
 import { EmptyState } from "@/components/shared/empty-state";
+import { Container } from "@/components/ui/container";
+import { LinkCard } from "@/components/ui/card";
 import { getProjects } from "@/lib/content";
 
 export const dynamic = "force-dynamic";
@@ -14,7 +15,7 @@ export default async function ProjectsPage() {
         title="Projects"
         description="Work with a beginning and an end — process, deliverables and lessons."
       />
-      <div className="mx-auto max-w-(--layout-max-width) px-6 pb-24">
+      <Container className="pb-24">
         {projects.length === 0 ? (
           <EmptyState
             title="No projects published yet."
@@ -23,16 +24,16 @@ export default async function ProjectsPage() {
         ) : (
           <ul className="grid grid-cols-1 gap-6 sm:grid-cols-2">
             {projects.map((project) => (
-              <li key={project.id} className="border-border rounded-lg border p-6">
-                <Link href={`/projects/${project.slug}`} className="font-medium">
-                  {project.title}
-                </Link>
-                <p className="text-muted mt-2 text-sm">{project.summary}</p>
+              <li key={project.id}>
+                <LinkCard href={`/projects/${project.slug}`}>
+                  <span className="font-medium">{project.title}</span>
+                  <p className="text-muted mt-2 text-sm">{project.summary}</p>
+                </LinkCard>
               </li>
             ))}
           </ul>
         )}
-      </div>
+      </Container>
     </>
   );
 }

@@ -1,5 +1,6 @@
 import { PageHeader } from "@/components/shared/page-header";
 import { EmptyState } from "@/components/shared/empty-state";
+import { Container } from "@/components/ui/container";
 import { getCareerEntries } from "@/lib/content";
 
 export const dynamic = "force-dynamic";
@@ -13,7 +14,7 @@ export default async function CareerPage() {
         title="Career Archive"
         description="A factual, chronological record of work — no confidential or client-sensitive information."
       />
-      <div className="mx-auto max-w-(--content-max-width) px-6 pb-24">
+      <Container width="content" className="pb-24">
         {entries.length === 0 ? (
           <EmptyState
             title="No entries published yet."
@@ -32,7 +33,7 @@ export default async function CareerPage() {
             ))}
           </ol>
         )}
-      </div>
+      </Container>
     </>
   );
 }

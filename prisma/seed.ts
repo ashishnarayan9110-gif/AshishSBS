@@ -54,7 +54,7 @@ async function main() {
 
   await prisma.venture.upsert({
     where: { slug: "betta-beaut" },
-    update: {},
+    update: { featured: true },
     create: {
       slug: "betta-beaut",
       name: "Betta Beaut",
@@ -63,12 +63,13 @@ async function main() {
       summary: "Technology infrastructure for salons.",
       contentStatus: "PUBLISHED",
       publishedAt: new Date(),
+      featured: true,
     },
   });
 
   await prisma.venture.upsert({
     where: { slug: "nirmal-kaya" },
-    update: {},
+    update: { featured: true },
     create: {
       slug: "nirmal-kaya",
       name: "Nirmal Kaya",
@@ -77,6 +78,7 @@ async function main() {
       summary: "A standalone wellness management venture.",
       contentStatus: "PUBLISHED",
       publishedAt: new Date(),
+      featured: true,
     },
   });
 

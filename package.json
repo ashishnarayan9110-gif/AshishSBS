@@ -13,13 +13,16 @@
     "prisma:generate": "prisma generate",
     "prisma:migrate": "prisma migrate dev",
     "prisma:studio": "prisma studio",
-    "prisma:seed": "tsx --env-file=.env prisma/seed.ts"
+    "prisma:seed": "tsx --env-file=.env prisma/seed.ts",
+    "seed:admin": "tsx --env-file=.env prisma/seed-admin.ts"
   },
   "dependencies": {
     "@hookform/resolvers": "^5.4.0",
     "@prisma/client": "^6.19.3",
+    "bcryptjs": "^3.0.3",
     "framer-motion": "^12.42.0",
     "next": "16.2.9",
+    "next-auth": "5.0.0-beta.31",
     "prisma": "^6.19.3",
     "react": "19.2.4",
     "react-dom": "19.2.4",

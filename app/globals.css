@@ -68,6 +68,15 @@ body {
   outline-offset: 2px;
 }
 
+/* Section headings inside detail-page content (Problem, Solution, etc.)
+   render with the same weight as body text by default since Tailwind's
+   preflight unsets heading styles. Low-specificity element selector so
+   any explicit utility classes (e.g. homepage section labels) still win. */
+main section h2 {
+  font-size: 1.125rem;
+  font-weight: 500;
+}
+
 .field-input {
   width: 100%;
   border: 1px solid var(--border);

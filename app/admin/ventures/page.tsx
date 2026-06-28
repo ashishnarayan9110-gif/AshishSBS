@@ -1,7 +1,8 @@
 import Link from "next/link";
 import { prisma } from "@/lib/prisma";
 import { Button } from "@/components/ui/button";
-import { DeleteVentureButton } from "@/features/admin/delete-venture-button";
+import { DeleteButton } from "@/features/admin/delete-button";
+import { deleteVenture } from "@/features/admin/venture-actions";
 
 export default async function AdminVenturesPage() {
   const ventures = await prisma.venture.findMany({ orderBy: { createdAt: "desc" } });
@@ -36,7 +37,7 @@ export default async function AdminVenturesPage() {
                 <Link href={`/admin/ventures/${venture.id}`} className="underline">
                   Edit
                 </Link>
-                <DeleteVentureButton id={venture.id} name={venture.name} />
+                <DeleteButton id={venture.id} name={venture.name} action={deleteVenture} />
               </td>
             </tr>
           ))}

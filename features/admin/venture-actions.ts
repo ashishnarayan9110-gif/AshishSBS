@@ -3,18 +3,8 @@
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { z } from "zod";
-import { auth } from "@/auth";
 import { prisma } from "@/lib/prisma";
-
-const STAFF_ROLES = new Set(["FOUNDER", "ADMINISTRATOR", "EDITOR"]);
-
-async function requireStaff() {
-  const session = await auth();
-  if (!session?.user || !STAFF_ROLES.has(session.user.role)) {
-    throw new Error("Not authorized.");
-  }
-  return session.user;
-}
+import { requireStaff } from "@/lib/admin/require-staff";
 
 const ventureSchema = z.object({
   slug: z

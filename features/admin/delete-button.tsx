@@ -1,11 +1,17 @@
 "use client";
 
-import { deleteVenture } from "@/features/admin/venture-actions";
-
-export function DeleteVentureButton({ id, name }: { id: string; name: string }) {
+export function DeleteButton({
+  id,
+  name,
+  action,
+}: {
+  id: string;
+  name: string;
+  action: (id: string) => Promise<void>;
+}) {
   return (
     <form
-      action={() => deleteVenture(id)}
+      action={() => action(id)}
       onSubmit={(event) => {
         if (!confirm(`Delete "${name}"? This cannot be undone.`)) {
           event.preventDefault();

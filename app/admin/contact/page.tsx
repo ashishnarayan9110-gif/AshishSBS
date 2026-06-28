@@ -2,6 +2,8 @@ import { prisma } from "@/lib/prisma";
 import { DeleteButton } from "@/features/admin/delete-button";
 import { deleteContactSubmission } from "@/features/admin/contact-submission-actions";
 
+export const dynamic = "force-dynamic";
+
 export default async function AdminContactSubmissionsPage() {
   const submissions = await prisma.contactSubmission.findMany({
     orderBy: { createdAt: "desc" },

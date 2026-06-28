@@ -4,6 +4,8 @@ import { Button } from "@/components/ui/button";
 import { DeleteButton } from "@/features/admin/delete-button";
 import { deleteService } from "@/features/admin/service-actions";
 
+export const dynamic = "force-dynamic";
+
 export default async function AdminServicesPage() {
   const services = await prisma.service.findMany({ orderBy: { createdAt: "desc" } });
 

@@ -4,6 +4,8 @@ import { Button } from "@/components/ui/button";
 import { DeleteButton } from "@/features/admin/delete-button";
 import { deleteMonthlyReview } from "@/features/admin/monthly-review-actions";
 
+export const dynamic = "force-dynamic";
+
 export default async function AdminMonthlyReviewsPage() {
   const reviews = await prisma.monthlyReview.findMany({ orderBy: { month: "desc" } });
 

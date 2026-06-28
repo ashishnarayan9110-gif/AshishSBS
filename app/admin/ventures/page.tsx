@@ -4,6 +4,8 @@ import { Button } from "@/components/ui/button";
 import { DeleteButton } from "@/features/admin/delete-button";
 import { deleteVenture } from "@/features/admin/venture-actions";
 
+export const dynamic = "force-dynamic";
+
 export default async function AdminVenturesPage() {
   const ventures = await prisma.venture.findMany({ orderBy: { createdAt: "desc" } });
 

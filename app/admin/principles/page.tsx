@@ -4,6 +4,8 @@ import { Button } from "@/components/ui/button";
 import { DeleteButton } from "@/features/admin/delete-button";
 import { deletePrinciple } from "@/features/admin/principle-actions";
 
+export const dynamic = "force-dynamic";
+
 export default async function AdminPrinciplesPage() {
   const principles = await prisma.principle.findMany({ orderBy: { createdAt: "desc" } });
 

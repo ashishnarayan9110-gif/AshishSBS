@@ -4,6 +4,8 @@ import { Button } from "@/components/ui/button";
 import { DeleteButton } from "@/features/admin/delete-button";
 import { deleteCareerEntry } from "@/features/admin/career-entry-actions";
 
+export const dynamic = "force-dynamic";
+
 export default async function AdminCareerPage() {
   const entries = await prisma.careerEntry.findMany({ orderBy: { startDate: "desc" } });
 

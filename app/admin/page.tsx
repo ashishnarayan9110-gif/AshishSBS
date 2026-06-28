@@ -31,6 +31,8 @@ const CONTENT_MODELS = [
   },
 ] as const;
 
+export const dynamic = "force-dynamic";
+
 export default async function AdminPage() {
   const session = await auth();
   const counts = await Promise.all(CONTENT_MODELS.map((model) => model.count()));

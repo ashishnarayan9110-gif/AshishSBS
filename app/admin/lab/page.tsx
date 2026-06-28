@@ -4,6 +4,8 @@ import { Button } from "@/components/ui/button";
 import { DeleteButton } from "@/features/admin/delete-button";
 import { deleteLabNote } from "@/features/admin/lab-note-actions";
 
+export const dynamic = "force-dynamic";
+
 export default async function AdminLabNotesPage() {
   const notes = await prisma.labNote.findMany({ orderBy: { createdAt: "desc" } });
 

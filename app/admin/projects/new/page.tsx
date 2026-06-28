@@ -2,6 +2,8 @@ import { prisma } from "@/lib/prisma";
 import { ProjectForm } from "@/features/admin/project-form";
 import { createProject } from "@/features/admin/project-actions";
 
+export const dynamic = "force-dynamic";
+
 export default async function NewProjectPage() {
   const ventures = await prisma.venture.findMany({ orderBy: { name: "asc" } });
 

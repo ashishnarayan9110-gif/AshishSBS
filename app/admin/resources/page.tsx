@@ -4,6 +4,8 @@ import { Button } from "@/components/ui/button";
 import { DeleteButton } from "@/features/admin/delete-button";
 import { deleteResource } from "@/features/admin/resource-actions";
 
+export const dynamic = "force-dynamic";
+
 export default async function AdminResourcesPage() {
   const resources = await prisma.resource.findMany({ orderBy: { createdAt: "desc" } });
 

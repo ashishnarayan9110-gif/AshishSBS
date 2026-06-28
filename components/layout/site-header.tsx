@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { ThemeToggle } from "@/components/layout/theme-toggle";
+import { MobileNav } from "@/components/layout/mobile-nav";
 
 const NAV_ITEMS = [
   { href: "/about", label: "About" },
@@ -18,7 +19,8 @@ export function SiteHeader() {
         <Link href="/" className="text-sm font-medium">
           Ashish
         </Link>
-        <nav aria-label="Primary">
+
+        <nav aria-label="Primary" className="hidden sm:block">
           <ul className="flex items-center gap-6 text-sm">
             {NAV_ITEMS.map((item) => (
               <li key={item.href}>
@@ -44,6 +46,17 @@ export function SiteHeader() {
             </li>
           </ul>
         </nav>
+
+        <div className="flex items-center gap-3 sm:hidden">
+          <Link href="/search" aria-label="Search" className="text-muted">
+            <svg viewBox="0 0 24 24" className="h-5 w-5" fill="none" stroke="currentColor" aria-hidden="true">
+              <circle cx="11" cy="11" r="7" strokeWidth={1.5} />
+              <path d="m20 20-3.5-3.5" strokeWidth={1.5} strokeLinecap="round" />
+            </svg>
+          </Link>
+          <ThemeToggle />
+          <MobileNav items={[...NAV_ITEMS]} />
+        </div>
       </div>
     </header>
   );

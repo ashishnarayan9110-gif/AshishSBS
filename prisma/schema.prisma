@@ -47,6 +47,19 @@ enum ContactReason {
   MEDIA
 }
 
+enum FounderStage {
+  IDEA_ONLY
+  PRE_LAUNCH
+  REGISTERED
+  GENERATING_REVENUE
+}
+
+enum PaymentStatus {
+  PENDING
+  PAID
+  FAILED
+}
+
 // ---------------------------------------------------------------------------
 // Auth / CMS users
 // ---------------------------------------------------------------------------
@@ -67,6 +80,7 @@ model User {
   authoredResources  Resource[]
   authoredArticles   Article[]
   authoredReviews    MonthlyReview[]
+  authoredInsights   Insight[]
 
   @@map("users")
 }
@@ -282,6 +296,25 @@ model Article {
   @@map("articles")
 }
 
+model Insight {
+  id           String        @id @default(cuid())
+  slug         String        @unique
+  title        String
+  guestName    String?
+  videoUrl     String?
+  summary      String
+  body         String?
+  contentStatus ContentStatus @default(DRAFT)
+  publishedAt  DateTime?
+  createdAt    DateTime      @default(now())
+  updatedAt    DateTime      @updatedAt
+
+  authorId String?
+  author   User?  @relation(fields: [authorId], references: [id])
+
+  @@map("insights")
+}
+
 model Book {
   id          String   @id @default(cuid())
   title       String
@@ -454,4 +487,34 @@ model ContactSubmission {
   createdAt DateTime      @default(now())
 
   @@map("contact_submissions")
+}
+
+model IdeaSubmission {
+  id               String   @id @default(cuid())
+  name             String
+  businessIdea     String
+  targetCustomer   String
+  problem          String
+  biggestChallenge String
+  createdAt        DateTime @default(now())
+
+  @@map("idea_submissions")
+}
+
+model StrategyCallBooking {
+  id            String        @id @default(cuid())
+  name          String
+  email         String
+  phone         String?
+  question      String
+  triedSoFar    String
+  stage         FounderStage
+  amount        Int // in paise (₹1,499 = 149900)
+  paymentStatus PaymentStatus @default(PENDING)
+  razorpayOrderId   String?   @unique
+  razorpayPaymentId String?
+  createdAt     DateTime      @default(now())
+  updatedAt     DateTime      @updatedAt
+
+  @@map("strategy_call_bookings")
 }

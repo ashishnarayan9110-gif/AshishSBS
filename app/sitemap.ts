@@ -20,42 +20,57 @@ const STATIC_ROUTES = [
   "/monthly",
   "/search",
   "/contact",
+  "/insights",
+  "/submit-idea",
+  "/strategy-call",
   "/privacy",
   "/terms",
 ];
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  const [ventures, projects, labNotes, principles, resources, services, reviews] =
-    await Promise.all([
-      prisma.venture.findMany({
-        where: { contentStatus: "PUBLISHED" },
-        select: { slug: true, updatedAt: true },
-      }),
-      prisma.project.findMany({
-        where: { contentStatus: "PUBLISHED" },
-        select: { slug: true, updatedAt: true },
-      }),
-      prisma.labNote.findMany({
-        where: { contentStatus: "PUBLISHED" },
-        select: { slug: true, updatedAt: true },
-      }),
-      prisma.principle.findMany({
-        where: { contentStatus: "PUBLISHED" },
-        select: { slug: true, updatedAt: true },
-      }),
-      prisma.resource.findMany({
-        where: { contentStatus: "PUBLISHED" },
-        select: { slug: true, updatedAt: true },
-      }),
-      prisma.service.findMany({
-        where: { contentStatus: "PUBLISHED" },
-        select: { slug: true, updatedAt: true },
-      }),
-      prisma.monthlyReview.findMany({
-        where: { contentStatus: "PUBLISHED" },
-        select: { slug: true, updatedAt: true },
-      }),
-    ]);
+  const [
+    ventures,
+    projects,
+    labNotes,
+    principles,
+    resources,
+    services,
+    reviews,
+    insights,
+  ] = await Promise.all([
+    prisma.venture.findMany({
+      where: { contentStatus: "PUBLISHED" },
+      select: { slug: true, updatedAt: true },
+    }),
+    prisma.project.findMany({
+      where: { contentStatus: "PUBLISHED" },
+      select: { slug: true, updatedAt: true },
+    }),
+    prisma.labNote.findMany({
+      where: { contentStatus: "PUBLISHED" },
+      select: { slug: true, updatedAt: true },
+    }),
+    prisma.principle.findMany({
+      where: { contentStatus: "PUBLISHED" },
+      select: { slug: true, updatedAt: true },
+    }),
+    prisma.resource.findMany({
+      where: { contentStatus: "PUBLISHED" },
+      select: { slug: true, updatedAt: true },
+    }),
+    prisma.service.findMany({
+      where: { contentStatus: "PUBLISHED" },
+      select: { slug: true, updatedAt: true },
+    }),
+    prisma.monthlyReview.findMany({
+      where: { contentStatus: "PUBLISHED" },
+      select: { slug: true, updatedAt: true },
+    }),
+    prisma.insight.findMany({
+      where: { contentStatus: "PUBLISHED" },
+      select: { slug: true, updatedAt: true },
+    }),
+  ]);
 
   const staticEntries: MetadataRoute.Sitemap = STATIC_ROUTES.map((path) => ({
     url: `${SITE_URL}${path}`,
@@ -90,6 +105,10 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     ...reviews.map((r) => ({
       url: `${SITE_URL}/monthly/${r.slug}`,
       lastModified: r.updatedAt,
+    })),
+    ...insights.map((i) => ({
+      url: `${SITE_URL}/insights/${i.slug}`,
+      lastModified: i.updatedAt,
     })),
   ];
 

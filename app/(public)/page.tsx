@@ -7,10 +7,15 @@ import { prisma } from "@/lib/prisma";
 export const dynamic = "force-dynamic";
 
 export default async function HomePage() {
-  const [featuredVentures, principles, services] = await Promise.all([
+  const [featuredVentures, featuredProjects, principles, services] = await Promise.all([
     prisma.venture.findMany({
       where: { contentStatus: "PUBLISHED", featured: true },
       take: 4,
+      orderBy: { publishedAt: "desc" },
+    }),
+    prisma.project.findMany({
+      where: { contentStatus: "PUBLISHED", featured: true },
+      take: 6,
       orderBy: { publishedAt: "desc" },
     }),
     prisma.principle.findMany({
@@ -46,6 +51,25 @@ export default async function HomePage() {
         </div>
       </Container>
 
+      {/* Featured Projects */}
+      {featuredProjects.length > 0 ? (
+        <Container className="pb-20">
+          <h2 className="text-muted text-xs font-medium tracking-wide uppercase">
+            Projects
+          </h2>
+          <ul className="mt-4 grid grid-cols-1 gap-6 sm:grid-cols-2">
+            {featuredProjects.map((project) => (
+              <li key={project.id}>
+                <LinkCard href={`/projects/${project.slug}`}>
+                  <span className="font-medium">{project.title}</span>
+                  <p className="text-muted mt-2 text-sm">{project.summary}</p>
+                </LinkCard>
+              </li>
+            ))}
+          </ul>
+        </Container>
+      ) : null}
+
       {/* Featured Ventures */}
       {featuredVentures.length > 0 ? (
         <Container className="pb-20">
@@ -67,6 +91,22 @@ export default async function HomePage() {
           </ul>
         </Container>
       ) : null}
+
+      {/* Labs CTA — building in public */}
+      <Container className="pb-20">
+        <div className="border-border rounded-lg border p-8 text-center">
+          <p className="font-medium">Building in public</p>
+          <p className="text-muted mt-2 text-sm">
+            Projects I&apos;m currently working on. Some finished, many unfinished. All
+            open for collaboration.
+          </p>
+          <div className="mt-4">
+            <LinkButton href="/lab" variant="secondary">
+              See what I&apos;m building →
+            </LinkButton>
+          </div>
+        </div>
+      </Container>
 
       {/* Principles Snapshot */}
       {principles.length > 0 ? (

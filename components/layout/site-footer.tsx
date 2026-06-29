@@ -5,6 +5,7 @@ const FOOTER_GROUPS = [
     title: "Platform",
     links: [
       { href: "/about", label: "About" },
+      { href: "/ventures", label: "All Ventures" },
       { href: "/principles", label: "Principles" },
       { href: "/career", label: "Career Archive" },
       { href: "/monthly", label: "Monthly Builder Review" },
@@ -14,13 +15,18 @@ const FOOTER_GROUPS = [
     title: "Knowledge",
     links: [
       { href: "/lab", label: "Lab" },
+      { href: "/insights", label: "Insights" },
       { href: "/resources", label: "Resources" },
       { href: "/search", label: "Search" },
     ],
   },
   {
-    title: "Ventures",
-    links: [{ href: "/ventures", label: "All Ventures" }],
+    title: "Work With Me",
+    links: [
+      { href: "/services", label: "Services" },
+      { href: "/submit-idea", label: "Submit Your Idea" },
+      { href: "/strategy-call", label: "Strategy Call" },
+    ],
   },
   {
     title: "Legal",

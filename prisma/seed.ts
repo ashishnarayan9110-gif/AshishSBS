@@ -99,6 +99,36 @@ async function main() {
   });
 
   // ---------------------------------------------------------------------
+  // Projects (Volume I Module 04) — Savison Life is the flagship project
+  // ---------------------------------------------------------------------
+
+  const savisonLifeVenture = await prisma.venture.findUnique({
+    where: { slug: "savison-life" },
+  });
+
+  await prisma.project.upsert({
+    where: { slug: "savison-life" },
+    update: { featured: true, ventureId: savisonLifeVenture?.id ?? null },
+    create: {
+      slug: "savison-life",
+      title: "Savison Life",
+      summary:
+        "India's verified B2B pharmaceutical manufacturing marketplace connecting buyers with drug-license verified manufacturers.",
+      background:
+        "Pharmaceutical brokerage traditionally runs on relationships and trust built over years, with no systematic way to verify a manufacturer's licensing or compliance status before a deal.",
+      process:
+        "Built a marketplace enforcing drug-license verification, an NLEM-aligned product catalog, deal-room price negotiation, SLA automation, and transparent manufacturer payouts.",
+      outcome:
+        "Operational marketplace with billing, deal rooms, and approved-product enforcement live — verified manufacturers and buyers transacting without relying on informal trust networks.",
+      industry: "Pharmaceutical Marketplace",
+      featured: true,
+      contentStatus: "PUBLISHED",
+      publishedAt: new Date(),
+      ventureId: savisonLifeVenture?.id ?? null,
+    },
+  });
+
+  // ---------------------------------------------------------------------
   // Principles (Personal OS Part I §5 + Part II "Values")
   // ---------------------------------------------------------------------
 

@@ -29,6 +29,17 @@ const CONTENT_MODELS = [
     href: "/admin/contact",
     count: () => prisma.contactSubmission.count(),
   },
+  { label: "Insights", href: "/admin/insights", count: () => prisma.insight.count() },
+  {
+    label: "Idea submissions",
+    href: "/admin/idea-submissions",
+    count: () => prisma.ideaSubmission.count(),
+  },
+  {
+    label: "Strategy call bookings",
+    href: "/admin/strategy-calls",
+    count: () => prisma.strategyCallBooking.count(),
+  },
 ] as const;
 
 export const dynamic = "force-dynamic";

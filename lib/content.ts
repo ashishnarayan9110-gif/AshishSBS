@@ -88,3 +88,14 @@ export function getMonthlyReviews() {
 export function getMonthlyReviewBySlug(slug: string) {
   return prisma.monthlyReview.findFirst({ where: { slug, contentStatus: PUBLISHED } });
 }
+
+export function getInsights() {
+  return prisma.insight.findMany({
+    where: { contentStatus: PUBLISHED },
+    orderBy: { publishedAt: "desc" },
+  });
+}
+
+export function getInsightBySlug(slug: string) {
+  return prisma.insight.findFirst({ where: { slug, contentStatus: PUBLISHED } });
+}

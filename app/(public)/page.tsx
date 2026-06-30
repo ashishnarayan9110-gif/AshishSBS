@@ -34,19 +34,20 @@ export default async function HomePage() {
     <>
       {/* Hero */}
       <Container width="content" className="py-24">
-        <p className="text-muted text-sm">Systems Designer</p>
+        <p className="text-muted text-sm">Systems Over Chaos</p>
         <h1 className="mt-3 text-4xl font-medium tracking-tight">
-          I design systems that help businesses operate with greater clarity, trust and
-          efficiency.
+          I help first-time founders launch properly — with clean systems, real compliance,
+          and clear positioning.
         </h1>
         <p className="text-muted mt-6 text-lg">
-          This platform documents ventures, projects and research as they happen — not a
-          portfolio, a living operating system.
+          I built Savison Life from zero. Now I help founders avoid the operational chaos
+          that kills good ideas before they can scale. No hype, no fluff — just systems
+          that work.
         </p>
         <div className="mt-8 flex gap-4">
-          <LinkButton href="/about">Read the philosophy</LinkButton>
-          <LinkButton href="/ventures" variant="secondary">
-            See current ventures
+          <LinkButton href="/strategy-call">Book a strategy call</LinkButton>
+          <LinkButton href="/about" variant="secondary">
+            Read the philosophy
           </LinkButton>
         </div>
       </Container>
@@ -94,16 +95,30 @@ export default async function HomePage() {
 
       {/* Labs CTA — building in public */}
       <Container className="pb-20">
-        <div className="border-border rounded-lg border p-8 text-center">
-          <p className="font-medium">Building in public</p>
-          <p className="text-muted mt-2 text-sm">
-            Projects I&apos;m currently working on. Some finished, many unfinished. All
-            open for collaboration.
-          </p>
-          <div className="mt-4">
-            <LinkButton href="/lab" variant="secondary">
-              See what I&apos;m building →
-            </LinkButton>
+        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+          <div className="border-border rounded-lg border p-8">
+            <p className="font-medium">Ashish Labs</p>
+            <p className="text-muted mt-2 text-sm">
+              Projects I&apos;m currently working on. Some finished, many unfinished. All
+              open for collaboration.
+            </p>
+            <div className="mt-4">
+              <LinkButton href="/lab" variant="secondary">
+                See what I&apos;m building →
+              </LinkButton>
+            </div>
+          </div>
+          <div className="border-border rounded-lg border p-8">
+            <p className="font-medium">Insights</p>
+            <p className="text-muted mt-2 text-sm">
+              Real conversations with people who actually move things. No hype — sharp,
+              high-signal discussions with operators, experts, and builders.
+            </p>
+            <div className="mt-4">
+              <LinkButton href="/insights" variant="secondary">
+                Watch the conversations →
+              </LinkButton>
+            </div>
           </div>
         </div>
       </Container>
@@ -145,11 +160,29 @@ export default async function HomePage() {
         </Container>
       ) : null}
 
-      {/* Contact CTA */}
-      <Container width="content" className="pb-24 text-center">
-        <p className="text-lg font-medium">Have a problem worth discussing?</p>
-        <div className="mt-6">
-          <LinkButton href="/contact">Start a conversation</LinkButton>
+      {/* Bottom CTAs */}
+      <Container width="content" className="pb-24">
+        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+          <div className="border-border rounded-lg border p-6 text-center">
+            <p className="font-medium">Submit your idea</p>
+            <p className="text-muted mt-2 text-sm">
+              Share your business idea. Selected submissions get a public breakdown video.
+            </p>
+            <div className="mt-4">
+              <LinkButton href="/submit-idea" variant="secondary">
+                Submit for breakdown →
+              </LinkButton>
+            </div>
+          </div>
+          <div className="border-border rounded-lg border p-6 text-center">
+            <p className="font-medium">20-Minute Strategy Call — ₹1,499</p>
+            <p className="text-muted mt-2 text-sm">
+              A high-signal call for serious founders. Come with a specific question.
+            </p>
+            <div className="mt-4">
+              <LinkButton href="/strategy-call">Book the call →</LinkButton>
+            </div>
+          </div>
         </div>
       </Container>
     </>

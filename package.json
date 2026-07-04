@@ -18,7 +18,8 @@
     "prisma:migrate": "prisma migrate dev",
     "prisma:studio": "prisma studio",
     "prisma:seed": "tsx --env-file=.env prisma/seed.ts",
-    "seed:admin": "tsx --env-file=.env prisma/seed-admin.ts"
+    "seed:admin": "tsx --env-file=.env prisma/seed-admin.ts",
+    "seed:realty": "tsx --env-file=.env prisma/seed-realty.ts"
   },
   "dependencies": {
     "@hookform/resolvers": "^5.4.0",
@@ -32,6 +33,7 @@
     "react": "19.2.4",
     "react-dom": "19.2.4",
     "react-hook-form": "^7.80.0",
+    "resend": "^6.16.0",
     "zod": "^4.4.3"
   },
   "devDependencies": {

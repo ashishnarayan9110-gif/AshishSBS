@@ -501,6 +501,61 @@ model IdeaSubmission {
   @@map("idea_submissions")
 }
 
+// ---------------------------------------------------------------------------
+// Realty subdomain (realty.ashish.sbs)
+// ---------------------------------------------------------------------------
+
+model RealtyListing {
+  id             String   @id @default(cuid())
+  slug           String   @unique
+  title          String
+  subtitle       String?
+  location       String
+  priceLabel     String
+  negotiable     Boolean  @default(true)
+  status         String   @default("ACTIVE")
+  summary        String
+  specifications Json     // {label, value, valueSmall?, highlight?, description}[]
+  permittedUses  Json     // {title, description}[]
+  locationPoints Json     // {title, description}[]
+  whyNow         Json     // {eyebrow, title, description}[]
+  stats          Json     // {value, label}[]
+  pillars        Json     // {roman, title, description}[]
+  published      Boolean  @default(true)
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+
+  inquiries RealtyInquiry[]
+
+  @@map("realty_listings")
+}
+
+model RealtyInquiry {
+  id        String         @id @default(cuid())
+  listingId String?
+  listing   RealtyListing? @relation(fields: [listingId], references: [id])
+  name      String
+  company   String?
+  phone     String
+  email     String
+  city      String?
+  budget    String?
+  purpose   String?
+  message   String?
+  confirmed Boolean        @default(false)
+  createdAt DateTime       @default(now())
+
+  @@map("realty_inquiries")
+}
+
+model SmallBizWaitlist {
+  id        String   @id @default(cuid())
+  email     String   @unique
+  createdAt DateTime @default(now())
+
+  @@map("smallbiz_waitlist")
+}
+
 model StrategyCallBooking {
   id            String        @id @default(cuid())
   name          String

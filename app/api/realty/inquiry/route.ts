@@ -1,6 +1,6 @@
 import { type NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
-import { resend, FROM_EMAIL, OWNER_EMAIL } from "@/lib/resend";
+import { getResend, FROM_EMAIL, OWNER_EMAIL } from "@/lib/resend";
 import { realtyInquirySchema } from "@/lib/schemas/realty-inquiry";
 
 export async function POST(request: NextRequest) {
@@ -49,7 +49,7 @@ export async function POST(request: NextRequest) {
           ? "Leasing"
           : "Not specified";
 
-  await resend.emails
+  await getResend().emails
     .send({
       from: FROM_EMAIL,
       to: OWNER_EMAIL,

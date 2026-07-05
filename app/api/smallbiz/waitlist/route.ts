@@ -1,6 +1,6 @@
 import { type NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
-import { resend, FROM_EMAIL, OWNER_EMAIL } from "@/lib/resend";
+import { getResend, FROM_EMAIL, OWNER_EMAIL } from "@/lib/resend";
 import { smallBizWaitlistSchema } from "@/lib/schemas/smallbiz-waitlist";
 
 export async function POST(request: NextRequest) {
@@ -32,7 +32,7 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ error: "Failed to save." }, { status: 500 });
   }
 
-  await resend.emails
+  await getResend().emails
     .send({
       from: FROM_EMAIL,
       to: OWNER_EMAIL,

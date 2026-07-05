@@ -509,7 +509,9 @@ export default function RikencareProjectPage() {
           <p>
             <strong className="text-foreground">Roles.</strong> Brand identity (logo, monogram,
             wordmark, brand guidelines, colour system, typography, motion specification, graphic
-            language, and brand voice) and website design and engineering: Ashish Narayan.
+            language, and brand voice) and website design and engineering: Ashish Narayan. The work
+            was produced with the assistance of AI tooling throughout — direction, decisions, and
+            final approval are my own.
           </p>
           <p>
             <strong className="text-foreground">Client & status.</strong> Rikencare Lifesciences is a

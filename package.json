@@ -20,7 +20,8 @@
     "prisma:seed": "tsx --env-file=.env prisma/seed.ts",
     "seed:admin": "tsx --env-file=.env prisma/seed-admin.ts",
     "seed:realty": "tsx --env-file=.env prisma/seed-realty.ts",
-    "seed:rikencare": "tsx --env-file=.env prisma/seed-rikencare.ts"
+    "seed:rikencare": "tsx --env-file=.env prisma/seed-rikencare.ts",
+    "seed:savison": "tsx --env-file=.env prisma/seed-savison.ts"
   },
   "dependencies": {
     "@hookform/resolvers": "^5.4.0",

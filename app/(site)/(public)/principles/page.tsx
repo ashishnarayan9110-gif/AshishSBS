@@ -15,7 +15,7 @@ export default async function PrinciplesPage() {
         title="Principles"
         description="Long-term beliefs that guide every decision — not opinions, not articles."
       />
-      <Container className="pb-24">
+      <Container className="pt-14 pb-24">
         {principles.length === 0 ? (
           <EmptyState
             title="No principles published yet."

@@ -27,7 +27,7 @@ export default async function PrincipleDetailPage({
         />
       </Container>
       <PageHeader title={principle.title} description={principle.statement} />
-      <Container width="content" className="pb-24">
+      <Container width="content" className="pt-14 pb-24">
         {principle.explanation ? (
           <p className="text-muted">{principle.explanation}</p>
         ) : null}

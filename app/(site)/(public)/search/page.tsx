@@ -54,7 +54,7 @@ export default async function SearchPage({
         title="Search"
         description="Search ventures, projects, lab notes, principles and resources."
       />
-      <Container className="pb-24">
+      <Container className="pt-14 pb-24">
         <form className="mb-10" action="/search">
           <input
             type="search"

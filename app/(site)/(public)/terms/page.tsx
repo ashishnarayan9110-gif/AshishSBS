@@ -5,7 +5,7 @@ export default function TermsPage() {
   return (
     <>
       <PageHeader title="Terms" />
-      <Container width="content" className="pb-24">
+      <Container width="content" className="pt-14 pb-24">
         <p className="text-muted">
           Content on this platform is published for documentation and educational
           purposes. It is provided as-is without warranty. Reuse with attribution is

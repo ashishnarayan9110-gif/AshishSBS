@@ -502,7 +502,7 @@ export default function RikencareProjectPage() {
       <Divider />
 
       {/* Credits */}
-      <Container width="content" className="pb-24">
+      <Container width="content" className="pt-14 pb-24">
         <SectionEyebrow>Credits & Caveats</SectionEyebrow>
         <h2 className="text-xl font-medium tracking-tight">Roles, Provenance, and Honest Scope</h2>
         <div className="text-muted mt-6 space-y-4 text-sm leading-relaxed">

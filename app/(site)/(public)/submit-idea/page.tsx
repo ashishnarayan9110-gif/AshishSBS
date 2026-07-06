@@ -9,7 +9,7 @@ export default function SubmitIdeaPage() {
         title="Submit Your Idea for Public Breakdown"
         description="Selected submissions will be featured in public videos. This is not 1-on-1 mentoring — for that, see the strategy call."
       />
-      <Container width="content" className="pb-24">
+      <Container width="content" className="pt-14 pb-24">
         <IdeaForm />
       </Container>
     </>

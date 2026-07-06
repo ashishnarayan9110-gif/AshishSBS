@@ -32,7 +32,7 @@ export default async function MonthlyReviewDetailPage({
         />
       </Container>
       <PageHeader title={title} />
-      <Container width="content" className="space-y-8 pb-24">
+      <Container width="content" className="space-y-8 pt-14 pb-24">
         {review.whatIBuilt ? (
           <section>
             <h2 className="font-medium">What I Built</h2>

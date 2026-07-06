@@ -15,7 +15,7 @@ export default async function ResourcesPage() {
         title="Resources"
         description="Templates, frameworks, checklists and guides — built once, reused often."
       />
-      <Container className="pb-24">
+      <Container className="pt-14 pb-24">
         {resources.length === 0 ? (
           <EmptyState
             title="No resources available yet."

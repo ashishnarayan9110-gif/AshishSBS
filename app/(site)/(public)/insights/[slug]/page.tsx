@@ -33,7 +33,7 @@ export default async function InsightDetailPage({
         title={insight.title}
         description={insight.guestName ? `With ${insight.guestName}` : undefined}
       />
-      <Container width="content" className="space-y-8 pb-24">
+      <Container width="content" className="space-y-8 pt-14 pb-24">
         {embedUrl ? (
           <div className="aspect-video overflow-hidden rounded-lg">
             <iframe

@@ -15,7 +15,7 @@ export default async function InsightsPage() {
         title="Insights"
         description="Real conversations with people who actually move things. No hype, no motivational speeches — sharp, high-signal discussions with operators, experts, and builders."
       />
-      <Container className="pb-24">
+      <Container className="pt-14 pb-24">
         {insights.length === 0 ? (
           <EmptyState
             title="No insights published yet."

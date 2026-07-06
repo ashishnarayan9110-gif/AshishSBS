@@ -32,7 +32,7 @@ export default async function VentureDetailPage({
         description={venture.summary}
         badge={<VentureStatusBadge status={venture.status} />}
       />
-      <Container width="content" className="space-y-8 pb-24">
+      <Container width="content" className="space-y-8 pt-14 pb-24">
         {venture.problem ? (
           <section>
             <h2 className="font-medium">Problem</h2>

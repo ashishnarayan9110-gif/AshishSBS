@@ -15,7 +15,7 @@ export default async function ServicesPage() {
         title="Services"
         description="Professional offerings for problems that cannot yet be automated."
       />
-      <Container className="pb-24">
+      <Container className="pt-14 pb-24">
         {services.length === 0 ? (
           <EmptyState
             title="No services published yet."

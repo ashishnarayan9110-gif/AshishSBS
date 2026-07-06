@@ -15,7 +15,7 @@ export default async function MonthlyReviewsPage() {
         title="Monthly Builder Review"
         description="A public progress log — what was built, what was learned, what failed."
       />
-      <Container className="pb-24">
+      <Container className="pt-14 pb-24">
         {reviews.length === 0 ? (
           <EmptyState
             title="No reviews published yet."

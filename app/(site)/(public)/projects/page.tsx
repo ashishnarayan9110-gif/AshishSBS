@@ -15,7 +15,7 @@ export default async function ProjectsPage() {
         title="Projects"
         description="Work with a beginning and an end — process, deliverables and lessons."
       />
-      <Container className="pb-24">
+      <Container className="pt-14 pb-24">
         {projects.length === 0 ? (
           <EmptyState
             title="No projects published yet."

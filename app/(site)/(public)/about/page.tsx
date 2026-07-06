@@ -9,7 +9,7 @@ export default function AboutPage() {
         title="About"
         description="Systems Over Chaos — how I think, build, and operate."
       />
-      <Container width="content" className="space-y-12 pb-24">
+      <Container width="content" className="space-y-12 pt-14 pb-24">
         {/* Core identity */}
         <section>
           <h2 className="font-medium">Who I am</h2>

@@ -9,7 +9,7 @@ export default function ContactPage() {
         title="Contact"
         description="The beginning of a conversation — not a lead form."
       />
-      <Container width="content" className="pb-24">
+      <Container width="content" className="pt-14 pb-24">
         <ContactForm />
       </Container>
     </>

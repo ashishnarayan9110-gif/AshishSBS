@@ -28,7 +28,7 @@ export default async function ServiceDetailPage({
         />
       </Container>
       <PageHeader title={service.name} description={service.problem ?? undefined} />
-      <Container width="content" className="space-y-8 pb-24">
+      <Container width="content" className="space-y-8 pt-14 pb-24">
         {service.idealClient ? (
           <section>
             <h2 className="font-medium">Ideal Client</h2>

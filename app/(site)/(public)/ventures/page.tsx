@@ -16,7 +16,7 @@ export default async function VenturesPage() {
         title="Ventures"
         description="Businesses documented from problem to current status — including the ones that paused or shut down."
       />
-      <Container className="pb-24">
+      <Container className="pt-14 pb-24">
         {ventures.length === 0 ? (
           <EmptyState
             title="No ventures published yet."

@@ -1,8 +1,7 @@
+import Link from "next/link";
 import { notFound } from "next/navigation";
-import { PageHeader } from "@/components/shared/page-header";
-import { Breadcrumbs } from "@/components/shared/breadcrumbs";
-import { Container } from "@/components/ui/container";
 import { getProjectBySlug } from "@/lib/content";
+import { prisma } from "@/lib/prisma";
 
 export const dynamic = "force-dynamic";
 
@@ -16,47 +15,104 @@ export default async function ProjectDetailPage({
 
   if (!project) notFound();
 
+  const nextProject = await prisma.project.findFirst({
+    where: { contentStatus: "PUBLISHED", slug: { not: project.slug } },
+    orderBy: { publishedAt: "desc" },
+    select: { slug: true, title: true },
+  });
+
+  const facts = [
+    { label: "INDUSTRY", value: project.industry ?? "—" },
+    { label: "YEAR", value: project.year ? String(project.year) : "—" },
+    { label: "STACK", value: project.technology ?? "—" },
+    { label: "STATUS", value: "Shipped" },
+  ];
+
+  const body = [
+    { label: "background", text: project.background },
+    { label: "process", text: project.process },
+    { label: "outcome", text: project.outcome },
+  ].filter((b): b is { label: string; text: string } => Boolean(b.text));
+
   return (
     <>
-      <Container width="content" className="pt-8">
-        <Breadcrumbs
-          items={[
-            { href: "/projects", label: "Projects" },
-            { href: `/projects/${project.slug}`, label: project.title },
-          ]}
-        />
-      </Container>
-      <PageHeader title={project.title} description={project.summary} />
-      <Container width="content" className="space-y-8 pb-24">
-        {project.background ? (
-          <section>
-            <h2 className="font-medium">Background</h2>
-            <p className="text-muted mt-2">{project.background}</p>
-          </section>
-        ) : null}
-        {project.process ? (
-          <section>
-            <h2 className="font-medium">Process</h2>
-            <p className="text-muted mt-2">{project.process}</p>
-          </section>
-        ) : null}
-        {project.outcome ? (
-          <section>
-            <h2 className="font-medium">Outcome</h2>
-            <p className="text-muted mt-2">{project.outcome}</p>
-          </section>
-        ) : null}
-        {project.lessons.length > 0 ? (
-          <section>
-            <h2 className="font-medium">Lessons</h2>
-            <ul className="text-muted mt-2 list-disc space-y-1 pl-5">
-              {project.lessons.map((lesson) => (
-                <li key={lesson.id}>{lesson.text}</li>
-              ))}
-            </ul>
-          </section>
-        ) : null}
-      </Container>
+      {/* Header */}
+      <div className="dot-grid border-border border-b px-6 pt-16 pb-12 sm:px-10">
+        <div className="mx-auto max-w-(--layout-max-width)">
+          <div className="font-meta text-muted mb-7 flex justify-between text-[11px] uppercase">
+            <Link href="/projects" className="hover:text-foreground">
+              ← Back to index
+            </Link>
+            <span className="text-accent">● Case study</span>
+          </div>
+          <h1 className="font-display text-[clamp(44px,8vw,110px)] leading-[0.9]">
+            {project.title}
+          </h1>
+          <p className="mt-7 max-w-xl text-lg leading-relaxed text-[#D9D2CF]">
+            {project.summary}
+          </p>
+
+          <div className="bg-border mt-12 grid grid-cols-2 gap-px lg:grid-cols-4">
+            {facts.map((f) => (
+              <div key={f.label} className="bg-background px-4 pt-6 pb-4">
+                <div className="font-meta text-muted text-[10px] uppercase">{f.label}</div>
+                <div className="font-grotesk mt-2 text-base font-semibold break-words sm:text-lg">
+                  {f.value}
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+
+      {/* Body */}
+      <div className="dot-grid border-border border-b px-6 py-20 sm:px-10">
+        <div className="mx-auto grid max-w-(--layout-max-width) gap-10 lg:grid-cols-[220px_1fr]">
+          <div className="font-meta text-accent text-[11px] uppercase">{"// Overview"}</div>
+          <div className="max-w-2xl space-y-6">
+            {body.map((b) => (
+              <p key={b.label} className="text-lg leading-relaxed text-[#D9D2CF]">
+                {b.text}
+              </p>
+            ))}
+            {project.lessons.length > 0 ? (
+              <div className="border-border mt-10 border-t pt-8">
+                <div className="font-meta text-accent mb-5 text-[11px] uppercase">
+                  {"// Lessons"}
+                </div>
+                <ul className="space-y-4">
+                  {project.lessons.map((lesson, i) => (
+                    <li key={lesson.id} className="flex gap-4">
+                      <span className="font-meta text-muted text-[13px]">
+                        {String(i + 1).padStart(2, "0")}
+                      </span>
+                      <span className="leading-relaxed text-[#D9D2CF]">{lesson.text}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            ) : null}
+          </div>
+        </div>
+      </div>
+
+      {/* Next project */}
+      {nextProject ? (
+        <div className="dot-grid px-6 py-20 sm:px-10">
+          <div className="mx-auto flex max-w-(--layout-max-width) flex-col gap-5">
+            <span className="font-meta text-muted text-[11px] uppercase">Next entry</span>
+            <Link
+              href={`/projects/${nextProject.slug}`}
+              className="border-border flex items-baseline justify-between gap-6 border-b pb-8"
+            >
+              <span className="font-display text-[clamp(28px,5vw,60px)] leading-none">
+                {nextProject.title}
+              </span>
+              <span className="text-accent text-2xl">↗</span>
+            </Link>
+          </div>
+        </div>
+      ) : null}
     </>
   );
 }

@@ -42,6 +42,91 @@
   --font-mono: var(--font-geist-mono);
 }
 
+/* ============================================================
+   OS theme — "protocol documentation" identity for the main
+   ashish.sbs site only. Scoped to .os so realty/smallbiz keep
+   the neutral token set above.
+   Palette: Black #000 · Ebony #131210 · Gray #E9DFDD ·
+   Silver #C7C8C5 · Crimson #FF1627 · Steel #706F6C
+   ============================================================ */
+.os {
+  --background: #000000;
+  --foreground: #e9dfdd;
+  --muted: #8a8884;
+  --muted-background: #131210;
+  --border: #292723;
+  --accent: #ff1627;
+  --accent-foreground: #e9dfdd;
+
+  --font-sans: var(--font-work-sans);
+  --font-mono: var(--font-plex-mono);
+
+  background: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-work-sans), sans-serif;
+}
+
+.os ::selection {
+  background: #ff1627;
+  color: #e9dfdd;
+}
+
+.os :focus-visible {
+  outline-color: #ff1627;
+}
+
+/* Inverted (light) section within the OS theme */
+.os-light {
+  --background: #e9dfdd;
+  --foreground: #131210;
+  --muted: #706f6c;
+  --muted-background: #dfd5d2;
+  --border: #cfc6c2;
+  background: var(--background);
+  color: var(--foreground);
+}
+
+.os .dot-grid {
+  background-image: radial-gradient(circle, rgba(233, 223, 221, 0.14) 1px, transparent 1px);
+  background-size: 28px 28px;
+}
+
+.os .dot-grid-dark {
+  background-image: radial-gradient(circle, rgba(19, 18, 16, 0.14) 1px, transparent 1px);
+  background-size: 28px 28px;
+}
+
+.os .font-display {
+  font-family: var(--font-anton), sans-serif;
+  font-weight: 400;
+  text-transform: uppercase;
+}
+
+.os .font-grotesk {
+  font-family: var(--font-space-grotesk), sans-serif;
+}
+
+.os .font-meta {
+  font-family: var(--font-plex-mono), monospace;
+  letter-spacing: 0.08em;
+}
+
+/* Placeholder image block — striped duotone per the imagery spec */
+.os .placeholder-stripes {
+  background: repeating-linear-gradient(
+    115deg,
+    #1a0d0d 0px,
+    #1a0d0d 2px,
+    #0a0a0a 2px,
+    #0a0a0a 14px
+  );
+}
+
+.os .field-input {
+  border-radius: 0.25rem;
+  background: var(--muted-background);
+}
+
 @media (prefers-reduced-motion: reduce) {
   *,
   *::before,

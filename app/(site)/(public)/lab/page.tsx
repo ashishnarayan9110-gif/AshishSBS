@@ -12,25 +12,34 @@ export default async function LabPage() {
   return (
     <>
       <PageHeader
-        title="Lab"
-        description="Unfinished thinking — experiments, research and open questions."
+        title="Lab Notes"
+        description="Unfinished thinking — experiments, research and open questions, logged as-is."
       />
-      <Container className="pb-24">
+      <Container className="py-14 pb-24">
         {notes.length === 0 ? (
           <EmptyState
             title="No experiments published yet."
             description="Lab notes appear here once documented in the CMS."
           />
         ) : (
-          <ul className="divide-border divide-y">
-            {notes.map((note) => (
-              <li key={note.id} className="py-4">
-                <Link href={`/lab/${note.slug}`} className="font-medium hover:underline">
-                  {note.title}
+          <ul className="border-border border-t">
+            {notes.map((note, i) => (
+              <li key={note.id}>
+                <Link
+                  href={`/lab/${note.slug}`}
+                  className="border-border grid grid-cols-[40px_1fr_24px] items-center gap-4 border-b py-6 sm:grid-cols-[60px_1fr_140px_24px] sm:gap-6"
+                >
+                  <span className="font-meta text-muted text-[13px]">
+                    {String(i + 1).padStart(2, "0")}
+                  </span>
+                  <span className="font-grotesk text-lg font-semibold sm:text-xl">
+                    {note.title}
+                  </span>
+                  <span className="font-meta text-accent hidden text-right text-[10px] uppercase sm:block">
+                    {note.category ? `#${note.category}` : ""}
+                  </span>
+                  <span className="text-muted text-lg">↗</span>
                 </Link>
-                {note.category ? (
-                  <span className="text-muted ml-2 text-xs">{note.category}</span>
-                ) : null}
               </li>
             ))}
           </ul>

@@ -15,7 +15,7 @@ export function MobileNav({ items }: { items: { href: string; label: string }[] 
   }, [open]);
 
   return (
-    <div className="sm:hidden">
+    <div className="lg:hidden">
       <button
         type="button"
         aria-expanded={open}

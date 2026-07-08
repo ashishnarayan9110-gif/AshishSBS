@@ -35,25 +35,25 @@ export default async function VentureDetailPage({
       <Container width="content" className="space-y-8 pt-14 pb-24">
         {venture.problem ? (
           <section>
-            <h2 className="font-medium">Problem</h2>
+            <h2 className="font-medium">What I noticed</h2>
             <p className="text-muted mt-2">{venture.problem}</p>
           </section>
         ) : null}
         {venture.solution ? (
           <section>
-            <h2 className="font-medium">Solution</h2>
+            <h2 className="font-medium">What I tried</h2>
             <p className="text-muted mt-2">{venture.solution}</p>
           </section>
         ) : null}
         {venture.currentStage ? (
           <section>
-            <h2 className="font-medium">Current Status</h2>
+            <h2 className="font-medium">Where it stands right now</h2>
             <p className="text-muted mt-2">{venture.currentStage}</p>
           </section>
         ) : null}
         {venture.lessons.length > 0 ? (
           <section>
-            <h2 className="font-medium">Lessons</h2>
+            <h2 className="font-medium">What I learned the hard way</h2>
             <ul className="text-muted mt-2 list-disc space-y-1 pl-5">
               {venture.lessons.map((lesson) => (
                 <li key={lesson.id}>{lesson.text}</li>

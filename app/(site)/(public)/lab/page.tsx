@@ -13,13 +13,13 @@ export default async function LabPage() {
     <>
       <PageHeader
         title="Lab Notes"
-        description="Unfinished thinking — experiments, research and open questions, logged as-is."
+        description="Observations, working theories, and things I got wrong — written down before I understood them, not after. Start anywhere; each one points to the next."
       />
       <Container className="py-14 pb-24">
         {notes.length === 0 ? (
           <EmptyState
-            title="No experiments published yet."
-            description="Lab notes appear here once documented in the CMS."
+            title="Nothing logged yet."
+            description="The first entry shows up here the moment there's something worth writing down."
           />
         ) : (
           <ul className="border-border border-t">

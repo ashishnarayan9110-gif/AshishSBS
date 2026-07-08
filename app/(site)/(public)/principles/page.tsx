@@ -12,8 +12,8 @@ export default async function PrinciplesPage() {
   return (
     <>
       <PageHeader
-        title="Principles"
-        description="Long-term beliefs that guide every decision — not opinions, not articles."
+        title="Working Theories"
+        description="Beliefs I currently hold and keep testing against reality — not settled truths, just the best explanation I have until something breaks it."
       />
       <Container className="pt-14 pb-24">
         {principles.length === 0 ? (

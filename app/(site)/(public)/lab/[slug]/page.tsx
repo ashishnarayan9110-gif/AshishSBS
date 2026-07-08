@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { getLabNoteBySlug } from "@/lib/content";
+import { getLabNoteBySlug, getLabNotes } from "@/lib/content";
 
 export const dynamic = "force-dynamic";
 
@@ -10,7 +10,7 @@ export default async function LabNoteDetailPage({
   params: Promise<{ slug: string }>;
 }) {
   const { slug } = await params;
-  const note = await getLabNoteBySlug(slug);
+  const [note, allNotes] = await Promise.all([getLabNoteBySlug(slug), getLabNotes()]);
 
   if (!note) notFound();
 
@@ -19,11 +19,15 @@ export default async function LabNoteDetailPage({
     .slice(0, 10)
     .replaceAll("-", ".");
 
+  const currentIndex = allNotes.findIndex((n) => n.slug === note.slug);
+  const nextNote = currentIndex >= 0 ? allNotes[currentIndex + 1] : undefined;
+
   return (
     <div className="os-light dot-grid-dark">
       <div className="mx-auto max-w-3xl px-6 pt-20 pb-12">
-        <div className="font-meta text-accent mb-6 text-[11px] uppercase">
-          {"// Lab note"} — {date}
+        <div className="font-meta text-accent mb-6 flex flex-wrap items-center gap-x-3 gap-y-1 text-[11px] uppercase">
+          <span>{"// Entry"} — {date}</span>
+          <span className="text-muted">· Still open</span>
         </div>
         <h1 className="font-display text-[clamp(34px,6vw,68px)] leading-[0.98]">
           {note.title}
@@ -42,16 +46,34 @@ export default async function LabNoteDetailPage({
           {note.body}
         </div>
 
-        <div className="mt-16 flex flex-wrap items-center justify-between gap-4 border-t border-black/12 pt-7">
+        <div className="mt-14 border-t border-black/12 pt-7">
           <span className="font-meta text-muted text-[11px] uppercase">
-            Logged {date} · Node: Ashish
+            Where this stands
           </span>
-          <Link
-            href="/lab"
-            className="font-grotesk border-accent border-b pb-1 text-sm font-semibold"
-          >
-            All lab notes ↗
-          </Link>
+          <p className="mt-2 text-base leading-relaxed text-[#2A2A2A]">
+            Not resolved. Filed here so I can&apos;t quietly pretend I never thought it.
+          </p>
+        </div>
+
+        <div className="mt-10 flex flex-wrap items-center justify-between gap-4 border-t border-black/12 pt-7">
+          <span className="font-meta text-muted text-[11px] uppercase">
+            Logged {date} · Ashish
+          </span>
+          {nextNote ? (
+            <Link
+              href={`/lab/${nextNote.slug}`}
+              className="font-grotesk border-accent border-b pb-1 text-sm font-semibold"
+            >
+              Continue the investigation ↗
+            </Link>
+          ) : (
+            <Link
+              href="/lab"
+              className="font-grotesk border-accent border-b pb-1 text-sm font-semibold"
+            >
+              Back to the notebook ↗
+            </Link>
+          )}
         </div>
       </div>
     </div>

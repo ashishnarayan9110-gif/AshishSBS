@@ -13,7 +13,7 @@ export default async function ServicesPage() {
     <>
       <PageHeader
         title="Services"
-        description="Professional offerings for problems that cannot yet be automated."
+        description="For when you'd rather borrow the last few years directly than wait for me to write it up."
       />
       <Container className="pt-14 pb-24">
         {services.length === 0 ? (

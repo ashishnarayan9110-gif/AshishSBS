@@ -2,10 +2,10 @@ import Link from "next/link";
 import { MobileNav } from "@/components/layout/mobile-nav";
 
 const NAV_ITEMS = [
-  { href: "/ventures", label: "Ventures" },
-  { href: "/projects", label: "Projects" },
   { href: "/lab", label: "Lab Notes" },
-  { href: "/principles", label: "Principles" },
+  { href: "/ventures", label: "Ventures" },
+  { href: "/projects", label: "Evidence" },
+  { href: "/principles", label: "Working Theories" },
   { href: "/services", label: "Services" },
   { href: "/about", label: "About" },
 ] as const;
@@ -47,7 +47,7 @@ export function SiteHeader() {
             href="/contact"
             className="font-meta border-accent text-accent hover:bg-accent hover:text-accent-foreground hidden rounded-[4px] border px-4 py-2 text-[11px] uppercase transition-colors sm:inline-block"
           >
-            Contact ↗
+            Say hello ↗
           </Link>
           <MobileNav
             items={[

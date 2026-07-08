@@ -12,8 +12,8 @@ export default async function ResourcesPage() {
   return (
     <>
       <PageHeader
-        title="Resources"
-        description="Templates, frameworks, checklists and guides — built once, reused often."
+        title="Field Kit"
+        description="The templates and checklists I actually built for myself along the way — kept here because rebuilding them from scratch each time was the mistake."
       />
       <Container className="pt-14 pb-24">
         {resources.length === 0 ? (

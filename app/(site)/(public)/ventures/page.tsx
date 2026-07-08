@@ -14,7 +14,7 @@ export default async function VenturesPage() {
     <>
       <PageHeader
         title="Ventures"
-        description="Businesses documented from problem to current status — including the ones that paused or shut down."
+        description="Real businesses, logged as they happen — the ones still running, the ones that paused, the ones that quietly died. Status changes; the record doesn't get rewritten."
       />
       <Container className="pt-14 pb-24">
         {ventures.length === 0 ? (

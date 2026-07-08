@@ -25,13 +25,13 @@ export default async function ProjectDetailPage({
     { label: "INDUSTRY", value: project.industry ?? "—" },
     { label: "YEAR", value: project.year ? String(project.year) : "—" },
     { label: "STACK", value: project.technology ?? "—" },
-    { label: "STATUS", value: "Shipped" },
+    { label: "CURRENT STATE", value: "Live — still watching it" },
   ];
 
   const body = [
-    { label: "background", text: project.background },
-    { label: "process", text: project.process },
-    { label: "outcome", text: project.outcome },
+    { label: "Why this exists", text: project.background },
+    { label: "What actually happened", text: project.process },
+    { label: "Where it stands now", text: project.outcome },
   ].filter((b): b is { label: string; text: string } => Boolean(b.text));
 
   return (
@@ -41,9 +41,9 @@ export default async function ProjectDetailPage({
         <div className="mx-auto max-w-(--layout-max-width)">
           <div className="font-meta text-muted mb-7 flex justify-between text-[11px] uppercase">
             <Link href="/projects" className="hover:text-foreground">
-              ← Back to index
+              ← Back to the archive
             </Link>
-            <span className="text-accent">● Case study</span>
+            <span className="text-accent">● Evidence entry</span>
           </div>
           <h1 className="font-display text-[clamp(44px,8vw,110px)] leading-[0.9]">
             {project.title}
@@ -68,17 +68,22 @@ export default async function ProjectDetailPage({
       {/* Body */}
       <div className="dot-grid border-border border-b px-6 py-20 sm:px-10">
         <div className="mx-auto grid max-w-(--layout-max-width) gap-10 lg:grid-cols-[220px_1fr]">
-          <div className="font-meta text-accent text-[11px] uppercase">{"// Overview"}</div>
-          <div className="max-w-2xl space-y-6">
+          <div className="font-meta text-accent text-[11px] uppercase">
+            {"// The record"}
+          </div>
+          <div className="max-w-2xl space-y-10">
             {body.map((b) => (
-              <p key={b.label} className="text-lg leading-relaxed text-[#D9D2CF]">
-                {b.text}
-              </p>
+              <div key={b.label}>
+                <div className="font-meta text-muted mb-2 text-[11px] uppercase">
+                  {b.label}
+                </div>
+                <p className="text-lg leading-relaxed text-[#D9D2CF]">{b.text}</p>
+              </div>
             ))}
             {project.lessons.length > 0 ? (
               <div className="border-border mt-10 border-t pt-8">
                 <div className="font-meta text-accent mb-5 text-[11px] uppercase">
-                  {"// Lessons"}
+                  {"// What I'd do differently now"}
                 </div>
                 <ul className="space-y-4">
                   {project.lessons.map((lesson, i) => (
@@ -100,7 +105,9 @@ export default async function ProjectDetailPage({
       {nextProject ? (
         <div className="dot-grid px-6 py-20 sm:px-10">
           <div className="mx-auto flex max-w-(--layout-max-width) flex-col gap-5">
-            <span className="font-meta text-muted text-[11px] uppercase">Next entry</span>
+            <span className="font-meta text-muted text-[11px] uppercase">
+              Keep reading
+            </span>
             <Link
               href={`/projects/${nextProject.slug}`}
               className="border-border flex items-baseline justify-between gap-6 border-b pb-8"

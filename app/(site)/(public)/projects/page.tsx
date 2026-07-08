@@ -12,8 +12,8 @@ export default async function ProjectsPage() {
   return (
     <>
       <PageHeader
-        title="Projects"
-        description="Work with a beginning and an end — process, deliverables and lessons."
+        title="Evidence"
+        description="What the ventures actually produced — the assumption I started with, what turned out to be true, and what I'd do differently now."
       />
       <Container className="pt-14 pb-24">
         {projects.length === 0 ? (

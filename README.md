@@ -59,36 +59,63 @@ component.
 
 ---
 
-## Creative direction (content voice)
+## Creative direction (voice, not visuals)
 
-As of the last content pass, the site is deliberately positioned as **"a
-living archive documenting the reconstruction of a person through work,"**
-not a polished, finished portfolio. This governs copy, not visuals — colors,
-type, and layout are unchanged from the design system above.
+This section describes a **person**, not a website. Colors, type, spacing,
+and layout are the fixed design system above — none of that changes here.
+What changes is the language, the hierarchy, and the feeling someone has
+after ten minutes on the site.
 
-Rules currently in force across every page:
+**The site is not a portfolio, a journal, a founder blog, or a motivational
+page.** It is the public record of someone who builds. A visitor should
+leave thinking *"this person builds interesting things,"* not *"this person
+talks about interesting things."*
 
-- No completion language. "Projects" → **Evidence**. "Principles" →
-  **Working Theories**. "Portfolio" language (showcase, featured, collection)
-  is avoided in favor of archive/log/field-kit language.
-- **Lab Notes leads the information hierarchy** — it's section `01` on the
-  homepage, ahead of Ventures and Evidence, because the site treats thinking
-  as the primary artifact and shipped work as supporting evidence of it.
-- Microcopy is rewritten from documentation to storytelling: "View project"
-  → *"What actually happened"*; "All lab notes" → *"Continue the
-  investigation"*; project sections are labeled *why this exists / what
-  actually happened / where it stands now* instead of *background / process
-  / outcome*.
-- First-person, present-tense, non-corporate voice throughout. Avoid:
-  solutions, expertise, deliverables, innovation. Prefer: building, testing,
-  learning, trying.
-- Every lab note links forward to the next one instead of back to a flat
-  index, to encourage reading the notebook in sequence rather than browsing
-  a list.
+**Ordering principle — the one rule everything else follows:**
+
+> Optimize every page for credibility first, curiosity second, philosophy
+> third. Never reverse that order.
+
+Concretely, this is why the homepage leads with **Ventures** (`01`, live
+proof of execution) and **Evidence** (`02`, what was actually shipped)
+*before* **Lab Notes** (`03`, the thinking) and **Working Theories** (`04`,
+the beliefs) — credibility is earned before curiosity is invited, and
+curiosity is earned before philosophy is offered. Films and other media can
+carry the mythology of the story; ashish.sbs is where that story is grounded
+in real, checkable work.
+
+**Voice**: calm, precise, curious, observant, competent, quietly ambitious.
+Never motivational, preachy, arrogant, self-important, fake-humble,
+corporate, or cinematic. Show decisions instead of claiming intelligence;
+show work instead of claiming expertise; show evidence instead of claiming
+authenticity.
+
+**Removed on this pass**: the "Rebuilding in the open" hero and the
+reconstruction/notebook/investigation framing from the previous content
+pass — it read as self-focused ("your transformation") rather than
+work-focused ("your work"). Mythology words (*manifesto, reconstruction,
+legacy, journey, transformation*) and motivational words (*dream, mission,
+vision, passion, empowering, innovating, disrupting*) are avoided sitewide
+in favor of active, checkable language: *building, testing, shipping,
+documenting, learning*.
+
+**Section/nav naming still in force**: "Projects" → **Evidence**,
+"Principles" → **Working Theories** — not portfolio language, but framed as
+decisions and tested beliefs rather than a showcase. Project pages are
+structured as a decision, not a case study: *why this exists → what
+actually happened → where it stands now → what I'd do differently now* —
+answering, without ever stating outright, what was built, why, what changed
+because of it, and what's next.
+
+**Litmus test before publishing any sentence**: does it sound earned? does
+it build trust? does it sound competent without claiming certainty? is it
+showing instead of telling? would it still read well in five years? If any
+answer is no, rewrite it.
 
 This is a copy/hierarchy layer, not a schema change — there are currently no
-per-entry "status / iteration / last updated" database fields; that motion
-is currently simulated in copy only (see **Known gaps** below).
+per-entry "status / iteration / last updated" database fields; the "Status:
+Building" framing is simulated in static copy only (see **Known gaps**
+below).
 
 ---
 
@@ -98,13 +125,13 @@ is currently simulated in copy only (see **Known gaps** below).
 
 | Route | Title (as shown) | Description / one-line copy |
 |---|---|---|
-| `/` | — | Hero: *"Rebuilding in the open."* — reconstruction narrative, live counts of open questions / ventures / evidence pulled from the DB. Section order: 01 Lab Notes → 02 Ventures → featured Evidence spotlight → 03 Evidence → 04 Working Theories → 05 Field Kit / 06 Services split panel. |
+| `/` | — | Hero: *"I build things that have to work."* — credibility-first framing, live counts of ventures/shipped work/notes pulled from the DB. Section order: 01 Ventures → featured build spotlight → 02 Evidence → 03 Lab Notes → 04 Working Theories → 05 Field Kit / 06 Services split panel. |
 | `/lab` | Lab Notes | *"Observations, working theories, and things I got wrong — written down before I understood them, not after. Start anywhere; each one points to the next."* |
-| `/lab/[slug]` | (note title) | Detail page: `// Entry — {date} · Still open` eyebrow, body, then a "Where this stands" reflection block, then "Continue the investigation ↗" linking to the next note in sequence. |
+| `/lab/[slug]` | (note title) | Detail page: `// Lab note — {date}` eyebrow, body, then "Next note ↗" linking to the next entry in sequence (or "Back to all notes ↗" on the last one). |
 | `/ventures` | Ventures | *"Real businesses, logged as they happen — the ones still running, the ones that paused, the ones that quietly died. Status changes; the record doesn't get rewritten."* |
 | `/ventures/[slug]` | (venture name) | Sections: *What I noticed / What I tried / Where it stands right now / What I learned the hard way.* |
 | `/projects` | Evidence | *"What the ventures actually produced — the assumption I started with, what turned out to be true, and what I'd do differently now."* |
-| `/projects/[slug]` | (project title) | *Evidence entry* eyebrow. Sections: *Why this exists / What actually happened / Where it stands now*, plus *"What I'd do differently now"* (lessons). Ends with a "Keep reading →" link to the next entry. |
+| `/projects/[slug]` | (project title) | *Evidence* eyebrow. Sections: *Why this exists / What actually happened / Where it stands now*, plus *"What I'd do differently now"* (lessons). Ends with a link to the next entry. |
 | `/projects/rikencare-lifesciences` | Rikencare Lifesciences | Two-part case study: brand system + website build, for a WHO-GMP pharma manufacturer. Standalone static page (not CMS-driven), see project-specific credits block. |
 | `/projects/savison-life` | Savison Life | Founder-perspective case study: problem, brand system, four-portal platform architecture, stack, and an explicit "gaps" section. Standalone static page. |
 | `/principles` | Working Theories | *"Beliefs I currently hold and keep testing against reality — not settled truths, just the best explanation I have until something breaks it."* |

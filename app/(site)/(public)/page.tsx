@@ -71,31 +71,30 @@ export default async function HomePage() {
       {/* Hero */}
       <section className="dot-grid border-border flex min-h-[82vh] flex-col justify-between border-b px-6 py-10 sm:px-10">
         <div className="font-meta text-muted flex justify-between text-[11px] uppercase">
-          <span>Status: In progress · Not a finished thing</span>
-          <span className="hidden sm:inline">Entry logged · {today}</span>
+          <span>Status: Building</span>
+          <span className="hidden sm:inline">Last updated · {today}</span>
         </div>
 
         <div className="mx-auto w-full max-w-(--layout-max-width)">
           <span className="font-meta text-accent text-xs tracking-[0.15em] uppercase">
-            {"// A build log, not a résumé"}
+            {"// Currently building"}
           </span>
           <h1 className="font-display mt-4 text-[clamp(52px,10vw,140px)] leading-[0.88]">
-            Rebuilding
+            I build things
             <br />
-            in the <span className="text-accent">open.</span>
+            that have to <span className="text-accent">work.</span>
           </h1>
           <p className="mt-7 max-w-xl text-lg leading-relaxed text-[#D9D2CF]">
-            I lost Savison to zero once and built it back from nothing. Everything below
-            is evidence of that, still being written — the ventures, the wrong turns, the
-            things I believed and later had to unlearn. Nothing here is finished. Follow
-            it while it&apos;s still happening.
+            Savison Life — a compliance-gated pharma marketplace — is live below, along
+            with what shipped alongside it. This is where I keep the record of what
+            worked, what didn&apos;t, and what I&apos;m testing next.
           </p>
           <div className="mt-8 flex flex-wrap gap-4">
             <Link
-              href="/lab"
+              href="/ventures"
               className="font-grotesk bg-accent text-accent-foreground rounded-[4px] px-6 py-3.5 text-sm font-semibold"
             >
-              Read the notebook
+              See what I&apos;ve built
             </Link>
             <Link
               href="/strategy-call"
@@ -109,62 +108,17 @@ export default async function HomePage() {
         <div className="font-meta text-muted flex justify-between text-[11px] uppercase">
           <span>Keep scrolling ↓</span>
           <span>
-            {labNotes.length} open questions · {ventures.length} live bets ·{" "}
-            {projects.length} pieces of evidence
+            {ventures.length} ventures live · {projects.length} shipped ·{" "}
+            {labNotes.length} notes
           </span>
         </div>
       </section>
 
-      {/* 01 Lab Notes — the heart of the site, light section, leads */}
-      {labNotes.length > 0 ? (
-        <section className="os-light dot-grid-dark border-border border-b px-6 py-20 sm:px-10">
-          <div className="mx-auto max-w-(--layout-max-width)">
-            <SectionHead index="01" title="Lab Notes" aside="Currently unresolved" />
-            <p className="mb-10 max-w-xl text-[15px] leading-relaxed text-[#2A2A2A]">
-              Not essays. Working notes — what I noticed, what I got wrong, what I&apos;m
-              still testing. Read in order if you want the actual thread.
-            </p>
-            <ul className="grid grid-cols-1 gap-px bg-black/15 sm:grid-cols-3">
-              {labNotes.map((n) => (
-                <li key={n.id} className="flex">
-                  <Link
-                    href={`/lab/${n.slug}`}
-                    className="flex min-h-[200px] w-full flex-col justify-between gap-8 bg-[#E9DFDD] p-8"
-                  >
-                    <span className="font-meta text-accent text-[10px] uppercase">
-                      {(n.publishedAt ?? n.createdAt).toISOString().slice(0, 10).replaceAll("-", ".")}
-                    </span>
-                    <span>
-                      <span className="font-grotesk block text-lg leading-snug font-semibold">
-                        {n.title}
-                      </span>
-                      {n.category ? (
-                        <span className="text-muted mt-2 block text-sm">#{n.category}</span>
-                      ) : null}
-                    </span>
-                  </Link>
-                </li>
-              ))}
-            </ul>
-            {latestNote ? (
-              <div className="mt-8">
-                <Link
-                  href={`/lab/${latestNote.slug}`}
-                  className="font-grotesk border-b border-black/40 pb-1 text-sm font-semibold"
-                >
-                  Continue the investigation ↗
-                </Link>
-              </div>
-            ) : null}
-          </div>
-        </section>
-      ) : null}
-
-      {/* 02 Ventures */}
+      {/* 01 Ventures — credibility first */}
       {ventures.length > 0 ? (
         <section className="dot-grid border-border border-b px-6 py-20 sm:px-10">
           <div className="mx-auto max-w-(--layout-max-width)">
-            <SectionHead index="02" title="Ventures" aside="Live experiments, real stakes" />
+            <SectionHead index="01" title="Ventures" aside="Live, running now" />
             <ul className="border-border border-t">
               {ventures.map((v, i) => (
                 <li key={v.id}>
@@ -191,7 +145,7 @@ export default async function HomePage() {
         </section>
       ) : null}
 
-      {/* Featured evidence spotlight */}
+      {/* Featured build spotlight */}
       {featured ? (
         <section className="border-border grid border-b lg:grid-cols-2">
           <div className="placeholder-stripes border-border flex aspect-square items-center justify-center lg:border-r">
@@ -201,7 +155,7 @@ export default async function HomePage() {
           </div>
           <div className="dot-grid flex flex-col justify-center gap-5 px-6 py-16 sm:px-14">
             <span className="font-meta text-accent text-[11px] uppercase">
-              {"// Latest evidence"} {featured.industry ? `— ${featured.industry}` : ""}
+              {"// Latest build"} {featured.industry ? `— ${featured.industry}` : ""}
             </span>
             <h3 className="font-display text-[clamp(30px,4vw,52px)] leading-[0.95]">
               {featured.title}
@@ -217,11 +171,11 @@ export default async function HomePage() {
         </section>
       ) : null}
 
-      {/* 03 Evidence (projects) */}
+      {/* 02 Evidence (projects) */}
       {restProjects.length > 0 ? (
         <section className="dot-grid border-border border-b px-6 py-20 sm:px-10">
           <div className="mx-auto max-w-(--layout-max-width)">
-            <SectionHead index="03" title="Evidence" aside="What the ventures produced" />
+            <SectionHead index="02" title="Evidence" aside="What the ventures produced" />
             <ul className="bg-border grid grid-cols-1 gap-px sm:grid-cols-2 lg:grid-cols-3">
               {restProjects.map((p, i) => (
                 <li key={p.id} className="flex">
@@ -251,7 +205,52 @@ export default async function HomePage() {
         </section>
       ) : null}
 
-      {/* 04 Working Theories (principles) */}
+      {/* 03 Lab Notes — curiosity, after credibility is established */}
+      {labNotes.length > 0 ? (
+        <section className="os-light dot-grid-dark border-border border-b px-6 py-20 sm:px-10">
+          <div className="mx-auto max-w-(--layout-max-width)">
+            <SectionHead index="03" title="Lab Notes" aside="What I'm testing" />
+            <p className="mb-10 max-w-xl text-[15px] leading-relaxed text-[#2A2A2A]">
+              Short, working notes — what I noticed, what I got wrong, what I&apos;m
+              still checking.
+            </p>
+            <ul className="grid grid-cols-1 gap-px bg-black/15 sm:grid-cols-3">
+              {labNotes.map((n) => (
+                <li key={n.id} className="flex">
+                  <Link
+                    href={`/lab/${n.slug}`}
+                    className="flex min-h-[200px] w-full flex-col justify-between gap-8 bg-[#E9DFDD] p-8"
+                  >
+                    <span className="font-meta text-accent text-[10px] uppercase">
+                      {(n.publishedAt ?? n.createdAt).toISOString().slice(0, 10).replaceAll("-", ".")}
+                    </span>
+                    <span>
+                      <span className="font-grotesk block text-lg leading-snug font-semibold">
+                        {n.title}
+                      </span>
+                      {n.category ? (
+                        <span className="text-muted mt-2 block text-sm">#{n.category}</span>
+                      ) : null}
+                    </span>
+                  </Link>
+                </li>
+              ))}
+            </ul>
+            {latestNote ? (
+              <div className="mt-8">
+                <Link
+                  href={`/lab/${latestNote.slug}`}
+                  className="font-grotesk border-b border-black/40 pb-1 text-sm font-semibold"
+                >
+                  Read the latest note ↗
+                </Link>
+              </div>
+            ) : null}
+          </div>
+        </section>
+      ) : null}
+
+      {/* 04 Working Theories — philosophy, last */}
       {principles.length > 0 ? (
         <section className="dot-grid border-border border-b px-6 py-20 sm:px-10">
           <div className="mx-auto max-w-(--layout-max-width)">

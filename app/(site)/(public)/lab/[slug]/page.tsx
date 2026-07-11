@@ -25,9 +25,8 @@ export default async function LabNoteDetailPage({
   return (
     <div className="os-light dot-grid-dark">
       <div className="mx-auto max-w-3xl px-6 pt-20 pb-12">
-        <div className="font-meta text-accent mb-6 flex flex-wrap items-center gap-x-3 gap-y-1 text-[11px] uppercase">
-          <span>{"// Entry"} — {date}</span>
-          <span className="text-muted">· Still open</span>
+        <div className="font-meta text-accent mb-6 text-[11px] uppercase">
+          {"// Lab note"} — {date}
         </div>
         <h1 className="font-display text-[clamp(34px,6vw,68px)] leading-[0.98]">
           {note.title}
@@ -46,15 +45,6 @@ export default async function LabNoteDetailPage({
           {note.body}
         </div>
 
-        <div className="mt-14 border-t border-black/12 pt-7">
-          <span className="font-meta text-muted text-[11px] uppercase">
-            Where this stands
-          </span>
-          <p className="mt-2 text-base leading-relaxed text-[#2A2A2A]">
-            Not resolved. Filed here so I can&apos;t quietly pretend I never thought it.
-          </p>
-        </div>
-
         <div className="mt-10 flex flex-wrap items-center justify-between gap-4 border-t border-black/12 pt-7">
           <span className="font-meta text-muted text-[11px] uppercase">
             Logged {date} · Ashish
@@ -64,14 +54,14 @@ export default async function LabNoteDetailPage({
               href={`/lab/${nextNote.slug}`}
               className="font-grotesk border-accent border-b pb-1 text-sm font-semibold"
             >
-              Continue the investigation ↗
+              Next note ↗
             </Link>
           ) : (
             <Link
               href="/lab"
               className="font-grotesk border-accent border-b pb-1 text-sm font-semibold"
             >
-              Back to the notebook ↗
+              Back to all notes ↗
             </Link>
           )}
         </div>

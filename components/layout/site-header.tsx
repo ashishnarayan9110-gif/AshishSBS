@@ -2,9 +2,9 @@ import Link from "next/link";
 import { MobileNav } from "@/components/layout/mobile-nav";
 
 const NAV_ITEMS = [
-  { href: "/lab", label: "Lab Notes" },
   { href: "/ventures", label: "Ventures" },
   { href: "/projects", label: "Evidence" },
+  { href: "/lab", label: "Lab Notes" },
   { href: "/principles", label: "Working Theories" },
   { href: "/services", label: "Services" },
   { href: "/about", label: "About" },

@@ -13,7 +13,7 @@ export default async function ResourcesPage() {
     <>
       <PageHeader
         title="Field Kit"
-        description="The templates and checklists I actually built for myself along the way — kept here because rebuilding them from scratch each time was the mistake."
+        description="The templates and checklists I actually built for myself along the way — kept here because recreating them from scratch each time cost real hours."
       />
       <Container className="pt-14 pb-24">
         {resources.length === 0 ? (

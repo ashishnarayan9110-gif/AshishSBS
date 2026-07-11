@@ -4,7 +4,7 @@ const FOOTER_GROUPS = [
   {
     title: "Reach out",
     links: [
-      { href: "/contact", label: "Say hello" },
+      { href: "/contact", label: "Get in touch" },
       { href: "/submit-idea", label: "Bring me an idea" },
       { href: "/strategy-call", label: "Book a call" },
     ],
@@ -12,9 +12,9 @@ const FOOTER_GROUPS = [
   {
     title: "Archive",
     links: [
-      { href: "/lab", label: "Lab Notes" },
       { href: "/ventures", label: "Ventures" },
       { href: "/projects", label: "Evidence" },
+      { href: "/lab", label: "Lab Notes" },
       { href: "/principles", label: "Working Theories" },
       { href: "/resources", label: "Field Kit" },
       { href: "/services", label: "Services" },
@@ -23,9 +23,9 @@ const FOOTER_GROUPS = [
   {
     title: "Elsewhere",
     links: [
-      { href: "/about", label: "Who's writing this" },
-      { href: "/career", label: "How I got here" },
-      { href: "/monthly", label: "Monthly letter" },
+      { href: "/about", label: "About" },
+      { href: "/career", label: "Career archive" },
+      { href: "/monthly", label: "Monthly review" },
       { href: "/privacy", label: "Privacy" },
       { href: "/terms", label: "Terms" },
     ],
@@ -37,9 +37,9 @@ export function SiteFooter() {
     <footer className="border-border dot-grid mt-auto border-t">
       <div className="mx-auto max-w-(--layout-max-width) px-6 pt-20 pb-12">
         <h2 className="font-display text-[clamp(48px,9vw,120px)] leading-[0.9]">
-          Still
+          Let&apos;s
           <br />
-          becoming. <span className="text-accent">↗</span>
+          build. <span className="text-accent">↗</span>
         </h2>
 
         <div className="border-border font-meta text-muted mt-10 grid grid-cols-1 gap-10 border-t pt-10 text-xs sm:grid-cols-3">
@@ -60,8 +60,8 @@ export function SiteFooter() {
         </div>
 
         <div className="font-meta text-muted mt-14 flex flex-wrap items-center justify-between gap-4 text-[11px] uppercase">
-          <span>© {new Date().getFullYear()} ashish.sbs — logged, not finished</span>
-          <span>Status: In progress · Last entry above</span>
+          <span>© {new Date().getFullYear()} ashish.sbs</span>
+          <span>Status: Building</span>
         </div>
       </div>
     </footer>

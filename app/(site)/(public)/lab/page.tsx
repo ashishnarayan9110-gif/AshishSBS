@@ -12,7 +12,7 @@ export default async function LabPage() {
   return (
     <>
       <PageHeader
-        title="Lab Notes"
+        title="What I'm Testing"
         description="Observations, working theories, and things I got wrong — written down before I understood them, not after. Start anywhere; each one points to the next."
       />
       <Container className="py-14 pb-24">

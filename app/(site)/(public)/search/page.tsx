@@ -52,7 +52,7 @@ export default async function SearchPage({
     <>
       <PageHeader
         title="Search"
-        description="Search ventures, projects, lab notes, principles and resources."
+        description="Search ventures, evidence, notes, and everything else on the site."
       />
       <Container className="pt-14 pb-24">
         <form className="mb-10" action="/search">
@@ -94,7 +94,7 @@ export default async function SearchPage({
             )}
             {results.labNotes.length > 0 && (
               <ResultGroup
-                label="Lab Notes"
+                label="What I'm Testing"
                 items={results.labNotes.map((n) => ({
                   href: `/lab/${n.slug}`,
                   label: n.title,
@@ -103,7 +103,7 @@ export default async function SearchPage({
             )}
             {results.principles.length > 0 && (
               <ResultGroup
-                label="Principles"
+                label="What Changed My Mind"
                 items={results.principles.map((p) => ({
                   href: `/principles/${p.slug}`,
                   label: p.title,

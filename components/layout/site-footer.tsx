@@ -14,8 +14,8 @@ const FOOTER_GROUPS = [
     links: [
       { href: "/ventures", label: "Ventures" },
       { href: "/projects", label: "Evidence" },
-      { href: "/lab", label: "Lab Notes" },
-      { href: "/principles", label: "Working Theories" },
+      { href: "/lab", label: "What I'm Testing" },
+      { href: "/principles", label: "What Changed My Mind" },
       { href: "/resources", label: "Field Kit" },
       { href: "/services", label: "Services" },
     ],

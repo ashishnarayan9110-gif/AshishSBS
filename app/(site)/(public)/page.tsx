@@ -209,7 +209,7 @@ export default async function HomePage() {
       {labNotes.length > 0 ? (
         <section className="os-light dot-grid-dark border-border border-b px-6 py-20 sm:px-10">
           <div className="mx-auto max-w-(--layout-max-width)">
-            <SectionHead index="03" title="Lab Notes" aside="What I'm testing" />
+            <SectionHead index="03" title="What I'm Testing" aside="Working notes" />
             <p className="mb-10 max-w-xl text-[15px] leading-relaxed text-[#2A2A2A]">
               Short, working notes — what I noticed, what I got wrong, what I&apos;m
               still checking.
@@ -250,13 +250,13 @@ export default async function HomePage() {
         </section>
       ) : null}
 
-      {/* 04 Working Theories — philosophy, last */}
+      {/* 04 What Changed My Mind — philosophy, last */}
       {principles.length > 0 ? (
         <section className="dot-grid border-border border-b px-6 py-20 sm:px-10">
           <div className="mx-auto max-w-(--layout-max-width)">
             <SectionHead
               index="04"
-              title="Working Theories"
+              title="What Changed My Mind"
               aside="Held loosely, tested constantly"
             />
             <ul className="border-border border-t">

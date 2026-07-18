@@ -12,7 +12,7 @@ export default async function PrinciplesPage() {
   return (
     <>
       <PageHeader
-        title="Working Theories"
+        title="What Changed My Mind"
         description="Beliefs I currently hold and keep testing against reality — not settled truths, just the best explanation I have until something breaks it."
       />
       <Container className="pt-14 pb-24">

@@ -191,11 +191,6 @@ the middleware gate.
 
 ### Integrations not yet connected / pending
 
-- **`realty.ashish.sbs` DNS + Vercel domain** — CNAME added at the registrar,
-  Vercel domain entry created; propagation/validation in progress as of the
-  last check (was showing "Invalid Configuration" pending DNS).
-- **`smallbusinessforsale.ashish.sbs` DNS + Vercel domain** — same status as
-  above.
 - **Resend domain verification for `ashish.sbs`** — once verified, switch
   `RESEND_FROM_EMAIL` from `onboarding@resend.dev` to a real
   `@ashish.sbs` sender.
@@ -241,6 +236,7 @@ real subdomain in production).
 | `pnpm seed:realty`      | Seed the realty listing (Barwala HSIIDC)  |
 | `pnpm seed:rikencare`   | Seed the Rikencare case-study project     |
 | `pnpm seed:savison`     | Seed the Savison Life case-study project  |
+| `pnpm seed:indizilla`   | ⚠️ Recreates an `IndiZilla` **venture** stub that was deliberately deleted (Jul 2026). Do not run unless you want it back. |
 
 ## Project structure
 
@@ -273,6 +269,111 @@ when resolving drift), then commit the generated migration.
 
 Vercel project `ashish-sbs` tracks `main`, deploying automatically on every
 push. Production env vars are configured in the Vercel dashboard; never
-commit `.env`. Domains currently attached: `ashish.sbs` (redirects to
-`www`), `www.ashish.sbs` (production), plus the pending realty/smallbiz
-subdomains above.
+commit `.env`. Domains attached: `ashish.sbs` (307s to `www`),
+`www.ashish.sbs` (production), `realty.ashish.sbs`,
+`smallbusinessforsale.ashish.sbs`.
+
+---
+
+## Accounts & infrastructure
+
+Everything this project runs on, and who owns it. **Identifiers only — no
+secrets live in this file.** See "Where the secrets are" below.
+
+| Service | Account / identifier | Notes |
+|---|---|---|
+| **Local checkout** | `D:\AshishSBS-Platform` | The only folder this project needs |
+| **GitHub** | `ashishnarayan9110-gif` → [`AshishSBS`](https://github.com/ashishnarayan9110-gif/AshishSBS) | Branch `main`; push = deploy |
+| **Vercel** | team slug `ashish-n`, CLI user `ashishnarayan9110-gif`, project `ashish-sbs` | Auto-deploys `main` |
+| **Supabase** | account `ashishnarayan9110@gmail.com`, org `kvtqnvdtxkdhwpfusfpc`, project **`ashish-sbs-platform`** (ref `bwtuvlqvzqbcdqnwlzvi`, `ap-south-1`) | Postgres only — Prisma owns the schema, not Supabase migrations |
+| **Domain + DNS** | `ashish.sbs` registered at **Hostinger**; nameservers `aurora/nebula.dns-parking.com` | DNS is edited in the Hostinger panel, **not** Vercel |
+| **Email** | Resend | Sending from `onboarding@resend.dev` until the domain is verified |
+| **Payments** | Razorpay | Strategy-call checkout only |
+
+### Live DNS records (Hostinger → ashish.sbs)
+
+| Type | Name | Value |
+|---|---|---|
+| A | `@` | `76.76.21.21` |
+| CNAME | `www` | `cname.vercel-dns.com` |
+| CNAME | `realty` | `f2889b2437a1896e.vercel-dns-017.com` |
+| CNAME | `smallbusinessforsale` | `f2889b2437a1896e.vercel-dns-017.com` |
+| A | `rikencare-demo` | `89.117.157.91` |
+
+### Where the secrets are
+
+Nothing secret is committed. Keys live in exactly two places:
+
+- **Local:** `.env` (gitignored). Keys expected: `DATABASE_URL`,
+  `NEXT_PUBLIC_SUPABASE_URL`, `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY`,
+  `NEXT_PUBLIC_SITE_URL`, `AUTH_SECRET`. See `.env.example` for the full
+  list including the optional Resend/Razorpay keys.
+- **Production:** the Vercel dashboard → project `ashish-sbs` → Settings →
+  Environment Variables.
+
+Admin login for `/admin` is an Auth.js **credentials** provider — an email +
+bcrypt hash stored in the `User` table, seeded by `pnpm seed:admin`. It is
+not Google or GitHub SSO.
+
+---
+
+## Operational gotchas
+
+Things that have actually bitten this project. Read before touching infra.
+
+**Hostinger re-points the apex if a hosting plan is attached.** In Jul 2026
+the site silently started serving a 2.4 KB Hostinger placeholder instead of
+the real 47 KB app. Cause: an `ALIAS @ → ashish.sbs.cdn.hstgr.net` record
+that Hostinger added. DNS forbids ALIAS and A on the same name, so the A
+record could not be added until the ALIAS was deleted. **If the site ever
+"changes" on its own, check for that ALIAS record first.**
+
+**Two GitHub accounts are in play on this machine.** This repo belongs to
+`ashishnarayan9110-gif`; a separate project (Indizilla) belongs to
+`ancoryen`. Git Credential Manager will otherwise use whichever was cached
+last and push will 403. Each repo is pinned:
+
+```bash
+git config credential.https://github.com.username ashishnarayan9110-gif
+```
+
+**Prisma owns the schema, Supabase is just Postgres.** Do not edit tables in
+the Supabase dashboard. Change `prisma/schema.prisma`, run
+`pnpm prisma:migrate`, commit the migration.
+
+**The transaction pooler breaks prepared statements.** `lib/prisma.ts`
+forces simple query mode for this reason — don't remove it.
+
+---
+
+## Current state (last updated Jul 2026)
+
+Recently shipped:
+
+- **Nav renamed:** "Evidence" → **Projects**, "What I'm Testing" →
+  **Sandbox**. Copy on both pages rewritten to be plainer.
+- **`/principles` retired.** It duplicated the About page. It now 307s to
+  `/about#how-i-think`; About renders the CMS principles itself. Individual
+  write-ups at `/principles/[slug]` are untouched and still linked.
+- **Listing thumbnails** (`components/ui/listing-thumb.tsx`) on Projects and
+  Ventures — real image when the CMS has one, otherwise a placeholder
+  derived deterministically from the slug.
+- **Ventures now also appear on `/projects`**, tagged `Venture` vs
+  `Project`, newest first. `/ventures` remains as its own filtered view.
+- **Responsive fixes:** all ten `/admin` tables were overflowing on phones
+  and are now in horizontally scrollable wrappers; global guards added in
+  `app/globals.css` (word-break, media max-width, anchor scroll-margin,
+  16px inputs so iOS stops zooming).
+- **Deleted the `IndiZilla` venture** stub (empty: no timeline, lessons,
+  links, media or tags). The separate Indizilla **project** and its
+  hand-written page at `/projects/indizilla` were kept.
+
+Known gaps:
+
+- `Project` has **no image field** in the schema, so every project thumbnail
+  is a placeholder. Ventures use `logoUrl`, which is currently null on all
+  of them. Adding project images needs a Prisma migration.
+- Homepage still renders a "Principles" section from the CMS. Only the
+  standalone page was retired; say so if that section should go too.
+- Not visually verified at every breakpoint — changes were confirmed via
+  static audit, typecheck and a production build.

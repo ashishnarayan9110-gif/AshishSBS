@@ -143,6 +143,43 @@ body {
   color: var(--foreground);
 }
 
+/* ---- small-screen safety ----------------------------------------------
+   A single long word — a URL in a summary, an unbroken slug — is enough to
+   push a phone layout sideways. Break them instead, and never let the page
+   itself scroll horizontally. */
+html {
+  overflow-x: hidden;
+}
+body {
+  overflow-wrap: break-word;
+}
+h1,
+h2,
+h3,
+h4 {
+  overflow-wrap: break-word;
+}
+/* Media never exceeds its column. */
+img,
+svg,
+video,
+canvas {
+  max-width: 100%;
+  height: auto;
+}
+/* Anchored sections clear the sticky header. */
+[id] {
+  scroll-margin-top: 84px;
+}
+/* Inputs at 16px+ stop iOS Safari zooming on focus. */
+@media (max-width: 640px) {
+  input,
+  select,
+  textarea {
+    font-size: 16px;
+  }
+}
+
 ::selection {
   background: var(--foreground);
   color: var(--background);

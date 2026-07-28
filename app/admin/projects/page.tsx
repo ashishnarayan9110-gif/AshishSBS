@@ -21,35 +21,39 @@ export default async function AdminProjectsPage() {
         </Link>
       </div>
 
-      <table className="border-border mt-8 w-full border-collapse text-sm">
-        <thead>
-          <tr className="border-border border-b text-left">
-            <th className="py-2 font-medium">Title</th>
-            <th className="py-2 font-medium">Venture</th>
-            <th className="py-2 font-medium">Content</th>
-            <th className="py-2"></th>
-          </tr>
-        </thead>
-        <tbody>
-          {projects.map((project) => (
-            <tr key={project.id} className="border-border border-b">
-              <td className="py-3">{project.title}</td>
-              <td className="text-muted py-3">{project.venture?.name ?? "—"}</td>
-              <td className="text-muted py-3">{project.contentStatus}</td>
-              <td className="py-3 text-right">
-                <Link href={`/admin/projects/${project.id}`} className="underline">
-                  Edit
-                </Link>
-                <DeleteButton
-                  id={project.id}
-                  name={project.title}
-                  action={deleteProject}
-                />
-              </td>
+      <div className="-mx-4 overflow-x-auto px-4 sm:mx-0 sm:px-0">
+
+        <table className="border-border mt-8 w-full border-collapse text-sm min-w-[640px]">
+          <thead>
+            <tr className="border-border border-b text-left">
+              <th className="py-2 font-medium">Title</th>
+              <th className="py-2 font-medium">Venture</th>
+              <th className="py-2 font-medium">Content</th>
+              <th className="py-2"></th>
             </tr>
-          ))}
-        </tbody>
-      </table>
+          </thead>
+          <tbody>
+            {projects.map((project) => (
+              <tr key={project.id} className="border-border border-b">
+                <td className="py-3">{project.title}</td>
+                <td className="text-muted py-3">{project.venture?.name ?? "—"}</td>
+                <td className="text-muted py-3">{project.contentStatus}</td>
+                <td className="py-3 text-right">
+                  <Link href={`/admin/projects/${project.id}`} className="underline">
+                    Edit
+                  </Link>
+                  <DeleteButton
+                    id={project.id}
+                    name={project.title}
+                    action={deleteProject}
+                  />
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+
+      </div>
 
       {projects.length === 0 ? (
         <p className="text-muted mt-8 text-sm">No projects yet.</p>

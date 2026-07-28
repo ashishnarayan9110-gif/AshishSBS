@@ -18,35 +18,39 @@ export default async function AdminInsightsPage() {
         </Link>
       </div>
 
-      <table className="border-border mt-8 w-full border-collapse text-sm">
-        <thead>
-          <tr className="border-border border-b text-left">
-            <th className="py-2 font-medium">Title</th>
-            <th className="py-2 font-medium">Guest</th>
-            <th className="py-2 font-medium">Content</th>
-            <th className="py-2"></th>
-          </tr>
-        </thead>
-        <tbody>
-          {insights.map((insight) => (
-            <tr key={insight.id} className="border-border border-b">
-              <td className="py-3">{insight.title}</td>
-              <td className="text-muted py-3">{insight.guestName ?? "—"}</td>
-              <td className="text-muted py-3">{insight.contentStatus}</td>
-              <td className="py-3 text-right">
-                <Link href={`/admin/insights/${insight.id}`} className="underline">
-                  Edit
-                </Link>
-                <DeleteButton
-                  id={insight.id}
-                  name={insight.title}
-                  action={deleteInsight}
-                />
-              </td>
+      <div className="-mx-4 overflow-x-auto px-4 sm:mx-0 sm:px-0">
+
+        <table className="border-border mt-8 w-full border-collapse text-sm min-w-[640px]">
+          <thead>
+            <tr className="border-border border-b text-left">
+              <th className="py-2 font-medium">Title</th>
+              <th className="py-2 font-medium">Guest</th>
+              <th className="py-2 font-medium">Content</th>
+              <th className="py-2"></th>
             </tr>
-          ))}
-        </tbody>
-      </table>
+          </thead>
+          <tbody>
+            {insights.map((insight) => (
+              <tr key={insight.id} className="border-border border-b">
+                <td className="py-3">{insight.title}</td>
+                <td className="text-muted py-3">{insight.guestName ?? "—"}</td>
+                <td className="text-muted py-3">{insight.contentStatus}</td>
+                <td className="py-3 text-right">
+                  <Link href={`/admin/insights/${insight.id}`} className="underline">
+                    Edit
+                  </Link>
+                  <DeleteButton
+                    id={insight.id}
+                    name={insight.title}
+                    action={deleteInsight}
+                  />
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+
+      </div>
 
       {insights.length === 0 ? (
         <p className="text-muted mt-8 text-sm">No insights yet.</p>

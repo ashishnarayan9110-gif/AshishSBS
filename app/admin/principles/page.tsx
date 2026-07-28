@@ -18,33 +18,37 @@ export default async function AdminPrinciplesPage() {
         </Link>
       </div>
 
-      <table className="border-border mt-8 w-full border-collapse text-sm">
-        <thead>
-          <tr className="border-border border-b text-left">
-            <th className="py-2 font-medium">Title</th>
-            <th className="py-2 font-medium">Content</th>
-            <th className="py-2"></th>
-          </tr>
-        </thead>
-        <tbody>
-          {principles.map((principle) => (
-            <tr key={principle.id} className="border-border border-b">
-              <td className="py-3">{principle.title}</td>
-              <td className="text-muted py-3">{principle.contentStatus}</td>
-              <td className="py-3 text-right">
-                <Link href={`/admin/principles/${principle.id}`} className="underline">
-                  Edit
-                </Link>
-                <DeleteButton
-                  id={principle.id}
-                  name={principle.title}
-                  action={deletePrinciple}
-                />
-              </td>
+      <div className="-mx-4 overflow-x-auto px-4 sm:mx-0 sm:px-0">
+
+        <table className="border-border mt-8 w-full border-collapse text-sm min-w-[640px]">
+          <thead>
+            <tr className="border-border border-b text-left">
+              <th className="py-2 font-medium">Title</th>
+              <th className="py-2 font-medium">Content</th>
+              <th className="py-2"></th>
             </tr>
-          ))}
-        </tbody>
-      </table>
+          </thead>
+          <tbody>
+            {principles.map((principle) => (
+              <tr key={principle.id} className="border-border border-b">
+                <td className="py-3">{principle.title}</td>
+                <td className="text-muted py-3">{principle.contentStatus}</td>
+                <td className="py-3 text-right">
+                  <Link href={`/admin/principles/${principle.id}`} className="underline">
+                    Edit
+                  </Link>
+                  <DeleteButton
+                    id={principle.id}
+                    name={principle.title}
+                    action={deletePrinciple}
+                  />
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+
+      </div>
 
       {principles.length === 0 ? (
         <p className="text-muted mt-8 text-sm">No principles yet.</p>

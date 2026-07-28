@@ -3,6 +3,7 @@ import { EmptyState } from "@/components/shared/empty-state";
 import { Container } from "@/components/ui/container";
 import { LinkCard } from "@/components/ui/card";
 import { VentureStatusBadge } from "@/components/ui/badge";
+import { ListingThumb } from "@/components/ui/listing-thumb";
 import { getVentures } from "@/lib/content";
 
 export const dynamic = "force-dynamic";
@@ -23,15 +24,20 @@ export default async function VenturesPage() {
             description="Ventures appear here once documented in the CMS."
           />
         ) : (
-          <ul className="grid grid-cols-1 gap-6 sm:grid-cols-2">
+          <ul className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
             {ventures.map((venture) => (
-              <li key={venture.id}>
-                <LinkCard href={`/ventures/${venture.slug}`}>
-                  <div className="flex items-start justify-between gap-3">
-                    <span className="font-medium">{venture.name}</span>
+              <li key={venture.id} className="flex">
+                <LinkCard href={`/ventures/${venture.slug}`} className="flex w-full flex-col p-4 sm:p-5">
+                  <ListingThumb
+                    title={venture.name}
+                    slug={venture.slug}
+                    src={venture.logoUrl}
+                  />
+                  <div className="mt-4 flex items-start justify-between gap-3">
+                    <span className="font-medium break-words">{venture.name}</span>
                     <VentureStatusBadge status={venture.status} />
                   </div>
-                  <p className="text-muted mt-2 text-sm">{venture.summary}</p>
+                  <p className="text-muted mt-2 text-sm leading-relaxed">{venture.summary}</p>
                 </LinkCard>
               </li>
             ))}

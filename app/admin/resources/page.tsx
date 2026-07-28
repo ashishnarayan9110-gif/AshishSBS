@@ -18,33 +18,37 @@ export default async function AdminResourcesPage() {
         </Link>
       </div>
 
-      <table className="border-border mt-8 w-full border-collapse text-sm">
-        <thead>
-          <tr className="border-border border-b text-left">
-            <th className="py-2 font-medium">Title</th>
-            <th className="py-2 font-medium">Content</th>
-            <th className="py-2"></th>
-          </tr>
-        </thead>
-        <tbody>
-          {resources.map((resource) => (
-            <tr key={resource.id} className="border-border border-b">
-              <td className="py-3">{resource.title}</td>
-              <td className="text-muted py-3">{resource.contentStatus}</td>
-              <td className="py-3 text-right">
-                <Link href={`/admin/resources/${resource.id}`} className="underline">
-                  Edit
-                </Link>
-                <DeleteButton
-                  id={resource.id}
-                  name={resource.title}
-                  action={deleteResource}
-                />
-              </td>
+      <div className="-mx-4 overflow-x-auto px-4 sm:mx-0 sm:px-0">
+
+        <table className="border-border mt-8 w-full border-collapse text-sm min-w-[640px]">
+          <thead>
+            <tr className="border-border border-b text-left">
+              <th className="py-2 font-medium">Title</th>
+              <th className="py-2 font-medium">Content</th>
+              <th className="py-2"></th>
             </tr>
-          ))}
-        </tbody>
-      </table>
+          </thead>
+          <tbody>
+            {resources.map((resource) => (
+              <tr key={resource.id} className="border-border border-b">
+                <td className="py-3">{resource.title}</td>
+                <td className="text-muted py-3">{resource.contentStatus}</td>
+                <td className="py-3 text-right">
+                  <Link href={`/admin/resources/${resource.id}`} className="underline">
+                    Edit
+                  </Link>
+                  <DeleteButton
+                    id={resource.id}
+                    name={resource.title}
+                    action={deleteResource}
+                  />
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+
+      </div>
 
       {resources.length === 0 ? (
         <p className="text-muted mt-8 text-sm">No resources yet.</p>

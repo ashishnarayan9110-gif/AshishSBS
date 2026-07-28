@@ -18,33 +18,37 @@ export default async function AdminCareerPage() {
         </Link>
       </div>
 
-      <table className="border-border mt-8 w-full border-collapse text-sm">
-        <thead>
-          <tr className="border-border border-b text-left">
-            <th className="py-2 font-medium">Project</th>
-            <th className="py-2 font-medium">Organisation</th>
-            <th className="py-2"></th>
-          </tr>
-        </thead>
-        <tbody>
-          {entries.map((entry) => (
-            <tr key={entry.id} className="border-border border-b">
-              <td className="py-3">{entry.project}</td>
-              <td className="text-muted py-3">{entry.organisation}</td>
-              <td className="py-3 text-right">
-                <Link href={`/admin/career/${entry.id}`} className="underline">
-                  Edit
-                </Link>
-                <DeleteButton
-                  id={entry.id}
-                  name={entry.project}
-                  action={deleteCareerEntry}
-                />
-              </td>
+      <div className="-mx-4 overflow-x-auto px-4 sm:mx-0 sm:px-0">
+
+        <table className="border-border mt-8 w-full border-collapse text-sm min-w-[640px]">
+          <thead>
+            <tr className="border-border border-b text-left">
+              <th className="py-2 font-medium">Project</th>
+              <th className="py-2 font-medium">Organisation</th>
+              <th className="py-2"></th>
             </tr>
-          ))}
-        </tbody>
-      </table>
+          </thead>
+          <tbody>
+            {entries.map((entry) => (
+              <tr key={entry.id} className="border-border border-b">
+                <td className="py-3">{entry.project}</td>
+                <td className="text-muted py-3">{entry.organisation}</td>
+                <td className="py-3 text-right">
+                  <Link href={`/admin/career/${entry.id}`} className="underline">
+                    Edit
+                  </Link>
+                  <DeleteButton
+                    id={entry.id}
+                    name={entry.project}
+                    action={deleteCareerEntry}
+                  />
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+
+      </div>
 
       {entries.length === 0 ? (
         <p className="text-muted mt-8 text-sm">No entries yet.</p>

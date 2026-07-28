@@ -18,29 +18,33 @@ export default async function AdminLabNotesPage() {
         </Link>
       </div>
 
-      <table className="border-border mt-8 w-full border-collapse text-sm">
-        <thead>
-          <tr className="border-border border-b text-left">
-            <th className="py-2 font-medium">Title</th>
-            <th className="py-2 font-medium">Content</th>
-            <th className="py-2"></th>
-          </tr>
-        </thead>
-        <tbody>
-          {notes.map((note) => (
-            <tr key={note.id} className="border-border border-b">
-              <td className="py-3">{note.title}</td>
-              <td className="text-muted py-3">{note.contentStatus}</td>
-              <td className="py-3 text-right">
-                <Link href={`/admin/lab/${note.id}`} className="underline">
-                  Edit
-                </Link>
-                <DeleteButton id={note.id} name={note.title} action={deleteLabNote} />
-              </td>
+      <div className="-mx-4 overflow-x-auto px-4 sm:mx-0 sm:px-0">
+
+        <table className="border-border mt-8 w-full border-collapse text-sm min-w-[640px]">
+          <thead>
+            <tr className="border-border border-b text-left">
+              <th className="py-2 font-medium">Title</th>
+              <th className="py-2 font-medium">Content</th>
+              <th className="py-2"></th>
             </tr>
-          ))}
-        </tbody>
-      </table>
+          </thead>
+          <tbody>
+            {notes.map((note) => (
+              <tr key={note.id} className="border-border border-b">
+                <td className="py-3">{note.title}</td>
+                <td className="text-muted py-3">{note.contentStatus}</td>
+                <td className="py-3 text-right">
+                  <Link href={`/admin/lab/${note.id}`} className="underline">
+                    Edit
+                  </Link>
+                  <DeleteButton id={note.id} name={note.title} action={deleteLabNote} />
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+
+      </div>
 
       {notes.length === 0 ? (
         <p className="text-muted mt-8 text-sm">No lab notes yet.</p>

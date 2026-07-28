@@ -41,9 +41,9 @@ export default async function ProjectDetailPage({
         <div className="mx-auto max-w-(--layout-max-width)">
           <div className="font-meta text-muted mb-7 flex justify-between text-[11px] uppercase">
             <Link href="/projects" className="hover:text-foreground">
-              ← Back to evidence
+              ← Back to projects
             </Link>
-            <span className="text-accent">Evidence</span>
+            <span className="text-accent">Projects</span>
           </div>
           <h1 className="font-display text-[clamp(44px,8vw,110px)] leading-[0.9]">
             {project.title}

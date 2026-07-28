@@ -21,7 +21,7 @@ export default async function PrincipleDetailPage({
       <Container width="content" className="pt-8">
         <Breadcrumbs
           items={[
-            { href: "/principles", label: "What Changed My Mind" },
+            { href: "/about#how-i-think", label: "About" },
             { href: `/principles/${principle.slug}`, label: principle.title },
           ]}
         />

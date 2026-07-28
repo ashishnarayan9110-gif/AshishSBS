@@ -94,7 +94,7 @@ export default async function SearchPage({
             )}
             {results.labNotes.length > 0 && (
               <ResultGroup
-                label="What I'm Testing"
+                label="Sandbox"
                 items={results.labNotes.map((n) => ({
                   href: `/lab/${n.slug}`,
                   label: n.title,
@@ -103,7 +103,7 @@ export default async function SearchPage({
             )}
             {results.principles.length > 0 && (
               <ResultGroup
-                label="What Changed My Mind"
+                label="Principles"
                 items={results.principles.map((p) => ({
                   href: `/principles/${p.slug}`,
                   label: p.title,

@@ -1,8 +1,16 @@
 import { PageHeader } from "@/components/shared/page-header";
 import { Container } from "@/components/ui/container";
 import { LinkButton } from "@/components/ui/button";
+import { LinkCard } from "@/components/ui/card";
+import { getPrinciples } from "@/lib/content";
 
-export default function AboutPage() {
+export const dynamic = "force-dynamic";
+
+export default async function AboutPage() {
+  // The standalone principles page said the same thing this page already does,
+  // so the written-up ones live here now, under how I think.
+  const principles = await getPrinciples();
+
   return (
     <>
       <PageHeader
@@ -66,7 +74,7 @@ export default function AboutPage() {
         </section>
 
         {/* Principles */}
-        <section>
+        <section id="how-i-think">
           <h2 className="font-medium">How I think</h2>
           <p className="text-muted mt-3 leading-relaxed">
             A few principles that guide everything I build and everything I recommend:
@@ -96,6 +104,25 @@ export default function AboutPage() {
               creates accountability, attracts collaborators, and preserves knowledge.
             </li>
           </ul>
+
+          {principles.length > 0 && (
+            <>
+              <p className="text-muted mt-8 leading-relaxed">
+                Some of these I&apos;ve written up at length — usually because I used to think
+                the opposite:
+              </p>
+              <ul className="mt-4 grid grid-cols-1 gap-6 sm:grid-cols-2">
+                {principles.map((principle) => (
+                  <li key={principle.id}>
+                    <LinkCard href={`/principles/${principle.slug}`}>
+                      <p className="font-medium">{principle.title}</p>
+                      <p className="text-muted mt-2 text-sm">{principle.statement}</p>
+                    </LinkCard>
+                  </li>
+                ))}
+              </ul>
+            </>
+          )}
         </section>
 
         {/* This platform */}

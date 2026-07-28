@@ -171,11 +171,11 @@ export default async function HomePage() {
         </section>
       ) : null}
 
-      {/* 02 Evidence (projects) */}
+      {/* 02 Projects */}
       {restProjects.length > 0 ? (
         <section className="dot-grid border-border border-b px-6 py-20 sm:px-10">
           <div className="mx-auto max-w-(--layout-max-width)">
-            <SectionHead index="02" title="Evidence" aside="What the ventures produced" />
+            <SectionHead index="02" title="Projects" aside="Built or helped build" />
             <ul className="bg-border grid grid-cols-1 gap-px sm:grid-cols-2 lg:grid-cols-3">
               {restProjects.map((p, i) => (
                 <li key={p.id} className="flex">
@@ -205,14 +205,14 @@ export default async function HomePage() {
         </section>
       ) : null}
 
-      {/* 03 Lab Notes — curiosity, after credibility is established */}
+      {/* 03 Sandbox — curiosity, after credibility is established */}
       {labNotes.length > 0 ? (
         <section className="os-light dot-grid-dark border-border border-b px-6 py-20 sm:px-10">
           <div className="mx-auto max-w-(--layout-max-width)">
-            <SectionHead index="03" title="What I'm Testing" aside="Working notes" />
+            <SectionHead index="03" title="Sandbox" aside="Running, stalled, or parked" />
             <p className="mb-10 max-w-xl text-[15px] leading-relaxed text-[#2A2A2A]">
-              Short, working notes — what I noticed, what I got wrong, what I&apos;m
-              still checking.
+              Projects that caught my interest. Some are still moving, some stopped
+              halfway — left as they are.
             </p>
             <ul className="grid grid-cols-1 gap-px bg-black/15 sm:grid-cols-3">
               {labNotes.map((n) => (
@@ -250,15 +250,11 @@ export default async function HomePage() {
         </section>
       ) : null}
 
-      {/* 04 What Changed My Mind — philosophy, last */}
+      {/* 04 Principles — philosophy, last */}
       {principles.length > 0 ? (
         <section className="dot-grid border-border border-b px-6 py-20 sm:px-10">
           <div className="mx-auto max-w-(--layout-max-width)">
-            <SectionHead
-              index="04"
-              title="What Changed My Mind"
-              aside="Held loosely, tested constantly"
-            />
+            <SectionHead index="04" title="Principles" aside="How I think about the work" />
             <ul className="border-border border-t">
               {principles.map((pr, i) => (
                 <li

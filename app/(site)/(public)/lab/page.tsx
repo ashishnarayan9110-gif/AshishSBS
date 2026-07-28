@@ -12,14 +12,14 @@ export default async function LabPage() {
   return (
     <>
       <PageHeader
-        title="What I'm Testing"
-        description="Observations, working theories, and things I got wrong — written down before I understood them, not after. Start anywhere; each one points to the next."
+        title="Sandbox"
+        description="Projects that caught my interest. Some are running, some stalled halfway, some I dropped on purpose. Kept here as they are — no tidying up after the fact."
       />
       <Container className="py-14 pb-24">
         {notes.length === 0 ? (
           <EmptyState
-            title="Nothing logged yet."
-            description="The first entry shows up here the moment there's something worth writing down."
+            title="Nothing here yet."
+            description="The first project shows up as soon as one is worth putting down."
           />
         ) : (
           <ul className="border-border border-t">

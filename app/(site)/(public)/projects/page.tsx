@@ -12,14 +12,14 @@ export default async function ProjectsPage() {
   return (
     <>
       <PageHeader
-        title="Evidence"
-        description="What the ventures actually produced — the assumption I started with, what turned out to be true, and what I'd do differently now."
+        title="Projects"
+        description="Work I've built or helped build. What it was for, what it took, and how it turned out."
       />
       <Container className="pt-14 pb-24">
         {projects.length === 0 ? (
           <EmptyState
             title="No projects published yet."
-            description="Projects appear here once documented in the CMS."
+            description="Projects appear here once they're written up."
           />
         ) : (
           <ul className="grid grid-cols-1 gap-6 sm:grid-cols-2">

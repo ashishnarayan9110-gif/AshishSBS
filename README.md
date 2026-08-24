@@ -85,10 +85,18 @@ carry the mythology of the story; ashish.sbs is where that story is grounded
 in real, checkable work.
 
 **Voice**: calm, precise, curious, observant, competent, quietly ambitious.
-Never motivational, preachy, arrogant, self-important, fake-humble,
-corporate, or cinematic. Show decisions instead of claiming intelligence;
-show work instead of claiming expertise; show evidence instead of claiming
+Never motivational, preachy, arrogant, self-important, fake-humble, or
+corporate. Show decisions instead of claiming intelligence; show work
+instead of claiming expertise; show evidence instead of claiming
 authenticity.
+
+**The one deliberate exception — `/crew`.** The rest of the site avoids
+cinematic language; the crew page leans into it, framing the people behind
+the work as a heist crew with aliases and quirks. That is a considered
+choice, not drift: the contrast is what makes it land, and warmth about
+other people is the one place where understatement would read as coldness.
+Aliases carry over to project and venture pages as short credit lines, and
+nowhere else. Do not spread the register any further without deciding to.
 
 **Removed on this pass**: the "Rebuilding in the open" hero and the
 reconstruction/notebook/investigation framing from the previous content
@@ -130,11 +138,11 @@ below).
 | `/lab/[slug]` | (note title) | Detail page: `// Lab note — {date}` eyebrow, body, then "Next note ↗" linking to the next entry in sequence (or "Back to all notes ↗" on the last one). |
 | `/ventures` | Ventures | *"Real businesses, logged as they happen — the ones still running, the ones that paused, the ones that quietly died. Status changes; the record doesn't get rewritten."* |
 | `/ventures/[slug]` | (venture name) | Sections: *What I noticed / What I tried / Where it stands right now / What I learned the hard way.* |
-| `/projects` | Evidence | *"What the ventures actually produced — the assumption I started with, what turned out to be true, and what I'd do differently now."* |
+| `/projects` | Projects | *"Work I've built or helped build — businesses, furniture, teaching, and the personal things in between. What it was for, what it took, and how it turned out, including the ones that didn't."* Lists projects and ventures together, filterable by discipline; each card shows its discipline and, where recorded, its outcome. |
 | `/projects/[slug]` | (project title) | *Evidence* eyebrow. Sections: *Why this exists / What actually happened / Where it stands now*, plus *"What I'd do differently now"* (lessons). Ends with a link to the next entry. |
 | `/projects/rikencare-lifesciences` | Rikencare Lifesciences | Two-part case study: brand system + website build, for a WHO-GMP pharma manufacturer. Standalone static page (not CMS-driven), see project-specific credits block. |
 | `/projects/savison-life` | Savison Life | Founder-perspective case study: problem, brand system, four-portal platform architecture, stack, and an explicit "gaps" section. Standalone static page. |
-| `/principles` | Working Theories | *"Beliefs I currently hold and keep testing against reality — not settled truths, just the best explanation I have until something breaks it."* |
+| `/principles` | — | **Retired as a page.** 307s to `/about#how-i-think`, which renders the CMS principles itself. The individual write-ups below are untouched. |
 | `/principles/[slug]` | (theory title) | Statement + explanation + examples, CMS-driven. |
 | `/resources` | Field Kit | *"The templates and checklists I actually built for myself along the way — kept here because rebuilding them from scratch each time was the mistake."* |
 | `/resources/[slug]` | (resource title) | Description + optional download link. |
@@ -145,6 +153,8 @@ below).
 | `/monthly` | Monthly Builder Review | *"A public progress log — what was built, what was learned, what failed."* |
 | `/monthly/[slug]` | (edition title) | CMS-driven monthly entry. |
 | `/career` | Career Archive | *"A factual, chronological record of work — no confidential or client-sensitive information."* |
+| `/crew` | The Crew | *"Nothing here was built alone."* Roster of the people behind the work, as numbered dossier cards — alias, role, quirk, what they did, and the projects they are credited on. Deliberately cinematic; see Creative direction. |
+| `/crew/[slug]` | (person name) | Individual dossier: alias, role, quirk, how we met, what they did, credits with a per-project contribution line, external links. |
 | `/about` | About | *"Systems Over Chaos — how I think, build, and operate."* Founder story, working style, principles inline, dual CTA (submit idea / strategy call). |
 | `/contact` | Contact | *"The beginning of a conversation — not a lead form."* |
 | `/submit-idea` | Submit Your Idea for Public Breakdown | *"Selected submissions will be featured in public videos. This is not 1-on-1 mentoring — for that, see the strategy call."* Free. |
@@ -158,8 +168,8 @@ below).
 
 | Subdomain | Rewrites to | Purpose | Status |
 |---|---|---|---|
-| `realty.ashish.sbs` | `/realty` | Personal real-estate advisory brand ("Performance Realty") — single live listing (HSIIDC SCO, Barwala), inquiry form → email via Resend, DB-backed `RealtyListing`/`RealtyInquiry` models. Independent header/footer, neutral theme (not `.os`). | Code live; **DNS/Vercel domain being connected** — see Known gaps. |
-| `smallbusinessforsale.ashish.sbs` (alias `smallbiz.`) | `/smallbiz` | "Buy Your Next Business" — coming-soon page with email waitlist capture (`SmallBizWaitlist` model). | Code live; **DNS/Vercel domain being connected** — see Known gaps. |
+| `realty.ashish.sbs` | `/realty` | Personal real-estate advisory brand ("Performance Realty") — single live listing (HSIIDC SCO, Barwala), inquiry form → email via Resend, DB-backed `RealtyListing`/`RealtyInquiry` models. Independent header/footer, neutral theme (not `.os`). | ✅ Live. |
+| `smallbusinessforsale.ashish.sbs` (alias `smallbiz.`) | `/smallbiz` | "Buy Your Next Business" — coming-soon page with email waitlist capture (`SmallBizWaitlist` model). | ✅ Live. |
 | `rikencare-demo.ashish.sbs` | — | Separately hosted client demo site (not part of this Next.js project). Referenced from the Rikencare case study page. | Live, external to this repo. |
 
 Locally, since middleware host-matching only fires with a real hostname,
@@ -170,7 +180,8 @@ these are reachable directly at `/realty` and `/smallbiz` on
 
 CMS for every content model below: career entries, contact submissions
 (read-only), idea submissions, insights, lab notes, monthly reviews,
-principles, projects, resources, services, strategy-call bookings, ventures.
+**people (crew)**, principles, projects, resources, services, strategy-call
+bookings, ventures.
 Each has a list + `[id]` edit view + `new` create view, following the same
 pattern. Auth via Auth.js credentials login at `/admin/login`;
 `requireStaff()` is called in every server action as defense-in-depth beyond
@@ -194,12 +205,17 @@ the middleware gate.
 - **Resend domain verification for `ashish.sbs`** — once verified, switch
   `RESEND_FROM_EMAIL` from `onboarding@resend.dev` to a real
   `@ashish.sbs` sender.
-- **Per-entry status/iteration metadata** (Lab Notes / Ventures / Projects)
-  — the "living document" framing in copy (*"Still open," "Current
-  state"*) is not yet backed by real schema fields (e.g. `status`,
-  `lastUpdated`, `iteration`, `openQuestions`). Currently simulated in
-  static page copy only; a real implementation needs a `prisma/schema.prisma`
-  migration plus admin CMS fields.
+- **Per-entry status/iteration metadata** — partly delivered (Aug 2026).
+  `Project.outcomeStatus` (`SHIPPED`/`RUNNING`/`PAUSED`/`FAILED`) now backs
+  the "current state" line on project pages, and `Venture.status` already
+  existed. Still missing: anything equivalent for **Lab Notes**, and the
+  richer `lastUpdated` / `iteration` / `openQuestions` fields. Any copy
+  implying a status that no schema field backs is a bug — see the
+  hardcoded-string incident under Operational gotchas.
+- **Per-credit contribution text in the CMS.** `PersonOnProject` and
+  `PersonOnVenture` both carry a `contribution` column, and the public pages
+  render it, but the admin project form only assigns people — there is no
+  input for the per-project line yet, so it falls back to the person's role.
 - **GSTIN/GST-style verification, escrow, or any payment flow beyond the
   strategy-call checkout** — out of scope for this project; not planned.
 - **Google Maps embed on the realty listing** — currently a graceful
@@ -225,11 +241,11 @@ real subdomain in production).
 | Script                 | Purpose                                  |
 | ----------------------- | ----------------------------------------- |
 | `pnpm dev`              | Start the dev server                      |
-| `pnpm build`            | Production build                          |
+| `pnpm build`            | `prisma generate` + production build      |
 | `pnpm lint`             | ESLint                                    |
 | `pnpm typecheck`        | `tsc --noEmit`                            |
 | `pnpm format`           | Prettier write                            |
-| `pnpm prisma:migrate`   | Create/apply a local migration            |
+| `pnpm prisma:migrate`   | ⚠️ **Do not run** — see Database below    |
 | `pnpm prisma:studio`    | Browse the database                       |
 | `pnpm prisma:seed`      | Run the main content seed                 |
 | `pnpm seed:admin`       | Seed the admin user                       |
@@ -259,11 +275,36 @@ prisma/                  schema.prisma (source of truth) + seed scripts
 
 Schema lives in `prisma/schema.prisma`. Every CMS-driven public page renders
 one or more content objects from it — no hardcoded content in components,
-except the two standalone case-study pages (`rikencare-lifesciences`,
-`savison-life`), which are static by design since their content is a
-one-off, richly-formatted narrative rather than a repeatable content type.
-Apply schema changes via `pnpm prisma:migrate` locally (or `prisma db push`
-when resolving drift), then commit the generated migration.
+except the three standalone case-study pages (`rikencare-lifesciences`,
+`savison-life`, `indizilla`), which are static by design since their content
+is a one-off, richly-formatted narrative rather than a repeatable content
+type. Note that a static page at `/projects/<slug>` **shadows** the dynamic
+`[slug]` route, so a DB project sharing one of those slugs will never render
+through the CMS template.
+
+### Applying a schema change — read this first
+
+> ⚠️ **Do not run `pnpm prisma:migrate` against this project.** It is
+> `prisma migrate dev`, and there is **no `prisma/migrations/` directory —
+> there never has been.** This database was built with `db push`. Running
+> `migrate dev` against a populated database with no migration history makes
+> Prisma detect drift and offer to **reset the database**, which would
+> destroy live content. There is no staging environment and no automated
+> backup.
+
+Until the schema is properly baselined, apply changes one of these ways:
+
+- **`prisma db push`** from a machine that can reach the database — the way
+  every earlier change was made.
+- **Supabase migration API / SQL editor**, applying SQL generated offline
+  with:
+  `prisma migrate diff --from-schema-datamodel <old> --to-schema-datamodel prisma/schema.prisma --script`
+  Diffing two schema *files* needs no database connection, so you can review
+  the exact SQL before anything runs. This is how the crew migration
+  (Aug 2026) was applied.
+
+Always read the generated SQL before applying it, and confirm it is additive
+(`CREATE` / `ADD`) with no `DROP`.
 
 ## Deployment
 
@@ -338,42 +379,104 @@ git config credential.https://github.com.username ashishnarayan9110-gif
 ```
 
 **Prisma owns the schema, Supabase is just Postgres.** Do not edit tables in
-the Supabase dashboard. Change `prisma/schema.prisma`, run
-`pnpm prisma:migrate`, commit the migration.
+the Supabase dashboard. Change `prisma/schema.prisma`, then apply it the safe
+way — **not** with `pnpm prisma:migrate`, which can offer to reset the
+production database. See the Database section above.
 
 **The transaction pooler breaks prepared statements.** `lib/prisma.ts`
 forces simple query mode for this reason — don't remove it.
 
+**Vercel restores `node_modules` from build cache, so `postinstall` may
+never run.** A build log reading `Installing dependencies... Already up to
+date` means pnpm short-circuited and `prisma generate` did **not** run. The
+build then type-checks against a stale Prisma client, and any model added
+since the cached client was generated resolves to `any` — surfacing as a
+confusing `implicitly has an 'any' type` error in a file that is actually
+correct. This bit the project twice (`7f342ee`, then the crew deploy). The
+fix that holds is `"build": "prisma generate && next build"` — do not move
+it back to `postinstall` alone.
+
+**The direct database host is IPv6-only, and some networks synthesize
+NAT64 records for the pooler.** `db.<ref>.supabase.co` has no A record, so
+an IPv4-only machine cannot reach it at all; Vercel can, which is why this
+only ever breaks local development. Worse, the session-pooler hostname may
+resolve to `64:ff9b::…` NAT64 addresses, which Prisma prefers and cannot
+route — producing `P1001 Can't reach database server` **even though a TCP
+test to the same host succeeds**, because the TCP tool picked IPv4. If that
+happens, pin the pooler's IPv4 address in the local `.env`. The correct
+session-pooler hostname is in the Supabase dashboard behind the **Connect**
+button (there is no Database page under Project Settings in the current UI).
+
+**Never hardcode a value the schema should carry.** `/projects/[slug]` once
+printed a literal `"Live — still watching it"` as CURRENT STATE for every
+project, including ones that had failed. It looked like copy, but it was a
+factual claim the database could not back. Fixed in Aug 2026 by adding
+`Project.outcomeStatus`. If a page states a status, a field must supply it.
+
+**Windows: `pnpm build` and `pnpm dev` conflict.** The dev server holds a
+lock on `query_engine-windows.dll.node`, so `prisma generate` — now part of
+`build` — fails with `EPERM`. Stop the dev server first. Separately, running
+a production build and then `next dev` without `rm -rf .next` makes every
+route return 404 while still rendering HTML; clearing `.next` fixes it.
+
+**RLS is on for every table, with no policies, by design.** Nothing in the
+codebase uses the Supabase JS client — all access is Prisma over a direct
+Postgres role, which bypasses RLS. Three tables (`realty_listings`,
+`realty_inquiries`, `smallbiz_waitlist`) were left exposed to the public
+anon key until Aug 2026. Any new table must have RLS enabled to match.
+
 ---
 
-## Current state (last updated Jul 2026)
+## Current state (last updated Aug 2026)
 
 Recently shipped:
 
-- **Nav renamed:** "Evidence" → **Projects**, "What I'm Testing" →
-  **Sandbox**. Copy on both pages rewritten to be plainer.
-- **`/principles` retired.** It duplicated the About page. It now 307s to
-  `/about#how-i-think`; About renders the CMS principles itself. Individual
-  write-ups at `/principles/[slug]` are untouched and still linked.
-- **Listing thumbnails** (`components/ui/listing-thumb.tsx`) on Projects and
-  Ventures — real image when the CMS has one, otherwise a placeholder
-  derived deterministically from the slug.
-- **Ventures now also appear on `/projects`**, tagged `Venture` vs
-  `Project`, newest first. `/ventures` remains as its own filtered view.
-- **Responsive fixes:** all ten `/admin` tables were overflowing on phones
-  and are now in horizontally scrollable wrappers; global guards added in
-  `app/globals.css` (word-break, media max-width, anchor scroll-margin,
-  16px inputs so iOS stops zooming).
-- **Deleted the `IndiZilla` venture** stub (empty: no timeline, lessons,
-  links, media or tags). The separate Indizilla **project** and its
-  hand-written page at `/projects/indizilla` were kept.
+- **Crew.** `Person` plus `PersonOnProject` / `PersonOnVenture` join tables
+  carrying a per-credit `contribution` line. Public roster at `/crew`,
+  dossiers at `/crew/[slug]`, credit lines on project and venture detail
+  pages, admin CRUD at `/admin/people`. People are **DRAFT by default** and
+  every crew query filters on `PUBLISHED` — these are real, named people and
+  nothing about them should go public by accident.
+- **Projects are no longer digital-only.** `Project.discipline`
+  (`DIGITAL`/`FURNITURE`/`TEACHING`/`BUSINESS`/`PERSONAL`/`OTHER`) with
+  filtering on `/projects`; a venture answers the Business filter, since a
+  venture is a business. Filter pills only render for disciplines that would
+  actually return something.
+- **Failure is a first-class outcome.** `Project.outcomeStatus`
+  (`SHIPPED`/`RUNNING`/`PAUSED`/`FAILED`) replaces the hardcoded
+  "Live — still watching it" string that used to render on every project.
+- **`Project.imageUrl`** added, closing the gap where every project
+  thumbnail was a slug-derived placeholder.
+- **RLS enabled on the last three unprotected tables** (`realty_listings`,
+  `realty_inquiries`, `smallbiz_waitlist`), which were readable and writable
+  with the public anon key. All 32 tables now have it on.
+- **Build regenerates the Prisma client** (`prisma generate && next build`)
+  after a cached `node_modules` skipped `postinstall` and failed a deploy.
+- **Tests: 25 → 43**, covering admin authorization, draft-by-default
+  publishing, enum rejection, credit replacement on update, and link parsing.
+
+Verified in Aug 2026:
+
+- All four hosts serve 200 with real content; `realty` and `smallbiz` are
+  fully live (the README previously called them pending).
+- `/projects` filtering, `/crew`, and the nav were checked at 390px and
+  desktop on local dev; production was verified by request (routes,
+  stylesheet, and rendered markup).
 
 Known gaps:
 
-- `Project` has **no image field** in the schema, so every project thumbnail
-  is a placeholder. Ventures use `logoUrl`, which is currently null on all
-  of them. Adding project images needs a Prisma migration.
-- Homepage still renders a "Principles" section from the CMS. Only the
+- **No `prisma/migrations/` directory.** The database still has no Prisma
+  migration history — see Database. Baselining it is the highest-value
+  infrastructure task outstanding.
+- **The crew UI has never been seen with real people in it.** `/crew` and
+  `/crew/[slug]` have only been verified in their empty state, and the
+  dynamic `/projects/[slug]` template is shadowed by static pages for all
+  three current projects, so its outcome line and credit block are unverified
+  against real data.
+- **No per-project contribution input** in the admin project form; the
+  column exists and renders, but falls back to the person's role.
+- **Homepage still renders a "Principles" section** from the CMS. Only the
   standalone page was retired; say so if that section should go too.
-- Not visually verified at every breakpoint — changes were confirmed via
-  static audit, typecheck and a production build.
+- **Aliases and quirks describe real people.** Nothing publishes itself, but
+  consent for a photo, an alias, or a personal story is a human question the
+  schema cannot answer.

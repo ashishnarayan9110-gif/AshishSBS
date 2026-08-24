@@ -27,7 +27,7 @@ function SectionHead({
 }
 
 export default async function HomePage() {
-  const [ventures, projects, labNotes, principles, resources, services] =
+  const [ventures, projects, labNotes, resources, services] =
     await Promise.all([
       prisma.venture.findMany({
         where: { contentStatus: "PUBLISHED", featured: true },
@@ -43,11 +43,6 @@ export default async function HomePage() {
         where: { contentStatus: "PUBLISHED" },
         take: 3,
         orderBy: { publishedAt: "desc" },
-      }),
-      prisma.principle.findMany({
-        where: { contentStatus: "PUBLISHED" },
-        take: 4,
-        orderBy: { createdAt: "asc" },
       }),
       prisma.resource.findMany({
         where: { contentStatus: "PUBLISHED" },
@@ -250,41 +245,11 @@ export default async function HomePage() {
         </section>
       ) : null}
 
-      {/* 04 Principles — philosophy, last */}
-      {principles.length > 0 ? (
-        <section className="dot-grid border-border border-b px-6 py-20 sm:px-10">
-          <div className="mx-auto max-w-(--layout-max-width)">
-            <SectionHead index="04" title="Principles" aside="How I think about the work" />
-            <ul className="border-border border-t">
-              {principles.map((pr, i) => (
-                <li
-                  key={pr.id}
-                  className="border-border grid grid-cols-[60px_1fr] gap-6 border-b py-8 sm:grid-cols-[100px_1fr]"
-                >
-                  <span className="font-display text-accent text-3xl">{pad(i)}</span>
-                  <div>
-                    <Link
-                      href={`/principles/${pr.slug}`}
-                      className="font-grotesk text-xl font-semibold hover:underline"
-                    >
-                      {pr.title}
-                    </Link>
-                    <p className="text-muted mt-2 max-w-2xl leading-relaxed">
-                      {pr.statement}
-                    </p>
-                  </div>
-                </li>
-              ))}
-            </ul>
-          </div>
-        </section>
-      ) : null}
-
       {/* 05 Field Kit / 06 Services */}
       <section className="bg-border border-border grid grid-cols-1 gap-px border-b lg:grid-cols-2">
         <div className="dot-grid bg-background px-6 py-16 sm:px-10">
           <span className="font-meta text-accent text-[11px] uppercase">
-            05 / Field Kit
+            04 / Field Kit
           </span>
           <h3 className="font-display mt-4 mb-6 text-[clamp(24px,3vw,36px)]">
             Things I built along the way
@@ -307,7 +272,7 @@ export default async function HomePage() {
         </div>
         <div className="dot-grid bg-accent px-6 py-16 sm:px-10">
           <span className="font-meta text-[11px] text-[#E9DFDD]/80 uppercase">
-            06 / Services
+            05 / Services
           </span>
           <h3 className="font-display mt-4 mb-6 text-[clamp(24px,3vw,36px)] text-[#E9DFDD]">
             If you want help directly

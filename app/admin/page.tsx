@@ -6,6 +6,7 @@ import { SignOutButton } from "@/features/auth/sign-out-button";
 const CONTENT_MODELS = [
   { label: "Ventures", href: "/admin/ventures", count: () => prisma.venture.count() },
   { label: "Projects", href: "/admin/projects", count: () => prisma.project.count() },
+  { label: "People", href: "/admin/people", count: () => prisma.person.count() },
   { label: "Lab Notes", href: "/admin/lab", count: () => prisma.labNote.count() },
   {
     label: "Principles",

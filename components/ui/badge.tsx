@@ -46,3 +46,41 @@ export function VentureStatusBadge({ status }: { status: string }) {
     </Badge>
   );
 }
+
+const DISCIPLINE_LABEL: Record<string, string> = {
+  DIGITAL: "Digital",
+  FURNITURE: "Furniture",
+  TEACHING: "Teaching",
+  BUSINESS: "Business",
+  PERSONAL: "Personal",
+  OTHER: "Other",
+};
+
+export function disciplineLabel(discipline: string) {
+  return DISCIPLINE_LABEL[discipline] ?? discipline;
+}
+
+// Outcome is the honest half of the record: a project that failed says so.
+const OUTCOME_TONE: Record<string, Tone> = {
+  SHIPPED: "success",
+  RUNNING: "success",
+  PAUSED: "warning",
+  FAILED: "danger",
+};
+
+const OUTCOME_LABEL: Record<string, string> = {
+  SHIPPED: "Shipped",
+  RUNNING: "Running",
+  PAUSED: "Paused",
+  FAILED: "Failed",
+};
+
+export function outcomeLabel(outcome: string) {
+  return OUTCOME_LABEL[outcome] ?? outcome;
+}
+
+export function ProjectOutcomeBadge({ outcome }: { outcome: string }) {
+  return (
+    <Badge tone={OUTCOME_TONE[outcome] ?? "neutral"}>{outcomeLabel(outcome)}</Badge>
+  );
+}

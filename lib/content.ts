@@ -12,7 +12,13 @@ export function getVentures() {
 export function getVentureBySlug(slug: string) {
   return prisma.venture.findFirst({
     where: { slug, contentStatus: PUBLISHED },
-    include: { timelineEvents: true, lessons: true, projects: true, externalLinks: true },
+    include: {
+      timelineEvents: true,
+      lessons: true,
+      projects: true,
+      externalLinks: true,
+      crew: { where: { person: { contentStatus: PUBLISHED } }, include: { person: true } },
+    },
   });
 }
 
@@ -26,7 +32,11 @@ export function getProjects() {
 export function getProjectBySlug(slug: string) {
   return prisma.project.findFirst({
     where: { slug, contentStatus: PUBLISHED },
-    include: { lessons: true, venture: true },
+    include: {
+      lessons: true,
+      venture: true,
+      crew: { where: { person: { contentStatus: PUBLISHED } }, include: { person: true } },
+    },
   });
 }
 
@@ -98,4 +108,41 @@ export function getInsights() {
 
 export function getInsightBySlug(slug: string) {
   return prisma.insight.findFirst({ where: { slug, contentStatus: PUBLISHED } });
+}
+
+// --- Crew -----------------------------------------------------------------
+// The people behind the work. Featured first, then alphabetical — the order is
+// stable so the roster doesn't reshuffle between visits.
+
+export function getCrew() {
+  return prisma.person.findMany({
+    where: { contentStatus: PUBLISHED },
+    orderBy: [{ featured: "desc" }, { name: "asc" }],
+    include: {
+      projects: {
+        where: { project: { contentStatus: PUBLISHED } },
+        include: { project: { select: { slug: true, title: true } } },
+      },
+      ventures: {
+        where: { venture: { contentStatus: PUBLISHED } },
+        include: { venture: { select: { slug: true, name: true } } },
+      },
+    },
+  });
+}
+
+export function getPersonBySlug(slug: string) {
+  return prisma.person.findFirst({
+    where: { slug, contentStatus: PUBLISHED },
+    include: {
+      projects: {
+        where: { project: { contentStatus: PUBLISHED } },
+        include: { project: { select: { slug: true, title: true } } },
+      },
+      ventures: {
+        where: { venture: { contentStatus: PUBLISHED } },
+        include: { venture: { select: { slug: true, name: true } } },
+      },
+    },
+  });
 }

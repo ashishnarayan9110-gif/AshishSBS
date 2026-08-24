@@ -9,9 +9,10 @@ export default async function EditProjectPage({
   params: Promise<{ id: string }>;
 }) {
   const { id } = await params;
-  const [project, ventures] = await Promise.all([
-    prisma.project.findUnique({ where: { id } }),
+  const [project, ventures, people] = await Promise.all([
+    prisma.project.findUnique({ where: { id }, include: { crew: true } }),
     prisma.venture.findMany({ orderBy: { name: "asc" } }),
+    prisma.person.findMany({ orderBy: { name: "asc" } }),
   ]);
 
   if (!project) notFound();
@@ -23,6 +24,8 @@ export default async function EditProjectPage({
         <ProjectForm
           project={project}
           ventures={ventures}
+          people={people}
+          crewIds={project.crew.map((c) => c.personId)}
           action={updateProject.bind(null, id)}
         />
       </div>

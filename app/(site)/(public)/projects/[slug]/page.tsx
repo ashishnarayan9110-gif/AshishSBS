@@ -2,6 +2,8 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { getProjectBySlug } from "@/lib/content";
 import { prisma } from "@/lib/prisma";
+import { disciplineLabel, outcomeLabel } from "@/components/ui/badge";
+import { CrewCredits } from "@/features/crew/crew-credits";
 
 export const dynamic = "force-dynamic";
 
@@ -22,10 +24,16 @@ export default async function ProjectDetailPage({
   });
 
   const facts = [
-    { label: "INDUSTRY", value: project.industry ?? "—" },
+    { label: "DISCIPLINE", value: disciplineLabel(project.discipline) },
     { label: "YEAR", value: project.year ? String(project.year) : "—" },
-    { label: "STACK", value: project.technology ?? "—" },
-    { label: "CURRENT STATE", value: "Live — still watching it" },
+    {
+      label: project.discipline === "DIGITAL" ? "STACK" : "MADE WITH",
+      value: project.technology ?? "—",
+    },
+    {
+      label: "CURRENT STATE",
+      value: project.outcomeStatus ? outcomeLabel(project.outcomeStatus) : "—",
+    },
   ];
 
   const body = [
@@ -97,6 +105,7 @@ export default async function ProjectDetailPage({
                 </ul>
               </div>
             ) : null}
+            <CrewCredits crew={project.crew} />
           </div>
         </div>
       </div>

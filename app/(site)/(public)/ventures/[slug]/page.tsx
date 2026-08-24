@@ -4,6 +4,7 @@ import { Breadcrumbs } from "@/components/shared/breadcrumbs";
 import { Container } from "@/components/ui/container";
 import { VentureStatusBadge } from "@/components/ui/badge";
 import { getVentureBySlug } from "@/lib/content";
+import { CrewCredits } from "@/features/crew/crew-credits";
 
 export const dynamic = "force-dynamic";
 
@@ -61,6 +62,7 @@ export default async function VentureDetailPage({
             </ul>
           </section>
         ) : null}
+        <CrewCredits crew={venture.crew} />
       </Container>
     </>
   );

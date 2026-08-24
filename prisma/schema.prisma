@@ -29,6 +29,27 @@ enum VentureStatus {
   SUNSET
 }
 
+// What kind of work a project is. The site started out digital-only; these keep
+// furniture, teaching and the rest as first-class work rather than tagged
+// exceptions.
+enum Discipline {
+  DIGITAL
+  FURNITURE
+  TEACHING
+  BUSINESS
+  PERSONAL
+  OTHER
+}
+
+// How a project actually ended up. FAILED is deliberately a first-class value —
+// the record is not meant to only hold the things that worked.
+enum ProjectOutcome {
+  SHIPPED
+  RUNNING
+  PAUSED
+  FAILED
+}
+
 enum Role {
   FOUNDER
   ADMINISTRATOR
@@ -118,6 +139,7 @@ model Venture {
   externalLinks  ExternalLink[]
   media          Media[]
   tags           TagOnVenture[]
+  crew           PersonOnVenture[]
 
   @@index([status, contentStatus])
   @@map("ventures")
@@ -136,6 +158,9 @@ model Project {
   industry     String?
   technology   String?
   year         Int?
+  discipline   Discipline    @default(DIGITAL)
+  outcomeStatus ProjectOutcome?
+  imageUrl     String?
   featured     Boolean       @default(false)
   contentStatus ContentStatus @default(DRAFT)
   publishedAt  DateTime?
@@ -153,8 +178,10 @@ model Project {
   relatedResources  ProjectResource[]
   media         Media[]
   tags          TagOnProject[]
+  crew          PersonOnProject[]
 
   @@index([ventureId])
+  @@index([discipline, contentStatus])
   @@map("projects")
 }
 
@@ -328,6 +355,62 @@ model Book {
   updatedAt   DateTime @updatedAt
 
   @@map("books")
+}
+
+// ---------------------------------------------------------------------------
+// Crew — the people behind the work
+// ---------------------------------------------------------------------------
+
+// A real, named person who helped with something here. Everything is optional
+// except the name: a person can be credited long before there's a photo or a
+// story written up. DRAFT by default, like every other content model — nobody
+// appears publicly until their entry has been read and published deliberately.
+model Person {
+  id            String        @id @default(cuid())
+  slug          String        @unique
+  name          String
+  alias         String?       // "The Millimetre" — the heist-crew handle
+  role          String?       // what they actually do: carpenter, professor, co-founder
+  quirk         String?       // the one detail that makes them them
+  howWeMet      String?
+  whatTheyDid   String?       // the credit, in plain terms
+  photoUrl      String?
+  links         Json?         // {label, url}[]
+  featured      Boolean       @default(false)
+  contentStatus ContentStatus @default(DRAFT)
+  publishedAt   DateTime?
+  createdAt     DateTime      @default(now())
+  updatedAt     DateTime      @updatedAt
+
+  projects PersonOnProject[]
+  ventures PersonOnVenture[]
+
+  @@index([contentStatus])
+  @@map("people")
+}
+
+model PersonOnProject {
+  personId     String
+  projectId    String
+  contribution String? // "Built every joint that mattered."
+
+  person  Person  @relation(fields: [personId], references: [id], onDelete: Cascade)
+  project Project @relation(fields: [projectId], references: [id], onDelete: Cascade)
+
+  @@id([personId, projectId])
+  @@map("people_on_projects")
+}
+
+model PersonOnVenture {
+  personId     String
+  ventureId    String
+  contribution String?
+
+  person  Person  @relation(fields: [personId], references: [id], onDelete: Cascade)
+  venture Venture @relation(fields: [ventureId], references: [id], onDelete: Cascade)
+
+  @@id([personId, ventureId])
+  @@map("people_on_ventures")
 }
 
 // ---------------------------------------------------------------------------

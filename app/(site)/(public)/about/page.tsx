@@ -2,14 +2,17 @@ import { PageHeader } from "@/components/shared/page-header";
 import { Container } from "@/components/ui/container";
 import { LinkButton } from "@/components/ui/button";
 import { LinkCard } from "@/components/ui/card";
-import { getPrinciples } from "@/lib/content";
+import { getCertifications, getPrinciples } from "@/lib/content";
 
 export const dynamic = "force-dynamic";
 
 export default async function AboutPage() {
   // The standalone principles page said the same thing this page already does,
   // so the written-up ones live here now, under how I think.
-  const principles = await getPrinciples();
+  const [principles, certifications] = await Promise.all([
+    getPrinciples(),
+    getCertifications(),
+  ]);
 
   return (
     <>
@@ -124,6 +127,69 @@ export default async function AboutPage() {
             </>
           )}
         </section>
+
+        {/* Skills — certifications, each linked to the issuer's own check */}
+        {certifications.length > 0 ? (
+          <section id="skills">
+            <h2 className="font-medium">Skills &amp; certifications</h2>
+            <p className="text-muted mt-3 leading-relaxed">
+              Formal ones, with the issuer&apos;s own verification where there is
+              one — so none of this has to be taken on trust.
+            </p>
+            <ul className="border-border mt-6 border-t">
+              {certifications.map((certification) => {
+                const skills = (certification.skills ?? "")
+                  .split(",")
+                  .map((skill) => skill.trim())
+                  .filter(Boolean);
+                const issued = certification.issuedAt?.getUTCFullYear();
+                const expires = certification.expiresAt?.getUTCFullYear();
+
+                return (
+                  <li
+                    key={certification.id}
+                    className="border-border flex flex-wrap items-baseline justify-between gap-x-6 gap-y-2 border-b py-5"
+                  >
+                    <div className="min-w-0">
+                      <p className="font-medium break-words">{certification.title}</p>
+                      <p className="text-muted mt-1 text-sm">
+                        {certification.issuer}
+                        {issued ? ` · ${issued}` : ""}
+                        {expires ? ` – ${expires}` : ""}
+                      </p>
+                      {skills.length > 0 ? (
+                        <ul className="mt-2 flex flex-wrap gap-2">
+                          {skills.map((skill) => (
+                            <li
+                              key={skill}
+                              className="font-meta text-muted border-muted rounded-full border px-2.5 py-1 text-[10px] uppercase"
+                            >
+                              {skill}
+                            </li>
+                          ))}
+                        </ul>
+                      ) : null}
+                    </div>
+                    {certification.verifyUrl ? (
+                      <a
+                        href={certification.verifyUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="font-meta text-accent shrink-0 text-[11px] uppercase hover:underline"
+                      >
+                        Verify ↗
+                      </a>
+                    ) : certification.credentialId ? (
+                      <span className="font-meta text-muted shrink-0 text-[11px] break-all">
+                        {certification.credentialId}
+                      </span>
+                    ) : null}
+                  </li>
+                );
+              })}
+            </ul>
+          </section>
+        ) : null}
 
         {/* This platform */}
         <section>

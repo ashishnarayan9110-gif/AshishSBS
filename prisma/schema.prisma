@@ -358,6 +358,32 @@ model Book {
 }
 
 // ---------------------------------------------------------------------------
+// Credentials
+// ---------------------------------------------------------------------------
+
+// A certification or course credential. Rendered on /about under "Skills".
+// `verifyUrl` is what makes an entry checkable rather than a claim — prefer the
+// issuer's own verification page over a self-hosted copy of the certificate.
+model Certification {
+  id            String        @id @default(cuid())
+  slug          String        @unique
+  title         String
+  issuer        String
+  issuedAt      DateTime?
+  expiresAt     DateTime?
+  credentialId  String?
+  verifyUrl     String?
+  skills        String?       // comma-separated, shown as tags
+  contentStatus ContentStatus @default(DRAFT)
+  publishedAt   DateTime?
+  createdAt     DateTime      @default(now())
+  updatedAt     DateTime      @updatedAt
+
+  @@index([contentStatus])
+  @@map("certifications")
+}
+
+// ---------------------------------------------------------------------------
 // Crew — the people behind the work
 // ---------------------------------------------------------------------------
 

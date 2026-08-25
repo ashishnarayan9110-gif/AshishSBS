@@ -146,3 +146,13 @@ export function getPersonBySlug(slug: string) {
     },
   });
 }
+
+// --- Certifications -------------------------------------------------------
+// Newest first, undated last — an entry without a date is still worth showing.
+
+export function getCertifications() {
+  return prisma.certification.findMany({
+    where: { contentStatus: PUBLISHED },
+    orderBy: [{ issuedAt: "desc" }, { title: "asc" }],
+  });
+}

@@ -64,8 +64,8 @@ export default async function HomePage() {
   return (
     <>
       {/* Hero */}
-      <section className="dot-grid border-border flex min-h-[82vh] flex-col justify-between border-b px-6 py-10 sm:px-10">
-        <div className="font-meta text-muted flex justify-between text-[11px] uppercase">
+      <section className="dot-grid border-border flex min-h-[82svh] flex-col justify-between border-b px-6 py-10 sm:px-10">
+        <div className="font-meta text-muted flex flex-col gap-1 text-[11px] uppercase sm:flex-row sm:items-center sm:justify-between sm:gap-4">
           <span>Status: Building</span>
           <span className="hidden sm:inline">Last updated · {today}</span>
         </div>
@@ -100,7 +100,7 @@ export default async function HomePage() {
           </div>
         </div>
 
-        <div className="font-meta text-muted flex justify-between text-[11px] uppercase">
+        <div className="font-meta text-muted flex flex-col gap-1 text-[11px] uppercase sm:flex-row sm:items-center sm:justify-between sm:gap-4">
           <span>Keep scrolling ↓</span>
           <span>
             {ventures.length} ventures live · {projects.length} shipped ·{" "}
@@ -143,7 +143,7 @@ export default async function HomePage() {
       {/* Featured build spotlight */}
       {featured ? (
         <section className="border-border grid border-b lg:grid-cols-2">
-          <div className="placeholder-stripes border-border flex aspect-square items-center justify-center lg:border-r">
+          <div className="placeholder-stripes border-border flex aspect-[16/9] items-center justify-center lg:aspect-square lg:border-r">
             <span className="font-meta text-muted text-xs uppercase">
               [ {featured.title} ]
             </span>
@@ -176,7 +176,7 @@ export default async function HomePage() {
                 <li key={p.id} className="flex">
                   <Link
                     href={`/projects/${p.slug}`}
-                    className="bg-muted-background flex min-h-[240px] w-full flex-col justify-between gap-12 p-8"
+                    className="bg-muted-background flex w-full flex-col justify-between gap-6 p-6 sm:min-h-[240px] sm:gap-12 sm:p-8"
                   >
                     <span className="flex items-start justify-between">
                       <span className="font-meta text-muted text-[11px]">{pad(i)}</span>

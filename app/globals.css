@@ -171,15 +171,6 @@ canvas {
 [id] {
   scroll-margin-top: 84px;
 }
-/* Inputs at 16px+ stop iOS Safari zooming on focus. */
-@media (max-width: 640px) {
-  input,
-  select,
-  textarea {
-    font-size: 16px;
-  }
-}
-
 ::selection {
   background: var(--foreground);
   color: var(--background);
@@ -207,4 +198,17 @@ main section h2 {
   font-size: 0.875rem;
   background: var(--background);
   color: var(--foreground);
+}
+
+/* Anything under 16px makes iOS zoom the whole page in on focus, which then
+   leaves the layout scrolled sideways. .field-input is a class and used to be
+   declared after the old element-only guard, so it silently won at 14px —
+   hence this rule sits last and names the class explicitly. */
+@media (max-width: 640px) {
+  input,
+  select,
+  textarea,
+  .field-input {
+    font-size: 16px;
+  }
 }

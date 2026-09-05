@@ -21,7 +21,7 @@ export function MobileNav({ items }: { items: { href: string; label: string }[] 
         aria-expanded={open}
         aria-label={open ? "Close menu" : "Open menu"}
         onClick={() => setOpen((value) => !value)}
-        className="flex h-9 w-9 items-center justify-center"
+        className="-mr-2 flex h-11 w-11 items-center justify-center"
       >
         {open ? (
           <svg

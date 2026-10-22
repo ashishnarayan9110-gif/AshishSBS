@@ -111,7 +111,17 @@
   color: var(--dim);
 }
 .os .tn { font-variant-numeric: tabular-nums; }
-.os .sec { padding-block: clamp(50px, 9vh, 120px); }
+.os .sec { position: relative; padding-block: clamp(50px, 9vh, 120px); }
+/* Reading copy never sits on the raw field. Every inner page's content goes
+   through Container -> .wrap.sec, so one full-bleed ground covers them all.
+   Full viewport width via negative gutters; .os is overflow-x:clip so this
+   cannot widen the page. */
+.os .sec::before, .os .quote::before {
+  content: ""; position: absolute; left: calc(50% - 50vw); right: calc(50% - 50vw);
+  top: 0; bottom: 0; z-index: -1; pointer-events: none;
+  background: rgba(8, 8, 10, 0.8);
+}
+.os .quote { position: relative; }
 
 /* ---- the field ---- */
 .os .fieldcv { position: fixed; inset: 0; z-index: 0; display: block; width: 100%; height: 100%; }
@@ -377,7 +387,14 @@ html.nocur input, html.nocur textarea, html.nocur label, html.nocur summary { cu
 .os .sechd p { font-size: 15px; color: var(--soft); max-width: 46ch; line-height: 1.72; }
 
 /* ---- page header ---- */
-.os .ph { padding-block: calc(env(safe-area-inset-top, 0px) + 118px) clamp(26px, 4vh, 46px); }
+.os .ph { position: relative; padding-block: calc(env(safe-area-inset-top, 0px) + 118px) clamp(26px, 4vh, 46px); }
+/* an inner page opens straight onto the field; without this the copy sits on
+   whatever the shader happens to be doing behind it */
+.os .ph::after {
+  content: ""; position: absolute; left: calc(var(--pl) * -1); right: calc(var(--pr) * -1);
+  top: 0; bottom: 0; z-index: -1; pointer-events: none;
+  background: linear-gradient(to bottom, rgba(8, 8, 10, 0.82), rgba(8, 8, 10, 0.58) 62%, rgba(8, 8, 10, 0.2));
+}
 .os .ph__k { display: block; margin-bottom: 18px; }
 .os .ph h1 { font-size: clamp(40px, 8.6vw, 118px); line-height: 0.88; letter-spacing: -0.05em; }
 .os .ph h1 em { font-style: normal; font-family: var(--s); font-weight: 300; letter-spacing: -0.012em; font-size: 1.12em; }

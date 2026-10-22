@@ -1,29 +1,24 @@
 import { type ReactNode } from "react";
 
+/* The page opener used by every inner route. `title` may carry an <em> for the
+   display serif or an <i> for the signal red when passed as a node. */
 export function PageHeader({
   title,
   description,
   badge,
+  index,
 }: {
-  title: string;
+  title: ReactNode;
   description?: string;
   badge?: ReactNode;
+  index?: string;
 }) {
   return (
-    <div className="dot-grid border-border border-b">
-      <div className="mx-auto max-w-(--layout-max-width) px-6 pt-14 pb-12">
-        <div className="flex flex-wrap items-center gap-4">
-          <h1 className="font-display text-[clamp(40px,7vw,88px)] leading-[0.9]">
-            {title}
-          </h1>
-          {badge}
-        </div>
-        {description ? (
-          <p className="text-muted mt-5 max-w-(--content-max-width) text-lg leading-relaxed">
-            {description}
-          </p>
-        ) : null}
-      </div>
+    <div className="wrap ph" data-rv>
+      {index ? <span className="m ph__k up">{index}</span> : null}
+      <h1 className="up">{title}</h1>
+      {description ? <p className="ph__p up">{description}</p> : null}
+      {badge ? <div className="ph__m up">{badge}</div> : null}
     </div>
   );
 }

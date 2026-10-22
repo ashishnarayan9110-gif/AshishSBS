@@ -11,10 +11,12 @@ export function Container({
   className?: string;
   id?: string;
 }) {
-  const maxWidth =
-    width === "layout" ? "max-w-(--layout-max-width)" : "max-w-(--content-max-width)";
   return (
-    <div id={id} className={`mx-auto ${maxWidth} px-6 ${className}`}>
+    <div
+      id={id}
+      className={`wrap sec ${className}`}
+      style={width === "content" ? { maxWidth: "min(var(--max), 74ch)" } : undefined}
+    >
       {children}
     </div>
   );

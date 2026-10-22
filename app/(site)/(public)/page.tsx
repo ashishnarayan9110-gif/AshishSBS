@@ -69,29 +69,26 @@ export default async function HomePage() {
             <span>I build things</span>
           </span>
           <span className="ln">
-            <span>that have to</span>
-          </span>
-          <span className="ln">
             <span>
-              <i>close.</i>
+              that have to <i>work.</i>
             </span>
           </span>
         </h1>
 
         <div className="hero__b" data-rv>
           <p className="hero__p up">
-            Savison Life &mdash; a compliance-gated pharma marketplace &mdash; is live,
-            along with what shipped alongside it. This is the record of what worked,
-            what didn&rsquo;t, and what gets tested next.
+            Savison Life &mdash; a compliance-gated pharma marketplace &mdash; is live
+            below, along with what shipped alongside it. This is where I keep the record
+            of what worked, what didn&rsquo;t, and what I&rsquo;m testing next.
           </p>
           <div className="figs up">
             <span className="fig">
-              <b className="tn">{pad(record.length)}</b>
-              <span className="m">Units</span>
-            </span>
-            <span className="fig">
               <b className="tn">{pad(ventures.length)}</b>
               <span className="m">Ventures</span>
+            </span>
+            <span className="fig">
+              <b className="tn">{pad(projects.length)}</b>
+              <span className="m">Projects</span>
             </span>
             <span className="fig">
               <b className="tn">{pad(services.length)}</b>
@@ -146,7 +143,7 @@ export default async function HomePage() {
       {record.length > 0 && (
         <section className="gal">
           <div className="gal__st">
-            <span className="gal__lbl m">The record &mdash; ventures and projects</span>
+            <span className="gal__lbl m">Everything, logged</span>
             <div className="gal__tr">
               {record.map((u, i) => (
                 <Link
@@ -232,8 +229,9 @@ export default async function HomePage() {
       {record.length > 0 && (
         <section className="wrap sec" style={{ paddingTop: 0 }}>
           <div className="sechd" data-rv>
-            <h2 className="up">03 / Every unit</h2>
-            <p className="up">Ventures and projects, together, newest first.</p>
+            <h2 className="up">03 / The record</h2>
+            <p className="up">Ventures and projects together, newest first. Including the
+              ones that didn&rsquo;t go anywhere.</p>
           </div>
           <div className="lst" data-rv>
             {record.map((u, i) => (
@@ -253,11 +251,9 @@ export default async function HomePage() {
 
       <section className="wrap quote" data-rv>
         <h2 className="up">
-          You cannot argue a drawer <i>into fitting.</i>
+          Most businesses don&rsquo;t fail from bad ideas.
+          <i> They fail from broken systems.</i>
         </h2>
-        <p className="m up" style={{ marginTop: 28 }}>
-          Learned at a bench, 2019
-        </p>
       </section>
     </>
   );

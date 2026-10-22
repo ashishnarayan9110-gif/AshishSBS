@@ -119,7 +119,7 @@
 .os .sec::before, .os .quote::before {
   content: ""; position: absolute; left: calc(50% - 50vw); right: calc(50% - 50vw);
   top: 0; bottom: 0; z-index: -1; pointer-events: none;
-  background: rgba(8, 8, 10, 0.8);
+  background: rgba(8, 8, 10, 0.91);
 }
 .os .quote { position: relative; }
 
@@ -262,6 +262,47 @@ html.nocur input, html.nocur textarea, html.nocur label, html.nocur summary { cu
 .os.anim .rv .up:nth-child(4) { transition-delay: 0.18s; }
 
 .os .pane { background: var(--glass); backdrop-filter: blur(16px) saturate(1.2); border: 1px solid var(--line); }
+
+/* ---- legacy utility classes, remapped onto the new identity ----
+   Pages written before the redesign still call these; rather than rewrite
+   every file, point them at the current faces so the whole tree stays
+   coherent in one place. */
+.os .font-display {
+  font-family: var(--g);
+  font-weight: 800;
+  letter-spacing: -0.045em;
+  line-height: 0.94;
+  text-transform: none;
+}
+.os .font-grotesk { font-family: var(--g); }
+.os .font-meta {
+  font-family: var(--m);
+  font-size: 10px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--dim);
+}
+.os .dot-grid, .os .dot-grid-dark { background-image: none; }
+.os .text-muted { color: var(--soft); }
+
+/* headings inside legacy page bodies */
+.os main section h2,
+.os main h2:not(.card__t):not(.sechd h2) {
+  font-size: clamp(20px, 2.4vw, 28px);
+  font-weight: 700;
+  letter-spacing: -0.035em;
+  line-height: 1.1;
+}
+.os main h3 { font-size: clamp(17px, 1.9vw, 21px); font-weight: 600; letter-spacing: -0.025em; }
+/* legacy body copy reads at the same measure as the ported pages */
+.os main p { line-height: 1.75; }
+/* legacy bodies stack <p> with utility margins that read too tight at this
+   measure; give consecutive paragraphs and sections real air */
+.os main section > p + p,
+.os main section > p { margin-top: 1em; }
+.os main section > h2 + p { margin-top: 0.7em; }
+.os main section + section { margin-top: 2.4em; }
+.os main ul:not(.grid):not(.lst) { line-height: 1.7; }
 
 /* ---- hero ---- */
 .os .hero {

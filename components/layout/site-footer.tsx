@@ -22,10 +22,10 @@ export function SiteFooter() {
     <footer className="wrap ftr">
       <div className="ftr__g">
         <div>
-          <span className="m">Ashish Narayan &plusmn;</span>
+          <span className="m">Ashish Narayan</span>
           <p className="hero__p" style={{ marginTop: 12, fontSize: 15 }}>
-            A build log for work in wood, code, classrooms and companies.
-            The gap is the information.
+            A living record of the ventures, projects and systems I build &mdash;
+            what worked, what didn&rsquo;t, and what I&rsquo;m testing next.
           </p>
         </div>
         {COLS.map((col, i) => (

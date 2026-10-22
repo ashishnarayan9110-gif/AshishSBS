@@ -57,7 +57,7 @@ export function SiteHeader() {
       <header className="hd">
         <div className="hd__in">
           <Link href="/" className="hd__mark">
-            Ashish&nbsp;Narayan&nbsp;&plusmn;
+            Ashish&nbsp;Narayan
           </Link>
           <nav className="hd__n" aria-label="Primary">
             {NAV.map((n) => (
@@ -103,7 +103,7 @@ export function SiteHeader() {
           </Link>
         ))}
         <div className="menu__f">
-          <span className="m">Ashish Narayan &plusmn;</span>
+          <span className="m">Ashish Narayan</span>
           <span className="m tn">30.7333&deg;N 76.7794&deg;E</span>
         </div>
       </nav>

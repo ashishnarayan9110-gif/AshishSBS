@@ -4,295 +4,260 @@ import { prisma } from "@/lib/prisma";
 export const dynamic = "force-dynamic";
 
 function pad(n: number) {
-  return String(n + 1).padStart(2, "0");
+  return String(n).padStart(2, "0");
 }
 
-function SectionHead({
-  index,
-  title,
-  aside,
-}: {
-  index: string;
-  title: string;
-  aside: string;
-}) {
-  return (
-    <div className="mb-10 flex flex-wrap items-baseline justify-between gap-3">
-      <h2 className="font-display text-[clamp(30px,4.5vw,54px)]">
-        {index} / {title}
-      </h2>
-      <span className="font-meta text-muted text-[11px] uppercase">{aside}</span>
-    </div>
-  );
+/* The three stacked cards on the index use fixed gradient grounds, so the
+   order matters more than the count; anything past three keeps the last. */
+function cardClass(i: number) {
+  return "card c" + Math.min(i + 1, 3);
 }
 
 export default async function HomePage() {
-  const [ventures, projects, labNotes, resources, services] =
-    await Promise.all([
-      prisma.venture.findMany({
-        where: { contentStatus: "PUBLISHED", featured: true },
-        take: 4,
-        orderBy: { publishedAt: "desc" },
-      }),
-      prisma.project.findMany({
-        where: { contentStatus: "PUBLISHED", featured: true },
-        take: 6,
-        orderBy: { publishedAt: "desc" },
-      }),
-      prisma.labNote.findMany({
-        where: { contentStatus: "PUBLISHED" },
-        take: 3,
-        orderBy: { publishedAt: "desc" },
-      }),
-      prisma.resource.findMany({
-        where: { contentStatus: "PUBLISHED" },
-        take: 3,
-        orderBy: { publishedAt: "desc" },
-      }),
-      prisma.service.findMany({
-        where: { contentStatus: "PUBLISHED" },
-        take: 3,
-        orderBy: { createdAt: "asc" },
-      }),
-    ]);
+  const [ventures, projects, labNotes, services] = await Promise.all([
+    prisma.venture.findMany({
+      where: { contentStatus: "PUBLISHED" },
+      orderBy: [{ featured: "desc" }, { publishedAt: "desc" }],
+    }),
+    prisma.project.findMany({
+      where: { contentStatus: "PUBLISHED" },
+      orderBy: [{ featured: "desc" }, { publishedAt: "desc" }],
+    }),
+    prisma.labNote.findMany({
+      where: { contentStatus: "PUBLISHED" },
+      take: 3,
+      orderBy: { publishedAt: "desc" },
+    }),
+    prisma.service.findMany({
+      where: { contentStatus: "PUBLISHED" },
+      orderBy: { createdAt: "asc" },
+    }),
+  ]);
 
-  const featured = projects[0];
-  const restProjects = projects.length > 1 ? projects.slice(1) : projects;
-  const today = new Date().toISOString().slice(0, 10).replaceAll("-", ".");
-  const latestNote = labNotes[0];
+  /* the record: every published unit, ventures and projects alike */
+  const record = [
+    ...projects.map((p) => ({
+      kind: "Project",
+      href: `/projects/${p.slug}`,
+      title: p.title,
+      summary: p.summary ?? "",
+      meta: [p.discipline, p.year].filter(Boolean).join(" · "),
+      gapped: p.outcomeStatus === "FAILED",
+    })),
+    ...ventures.map((v) => ({
+      kind: "Venture",
+      href: `/ventures/${v.slug}`,
+      title: v.name,
+      summary: v.summary ?? "",
+      meta: [v.industry, v.status].filter(Boolean).join(" · "),
+      gapped: false,
+    })),
+  ];
+
+  const stack = projects.slice(0, 3);
 
   return (
     <>
-      {/* Hero */}
-      <section className="dot-grid border-border flex min-h-[82svh] flex-col justify-between border-b px-6 py-10 sm:px-10">
-        <div className="font-meta text-muted flex flex-col gap-1 text-[11px] uppercase sm:flex-row sm:items-center sm:justify-between sm:gap-4">
-          <span>Status: Building</span>
-          <span className="hidden sm:inline">Last updated · {today}</span>
-        </div>
+      {/* ── hero ── */}
+      <section className="wrap hero">
+        <span className="m" data-rv>
+          Chandigarh &middot; 30.73&deg;N &middot; status: building
+        </span>
 
-        <div className="mx-auto w-full max-w-(--layout-max-width)">
-          <span className="font-meta text-accent text-xs tracking-[0.15em] uppercase">
-            {"// Currently building"}
+        <h1 className="hero__h" data-rv>
+          <span className="ln">
+            <span>I build things</span>
           </span>
-          <h1 className="font-display mt-4 text-[clamp(52px,10vw,140px)] leading-[0.88]">
-            I build things
-            <br />
-            that have to <span className="text-accent">work.</span>
-          </h1>
-          <p className="mt-7 max-w-xl text-lg leading-relaxed text-[#D9D2CF]">
-            Savison Life — a compliance-gated pharma marketplace — is live below, along
-            with what shipped alongside it. This is where I keep the record of what
-            worked, what didn&apos;t, and what I&apos;m testing next.
+          <span className="ln">
+            <span>that have to</span>
+          </span>
+          <span className="ln">
+            <span>
+              <i>close.</i>
+            </span>
+          </span>
+        </h1>
+
+        <div className="hero__b" data-rv>
+          <p className="hero__p up">
+            Savison Life &mdash; a compliance-gated pharma marketplace &mdash; is live,
+            along with what shipped alongside it. This is the record of what worked,
+            what didn&rsquo;t, and what gets tested next.
           </p>
-          <div className="mt-8 flex flex-wrap gap-4">
-            <Link
-              href="/ventures"
-              className="font-grotesk bg-accent text-accent-foreground rounded-[4px] px-6 py-3.5 text-sm font-semibold"
-            >
-              See what I&apos;ve built
-            </Link>
-            <Link
-              href="/strategy-call"
-              className="font-grotesk border-muted rounded-[4px] border px-6 py-3.5 text-sm font-semibold"
-            >
-              Talk to me directly
-            </Link>
+          <div className="figs up">
+            <span className="fig">
+              <b className="tn">{pad(record.length)}</b>
+              <span className="m">Units</span>
+            </span>
+            <span className="fig">
+              <b className="tn">{pad(ventures.length)}</b>
+              <span className="m">Ventures</span>
+            </span>
+            <span className="fig">
+              <b className="tn">{pad(services.length)}</b>
+              <span className="m">Services</span>
+            </span>
           </div>
-        </div>
-
-        <div className="font-meta text-muted flex flex-col gap-1 text-[11px] uppercase sm:flex-row sm:items-center sm:justify-between sm:gap-4">
-          <span>Keep scrolling ↓</span>
-          <span>
-            {ventures.length} ventures live · {projects.length} shipped ·{" "}
-            {labNotes.length} notes
-          </span>
         </div>
       </section>
 
-      {/* 01 Ventures — credibility first */}
-      {ventures.length > 0 ? (
-        <section className="dot-grid border-border border-b px-6 py-20 sm:px-10">
-          <div className="mx-auto max-w-(--layout-max-width)">
-            <SectionHead index="01" title="Ventures" aside="Live, running now" />
-            <ul className="border-border border-t">
-              {ventures.map((v, i) => (
-                <li key={v.id}>
-                  <Link
-                    href={`/ventures/${v.slug}`}
-                    className="border-border grid grid-cols-[40px_1fr_24px] items-center gap-4 border-b py-7 sm:grid-cols-[60px_1fr_140px_24px] sm:gap-6"
-                  >
-                    <span className="font-meta text-muted text-[13px]">{pad(i)}</span>
-                    <span>
-                      <span className="font-grotesk block text-xl font-semibold sm:text-2xl">
-                        {v.name}
-                      </span>
-                      <span className="text-muted mt-1 block text-sm">{v.summary}</span>
-                    </span>
-                    <span className="font-meta text-accent hidden text-right text-[11px] uppercase sm:block">
-                      {v.status.replaceAll("_", " ")}
-                    </span>
-                    <span className="text-muted text-lg">↗</span>
-                  </Link>
-                </li>
-              ))}
-            </ul>
+      {record.length > 0 && (
+        <div className="mq" aria-hidden="true">
+          <div className="mq__i">
+            {[0, 1].map((dup) =>
+              record.map((u) => (
+                <span key={dup + u.href}>
+                  {u.title} <i>/</i> {u.kind}
+                </span>
+              )),
+            )}
           </div>
-        </section>
-      ) : null}
+        </div>
+      )}
 
-      {/* Featured build spotlight */}
-      {featured ? (
-        <section className="border-border grid border-b lg:grid-cols-2">
-          <div className="placeholder-stripes border-border flex aspect-[16/9] items-center justify-center lg:aspect-square lg:border-r">
-            <span className="font-meta text-muted text-xs uppercase">
-              [ {featured.title} ]
-            </span>
-          </div>
-          <div className="dot-grid flex flex-col justify-center gap-5 px-6 py-16 sm:px-14">
-            <span className="font-meta text-accent text-[11px] uppercase">
-              {"// Latest build"} {featured.industry ? `— ${featured.industry}` : ""}
-            </span>
-            <h3 className="font-display text-[clamp(30px,4vw,52px)] leading-[0.95]">
-              {featured.title}
-            </h3>
-            <p className="max-w-md leading-relaxed text-[#D9D2CF]">{featured.summary}</p>
-            <Link
-              href={`/projects/${featured.slug}`}
-              className="font-grotesk border-accent w-fit border-b pb-1 text-sm font-semibold"
-            >
-              What actually happened ↗
-            </Link>
-          </div>
-        </section>
-      ) : null}
-
-      {/* 02 Projects */}
-      {restProjects.length > 0 ? (
-        <section className="dot-grid border-border border-b px-6 py-20 sm:px-10">
-          <div className="mx-auto max-w-(--layout-max-width)">
-            <SectionHead index="02" title="Projects" aside="Built or helped build" />
-            <ul className="bg-border grid grid-cols-1 gap-px sm:grid-cols-2 lg:grid-cols-3">
-              {restProjects.map((p, i) => (
-                <li key={p.id} className="flex">
-                  <Link
-                    href={`/projects/${p.slug}`}
-                    className="bg-muted-background flex w-full flex-col justify-between gap-6 p-6 sm:min-h-[240px] sm:gap-12 sm:p-8"
-                  >
-                    <span className="flex items-start justify-between">
-                      <span className="font-meta text-muted text-[11px]">{pad(i)}</span>
-                      <span className="font-meta text-muted border-muted rounded-full border px-2.5 py-1 text-[10px] uppercase">
-                        {p.year ?? "—"}
-                      </span>
-                    </span>
-                    <span>
-                      <span className="font-grotesk block text-xl font-semibold">
-                        {p.title}
-                      </span>
-                      <span className="text-muted mt-2 block text-sm leading-relaxed">
-                        {p.summary}
-                      </span>
-                    </span>
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          </div>
-        </section>
-      ) : null}
-
-      {/* 03 Sandbox — curiosity, after credibility is established */}
-      {labNotes.length > 0 ? (
-        <section className="os-light dot-grid-dark border-border border-b px-6 py-20 sm:px-10">
-          <div className="mx-auto max-w-(--layout-max-width)">
-            <SectionHead index="03" title="Sandbox" aside="Running, stalled, or parked" />
-            <p className="mb-10 max-w-xl text-[15px] leading-relaxed text-[#2A2A2A]">
-              Projects that caught my interest. Some are still moving, some stopped
-              halfway — left as they are.
-            </p>
-            <ul className="grid grid-cols-1 gap-px bg-black/15 sm:grid-cols-3">
-              {labNotes.map((n) => (
-                <li key={n.id} className="flex">
-                  <Link
-                    href={`/lab/${n.slug}`}
-                    className="flex min-h-[200px] w-full flex-col justify-between gap-8 bg-[#E9DFDD] p-8"
-                  >
-                    <span className="font-meta text-accent text-[10px] uppercase">
-                      {(n.publishedAt ?? n.createdAt).toISOString().slice(0, 10).replaceAll("-", ".")}
-                    </span>
-                    <span>
-                      <span className="font-grotesk block text-lg leading-snug font-semibold">
-                        {n.title}
-                      </span>
-                      {n.category ? (
-                        <span className="text-muted mt-2 block text-sm">#{n.category}</span>
-                      ) : null}
-                    </span>
-                  </Link>
-                </li>
-              ))}
-            </ul>
-            {latestNote ? (
-              <div className="mt-8">
-                <Link
-                  href={`/lab/${latestNote.slug}`}
-                  className="font-grotesk border-b border-black/40 pb-1 text-sm font-semibold"
-                >
-                  Read the latest note ↗
+      {/* ── the work, stacked ── */}
+      {stack.length > 0 && (
+        <section className="wrap stack">
+          {stack.map((p, i) => (
+            <article key={p.id} className={cardClass(i)} data-rv>
+              <span className="card__bg" />
+              <div className="card__r">
+                <span className={"pill" + (p.outcomeStatus === "FAILED" ? " pill--r" : "")}>
+                  {[p.discipline, p.outcomeStatus].filter(Boolean).join(" · ") || "Project"}
+                </span>
+                <span className="m">{p.year ?? ""}</span>
+              </div>
+              <div className="up">
+                <h2 className="card__t">{p.title}</h2>
+                {p.summary && <p className="card__d">{p.summary}</p>}
+              </div>
+              <div className="card__r">
+                <span className="m">{p.industry ?? ""}</span>
+                <Link href={`/projects/${p.slug}`} className="m" style={{ color: "var(--bone)" }}>
+                  Open &rarr;
                 </Link>
               </div>
-            ) : null}
+            </article>
+          ))}
+        </section>
+      )}
+
+      {/* ── horizontal record ── */}
+      {record.length > 0 && (
+        <section className="gal">
+          <div className="gal__st">
+            <span className="gal__lbl m">The record &mdash; ventures and projects</span>
+            <div className="gal__tr">
+              {record.map((u, i) => (
+                <Link
+                  key={u.href}
+                  href={u.href}
+                  className={"tile" + (u.gapped ? " tile--g" : "")}
+                >
+                  <div style={{ display: "flex", justifyContent: "space-between", gap: 10 }}>
+                    <span className="tile__n tn">{pad(i + 1)}</span>
+                    <span className="tile__n">{u.kind}</span>
+                  </div>
+                  <div>
+                    <h3 className="tile__t">{u.title}</h3>
+                    <p className="tile__n" style={{ marginTop: 10 }}>
+                      {u.meta}
+                    </p>
+                  </div>
+                  <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-end", gap: 10 }}>
+                    <span className="tile__n">Open</span>
+                    <span className="tile__v">&rarr;</span>
+                  </div>
+                </Link>
+              ))}
+            </div>
           </div>
         </section>
-      ) : null}
+      )}
 
-      {/* 05 Field Kit / 06 Services */}
-      <section className="bg-border border-border grid grid-cols-1 gap-px border-b lg:grid-cols-2">
-        <div className="dot-grid bg-background px-6 py-16 sm:px-10">
-          <span className="font-meta text-accent text-[11px] uppercase">
-            04 / Field Kit
-          </span>
-          <h3 className="font-display mt-4 mb-6 text-[clamp(24px,3vw,36px)]">
-            Things I built along the way
-          </h3>
-          <div className="flex flex-col gap-4">
-            {(resources.length > 0
-              ? resources.map((r) => ({ href: `/resources/${r.slug}`, name: r.title }))
-              : [{ href: "/resources", name: "See what's usable so far" }]
-            ).map((r) => (
-              <Link
-                key={r.href}
-                href={r.href}
-                className="border-border font-grotesk flex justify-between border-b pb-3.5"
-              >
-                <span>{r.name}</span>
-                <span className="text-muted">↗</span>
+      {/* ── services ── */}
+      {services.length > 0 && (
+        <section className="wrap sec">
+          <div className="sechd" data-rv>
+            <h2 className="up">01 / What I do</h2>
+            <p className="up">Each engagement starts from a failure mode, not a deliverable list.</p>
+          </div>
+          <div className="grid" data-rv>
+            {services.map((s, i) => (
+              <Link key={s.id} href={`/services/${s.slug}`} className="cell pane">
+                <span className="m tn">{pad(i + 1)}</span>
+                <h3>{s.name}</h3>
+                <p>{s.problem}</p>
+                <span className="cell__f">
+                  <span className="m">{s.timeline ?? ""}</span>
+                  <span className="m">&rarr;</span>
+                </span>
               </Link>
             ))}
           </div>
+        </section>
+      )}
+
+      {/* ── sandbox ── */}
+      <section className="wrap sec" style={{ paddingTop: 0 }}>
+        <div className="sechd" data-rv>
+          <h2 className="up">02 / Sandbox</h2>
+          <p className="up">Notes written while something is still unresolved.</p>
         </div>
-        <div className="dot-grid bg-accent px-6 py-16 sm:px-10">
-          <span className="font-meta text-[11px] text-[#E9DFDD]/80 uppercase">
-            05 / Services
-          </span>
-          <h3 className="font-display mt-4 mb-6 text-[clamp(24px,3vw,36px)] text-[#E9DFDD]">
-            If you want help directly
-          </h3>
-          <div className="flex flex-col gap-4">
-            {(services.length > 0
-              ? services.map((s) => ({ href: `/services/${s.slug}`, name: s.name }))
-              : [{ href: "/services", name: "See how I can help" }]
-            ).map((s) => (
-              <Link
-                key={s.href}
-                href={s.href}
-                className="font-grotesk flex justify-between border-b border-[#E9DFDD]/25 pb-3.5 text-[#E9DFDD]"
-              >
-                <span>{s.name}</span>
-                <span>↗</span>
+        {labNotes.length > 0 ? (
+          <div className="lst" data-rv>
+            {labNotes.map((n, i) => (
+              <Link key={n.id} href={`/lab/${n.slug}`} className="ent">
+                <span className="m tn">{pad(i + 1)}</span>
+                <span>
+                  <span className="ent__t">{n.title}</span>
+                </span>
+                <span className="m tn">{n.category ?? ""}</span>
+                <span className="ent__v tn">&rarr;</span>
               </Link>
             ))}
           </div>
-        </div>
+        ) : (
+          <div className="nil" data-rv>
+            <b>Nothing published yet</b>
+            <p>
+              The sandbox is wired to the CMS and empty. When a note goes up it appears
+              here, newest first, with no edit to this page.
+            </p>
+          </div>
+        )}
+      </section>
+
+      {/* ── every unit ── */}
+      {record.length > 0 && (
+        <section className="wrap sec" style={{ paddingTop: 0 }}>
+          <div className="sechd" data-rv>
+            <h2 className="up">03 / Every unit</h2>
+            <p className="up">Ventures and projects, together, newest first.</p>
+          </div>
+          <div className="lst" data-rv>
+            {record.map((u, i) => (
+              <Link key={u.href} href={u.href} className={"ent" + (u.gapped ? " ent--g" : "")}>
+                <span className="m tn">{pad(i + 1)}</span>
+                <span>
+                  <span className="ent__t">{u.title}</span>
+                  {u.summary && <span className="ent__s">{u.summary}</span>}
+                </span>
+                <span className="m tn">{u.meta}</span>
+                <span className="ent__v tn">&rarr;</span>
+              </Link>
+            ))}
+          </div>
+        </section>
+      )}
+
+      <section className="wrap quote" data-rv>
+        <h2 className="up">
+          You cannot argue a drawer <i>into fitting.</i>
+        </h2>
+        <p className="m up" style={{ marginTop: 28 }}>
+          Learned at a bench, 2019
+        </p>
       </section>
     </>
   );

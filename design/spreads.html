@@ -1,0 +1,347 @@
+<title>Closes Or Gaps</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:ital,wght@0,100..900;1,100..900&family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@400;500&display=swap">
+
+<style>
+/* ──────────────────────────────────────────────────────────────
+   Nine spreads. No shared card component, no template — each one
+   is composed by hand with its own rules, the way a book of
+   posters is art-directed cover by cover. Some are 90% empty.
+   Some are packed edge to edge. Type crops, rotates, bleeds and
+   overlaps. The only things held constant are the palette and
+   the two faces.
+   ────────────────────────────────────────────────────────────── */
+:root{
+  --ink:#0A0A0B;
+  --paper:#F2F0E9;
+  --red:#F0220E;
+  --ash:#817D77;
+  --g:"Archivo","Helvetica Neue",Arial,sans-serif;
+  --s:"Instrument Serif",Georgia,serif;
+  --m:"JetBrains Mono",ui-monospace,Menlo,monospace;
+  --p:max(22px,env(safe-area-inset-left,0px));
+  --pr:max(22px,env(safe-area-inset-right,0px));
+  color-scheme:dark;
+}
+*,*::before,*::after{box-sizing:border-box}
+html{scroll-snap-type:y mandatory;scroll-behavior:smooth}
+body{
+  margin:0;background:var(--ink);color:var(--paper);font-family:var(--g);
+  overflow-x:hidden;-webkit-font-smoothing:antialiased;
+}
+h1,h2,h3{margin:0;font-weight:900;letter-spacing:-.06em;line-height:.74}
+p{margin:0}
+.m{font-family:var(--m);font-size:10px;letter-spacing:.22em;text-transform:uppercase}
+.m--s{font-size:9px;letter-spacing:.26em}
+.tn{font-variant-numeric:tabular-nums}
+
+.sp{position:relative;min-height:100svh;scroll-snap-align:start;overflow:hidden;
+  padding-left:var(--p);padding-right:var(--pr)}
+
+.grain{position:fixed;inset:0;z-index:60;pointer-events:none;opacity:.2;mix-blend-mode:overlay;
+  background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='170' height='170'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.88' numOctaves='3' stitchTiles='stitch'/><feColorMatrix type='saturate' values='0'/></filter><rect width='170' height='170' filter='url(%23n)' opacity='.8'/></svg>")}
+
+.fol{position:fixed;z-index:55;mix-blend-mode:difference;color:#fff;pointer-events:none}
+.fol--l{left:max(22px,env(safe-area-inset-left,0px));bottom:calc(env(safe-area-inset-bottom,0px) + 20px)}
+.fol--r{right:max(22px,env(safe-area-inset-right,0px));bottom:calc(env(safe-area-inset-bottom,0px) + 20px)}
+
+/* ═══ I — COVER. One word, cropped both edges. Nothing else. ═══ */
+#s1{display:flex;align-items:center;justify-content:center;padding:0}
+.cov{font-size:34vw;font-weight:900;letter-spacing:-.07em;line-height:.7;white-space:nowrap;
+  text-transform:uppercase;transform:translateX(-1.5%)}
+.cov em{font-style:normal;color:var(--red)}
+#s1 .corner{position:absolute;right:var(--pr);bottom:30px;text-align:right;color:var(--ash);max-width:24ch}
+#s1 .top{position:absolute;left:var(--p);top:28px;color:var(--ash)}
+@media (max-width:760px){.cov{font-size:52vw;line-height:.78}}
+
+/* ═══ II — CONTENTS. All fourteen, packed solid, no gutters. ═══ */
+#s2{background:var(--paper);color:var(--ink);padding-block:clamp(54px,9vh,108px);display:flex;flex-direction:column;justify-content:center}
+.pack{display:flex;flex-direction:column}
+.pack a{display:block;font-weight:900;text-transform:uppercase;letter-spacing:-.055em;line-height:.8;
+  transition:color .2s,transform .3s cubic-bezier(.2,.8,.3,1);transform-origin:left center}
+.pack a:hover{color:var(--red);transform:translateX(12px)}
+.pack a.f{color:var(--red)}
+.pack a sup{font-family:var(--m);font-size:.17em;font-weight:400;letter-spacing:.14em;vertical-align:super;opacity:.5;margin-left:.3em}
+#s2 .lbl{position:absolute;right:var(--pr);top:30px;color:#6E6A64;writing-mode:vertical-rl}
+
+/* ═══ III — THE BINARY. Split field, vertical word, text only at the foot. ═══ */
+#s3{display:grid;grid-template-columns:1fr;padding:0;min-height:100svh}
+.bi__l{background:radial-gradient(120% 95% at 26% 14%,#FF6A4A,#F0220E 46%,#9A0E02 100%);
+  position:relative;display:flex;align-items:center;justify-content:center;min-height:52svh}
+.bi__v{writing-mode:vertical-rl;font-size:clamp(90px,21vh,260px);font-weight:900;letter-spacing:-.05em;
+  line-height:.8;text-transform:uppercase;color:#FFF1EE}
+.bi__r{background:var(--paper);color:var(--ink);position:relative;display:flex;align-items:flex-end;
+  padding:var(--p);padding-bottom:clamp(30px,6vh,64px);min-height:48svh}
+.bi__r p{font-family:var(--m);font-size:12px;line-height:1.95;max-width:38ch;color:#4A4843}
+.bi__r p b{color:var(--ink);font-weight:500}
+.bi__n{position:absolute;right:var(--pr);top:28px;font-size:clamp(60px,12vw,160px);font-weight:200;
+  letter-spacing:-.06em;line-height:.8;color:#D8D4CA}
+@media (min-width:860px){#s3{grid-template-columns:38% 62%}.bi__l,.bi__r{min-height:100svh}}
+
+/* ═══ IV — THE COUNT. One numeral, text set against its edge. ═══ */
+#s4{display:flex;align-items:center;padding-block:clamp(50px,8vh,100px)}
+.cnt{position:relative;display:flex;align-items:center;gap:clamp(14px,3vw,56px);flex-wrap:wrap}
+.cnt__n{font-size:clamp(170px,44vh,520px);font-weight:100;letter-spacing:-.07em;line-height:.72;
+  font-variant-numeric:tabular-nums;color:var(--paper)}
+.cnt__n span{color:var(--red)}
+.cnt__c{max-width:30ch}
+.cnt__c h3{font-family:var(--s);font-weight:400;font-size:clamp(26px,4vw,52px);line-height:1;letter-spacing:-.022em}
+.cnt__c h3 i{font-style:italic;color:var(--red)}
+.cnt__c p{font-family:var(--m);font-size:11.5px;line-height:1.9;color:var(--ash);margin-top:20px}
+.cnt__c p b{color:var(--paper);font-weight:500}
+#s4 .tick{position:absolute;left:var(--p);top:28px;color:var(--ash)}
+
+/* ═══ V — FAILED. Rotated, bleeding off the top, text in one corner. ═══ */
+#s5{background:var(--ink)}
+.fail__w{position:absolute;left:clamp(-30px,-2vw,0px);top:-9vh;bottom:-9vh;
+  writing-mode:vertical-rl;font-size:clamp(130px,29vh,380px);font-weight:900;letter-spacing:-.055em;
+  line-height:.78;text-transform:uppercase;color:var(--red);display:flex;align-items:center}
+.fail__b{position:absolute;right:var(--pr);bottom:clamp(34px,7vh,78px);max-width:40ch;text-align:right}
+.fail__b h3{font-family:var(--s);font-weight:400;font-style:italic;font-size:clamp(25px,4.4vw,54px);
+  line-height:1;letter-spacing:-.022em;margin-bottom:22px}
+.fail__b p{font-family:var(--m);font-size:11.5px;line-height:1.9;color:var(--ash)}
+.fail__b p b{color:var(--paper);font-weight:500}
+#s5 .n{position:absolute;left:clamp(130px,30vw,420px);top:34px;color:var(--ash)}
+@media (max-width:760px){.fail__w{font-size:40vw;left:-6vw;top:auto;bottom:-4vh;height:62vh}
+  .fail__b{bottom:auto;top:clamp(80px,14vh,140px);left:var(--p);text-align:left}}
+
+/* ═══ VI — FRAGMENT. Interlocking blocks over a held surface. ═══ */
+#s6{background:#E4E0D6;color:var(--ink);padding:0}
+.frag{position:absolute;inset:0}
+.frag > *{position:absolute}
+.fp{background:
+    radial-gradient(74% 54% at 32% 26%,rgba(255,186,138,.38),transparent 64%),
+    linear-gradient(158deg,#2A1A14,#140C0A 54%,#070404);}
+.fb{background:var(--ink)}
+.fr{background:var(--red)}
+.fo{outline:1px solid rgba(10,10,11,.42);outline-offset:-1px}
+.fh{background-image:radial-gradient(rgba(10,10,11,.9) 1.15px,transparent 1.25px);background-size:8px 8px}
+.ft{display:flex;align-items:center;justify-content:center;font-family:var(--m);font-size:10px;
+  letter-spacing:.18em;text-transform:uppercase}
+.fnum{font-family:var(--g);font-weight:900;letter-spacing:-.055em;display:flex;align-items:center;justify-content:center}
+
+/* ═══ VII — MATERIALS. Four words overlapping, filling the frame. ═══ */
+#s7{display:flex;align-items:center;justify-content:center;padding:0;background:var(--paper);color:var(--ink)}
+.mat{position:relative;width:100%;height:100svh}
+.mat b{position:absolute;font-weight:900;text-transform:uppercase;letter-spacing:-.062em;line-height:.74;display:block}
+.mat b:nth-child(1){left:-1.5%;top:6%;font-size:19vw;color:var(--ink)}
+.mat b:nth-child(2){right:-2%;top:28%;font-size:26vw;color:var(--red)}
+.mat b:nth-child(3){left:2%;top:50%;font-size:12vw;color:var(--ink);mix-blend-mode:multiply}
+.mat b:nth-child(4){right:3%;bottom:2%;font-size:15vw;-webkit-text-stroke:2px var(--ink);color:transparent}
+#s7 .cap{position:absolute;left:var(--p);bottom:30px;color:#6E6A64;z-index:3}
+@media (max-width:760px){
+  .mat b:nth-child(1){font-size:26vw;top:3%}
+  .mat b:nth-child(2){font-size:34vw;top:24%}
+  .mat b:nth-child(3){font-size:19vw;top:52%}
+  .mat b:nth-child(4){font-size:22vw;bottom:8%}
+}
+
+/* ═══ VIII — THE RULE. Serif, enormous air, one red word. ═══ */
+#s8{display:flex;align-items:center;padding-block:clamp(60px,10vh,130px)}
+.rule{max-width:17ch}
+.rule h2{font-family:var(--s);font-weight:400;font-size:clamp(34px,7.4vw,118px);line-height:.96;
+  letter-spacing:-.028em;text-transform:none}
+.rule h2 i{font-style:italic;color:var(--red)}
+.rule .by{margin-top:clamp(26px,5vh,52px);color:var(--ash);font-family:var(--m);font-size:11px;line-height:1.9}
+#s8 .edge{position:absolute;right:var(--pr);top:50%;transform:translateY(-50%);writing-mode:vertical-rl;
+  color:var(--ash)}
+
+/* ═══ IX — COLOPHON. Almost empty. One mark. ═══ */
+#s9{display:flex;align-items:flex-end;padding-block:clamp(40px,7vh,80px)}
+.colo{display:flex;justify-content:space-between;align-items:flex-end;gap:28px;flex-wrap:wrap;width:100%}
+.colo__l a{display:block;font-weight:900;text-transform:uppercase;letter-spacing:-.05em;line-height:.86;
+  font-size:clamp(26px,5.4vw,70px);transition:color .2s,transform .3s;transform-origin:left}
+.colo__l a:hover{color:var(--red);transform:translateX(10px)}
+.colo__r{text-align:right;color:var(--ash);font-family:var(--m);font-size:10.5px;line-height:2}
+#s9 .mk{position:absolute;left:50%;top:clamp(80px,22vh,240px);transform:translateX(-50%);
+  width:clamp(60px,9vw,120px);color:var(--red)}
+
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}*{transition-duration:.01ms!important}}
+</style>
+
+<div class="grain" aria-hidden="true"></div>
+<span class="fol fol--l m m--s">Ashish Narayan</span>
+<span class="fol fol--r m m--s tn" id="fol">I / IX</span>
+
+<!-- ══ I ══ -->
+<section class="sp" id="s1">
+  <span class="top m">Chandigarh &middot; est. 2019</span>
+  <h1 class="cov">Clo<em>s</em>es</h1>
+  <p class="corner m m--s">A joint either closes or it doesn&rsquo;t.<br>Fourteen entries. Two of them gapped.</p>
+</section>
+
+<!-- ══ II ══ -->
+<section class="sp" id="s2">
+  <span class="lbl m">Contents &mdash; fourteen</span>
+  <div class="pack" id="pack"></div>
+</section>
+
+<!-- ══ III ══ -->
+<section class="sp" id="s3">
+  <div class="bi__l"><span class="bi__v">Or gaps</span></div>
+  <div class="bi__r">
+    <span class="bi__n tn">02</span>
+    <p><b>A record, not a portfolio.</b> A portfolio shows the things that worked. This shows all of it &mdash;
+      which is the only version worth anything to someone deciding whether to trust me with their money,
+      their timber, or a room full of their students. Two of fourteen gapped. They are written up at the
+      same length as the rest.</p>
+  </div>
+</section>
+
+<!-- ══ IV ══ -->
+<section class="sp" id="s4">
+  <span class="tick m">The count</span>
+  <div class="cnt">
+    <span class="cnt__n tn">1<span>4</span></span>
+    <div class="cnt__c">
+      <h3>Seven years,<br>four benches,<br><i>one rule.</i></h3>
+      <p><b>Wood.</b> A joint closes or it gaps.<br>
+         <b>Code.</b> It runs or it throws.<br>
+         <b>Classrooms.</b> It lands or it doesn&rsquo;t.<br>
+         <b>Companies.</b> Payroll clears or it doesn&rsquo;t.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ══ V ══ -->
+<section class="sp" id="s5">
+  <span class="n m">Post-mortem &middot; 02 of 14</span>
+  <span class="fail__w" aria-hidden="true">Failed</span>
+  <div class="fail__b">
+    <h3>Right problem.<br>Wrong buyer.</h3>
+    <p><b>Betta Beaut, 2023.</b> Salon technology infrastructure. The people feeling the pain weren&rsquo;t the
+      ones holding the budget. Eighteen months, no second round.<br><br>
+      <b>Folding Wall Table, 2022.</b> Hinge geometry wrong under load. It sagged inside a month.
+      Rebuilt twice, then abandoned.</p>
+  </div>
+</section>
+
+<!-- ══ VI ══ -->
+<section class="sp" id="s6">
+  <div class="frag">
+    <div class="fp" style="left:0;top:0;width:46%;height:58%"></div>
+    <div class="fb" style="left:34%;top:12%;width:16%;height:76%"></div>
+    <div class="fr" style="left:42%;top:0;width:11%;height:30%"></div>
+    <div class="fh" style="left:53%;top:8%;width:18%;height:26%"></div>
+    <div class="fo ft" style="left:53%;top:34%;width:18%;height:11%">00 01&ndash;071</div>
+    <div class="fb ft" style="left:71%;top:0;width:29%;height:18%;color:var(--paper)">The record, in pieces</div>
+    <div class="fp" style="left:71%;top:18%;width:29%;height:40%"></div>
+    <div class="fr fnum" style="left:0;top:58%;width:21%;height:22%;color:var(--paper);font-size:9vw">02</div>
+    <div class="fo ft" style="left:21%;top:58%;width:13%;height:11%">20%</div>
+    <div class="fh" style="left:21%;top:69%;width:13%;height:11%"></div>
+    <div class="fb fnum" style="left:34%;top:58%;width:19%;height:22%;color:var(--paper);font-size:7vw">14</div>
+    <div class="fo ft" style="left:53%;top:45%;width:18%;height:35%">Held &mdash; portrait</div>
+    <div class="fo ft" style="left:71%;top:58%;width:14.5%;height:22%">236.095</div>
+    <div class="fr" style="left:85.5%;top:58%;width:14.5%;height:22%"></div>
+    <div class="fb" style="left:0;top:80%;width:34%;height:20%"></div>
+    <div class="ft" style="left:0;top:80%;width:34%;height:20%;color:var(--paper);z-index:2">Smallest real version</div>
+    <div class="fh" style="left:34%;top:80%;width:19%;height:20%"></div>
+    <div class="fp" style="left:53%;top:80%;width:32%;height:20%"></div>
+    <div class="fr ft" style="left:85%;top:80%;width:15%;height:20%;color:var(--paper)">2019</div>
+  </div>
+</section>
+
+<!-- ══ VII ══ -->
+<section class="sp" id="s7">
+  <div class="mat">
+    <b>Wood</b><b>Code</b><b>Classrooms</b><b>Companies</b>
+  </div>
+  <span class="cap m m--s">Four benches &mdash; the same question at four speeds</span>
+</section>
+
+<!-- ══ VIII ══ -->
+<section class="sp" id="s8">
+  <span class="edge m m--s">The rule</span>
+  <div class="rule">
+    <h2>You cannot argue a drawer <i>into fitting.</i></h2>
+    <p class="by">Learned at a bench in 2019.<br>Applied to every line of code, every class,<br>and every payroll since.</p>
+  </div>
+</section>
+
+<!-- ══ IX ══ -->
+<section class="sp" id="s9">
+  <svg class="mk" viewBox="0 0 100 100" fill="none" aria-hidden="true">
+    <g stroke="currentColor" stroke-width="4" stroke-linecap="round">
+      <path d="M50 6v88M6 50h88M20 20l60 60M80 20L20 80"/></g>
+    <circle cx="50" cy="50" r="11" fill="currentColor"/>
+  </svg>
+  <div class="colo">
+    <div class="colo__l">
+      <a href="#s9">ashish.sbs</a>
+      <a href="#s9">Submit an idea</a>
+      <a href="#s9">Strategy call</a>
+    </div>
+    <div class="colo__r">
+      Chandigarh, India<br>30.73&deg;N 76.77&deg;E<br>&copy; 2026 Ashish Narayan
+    </div>
+  </div>
+</section>
+
+<script>
+(function () {
+  "use strict";
+
+  var WORK = [
+    { n:1,  t:"Savison Life",           y:2025, f:0 },
+    { n:2,  t:"Rikencare",              y:2025, f:0 },
+    { n:3,  t:"Indizilla",              y:2024, f:0 },
+    { n:4,  t:"GetPharm",               y:2025, f:0 },
+    { n:5,  t:"Betta Beaut",            y:2023, f:1 },
+    { n:6,  t:"Nirmal Kaya",            y:2024, f:0 },
+    { n:7,  t:"Performance Realty",     y:2026, f:0 },
+    { n:8,  t:"Slab Desk",              y:2021, f:0 },
+    { n:9,  t:"Mortise Bench",          y:2020, f:0 },
+    { n:10, t:"Folding Wall Table",     y:2022, f:1 },
+    { n:11, t:"Systems Thinking",       y:2023, f:0 },
+    { n:12, t:"Build-in-Public Clinic", y:2024, f:0 },
+    { n:13, t:"The Monthly Review",     y:2026, f:0 },
+    { n:14, t:"Field Kit",              y:2025, f:0 }
+  ];
+
+  /* Spread II is set to fill its frame: longer names get set smaller so
+     every line runs to roughly the same measure, which is what packs a
+     contents page solid instead of leaving a ragged edge. */
+  var pack = document.getElementById("pack");
+  WORK.forEach(function (p) {
+    var a = document.createElement("a");
+    a.href = "#s2";
+    a.className = p.f ? "f" : "";
+    var size = Math.min(7.4, 104 / (p.t.length + 2));
+    a.style.fontSize = "clamp(19px," + size.toFixed(2) + "vw,96px)";
+    a.innerHTML = p.t + "<sup>" + (p.n < 10 ? "0" : "") + p.n + "</sup>";
+    pack.appendChild(a);
+  });
+
+  /* folio */
+  var ROMAN = ["I","II","III","IV","V","VI","VII","VIII","IX"];
+  var fol = document.getElementById("fol");
+  var sps = Array.prototype.slice.call(document.querySelectorAll(".sp"));
+  if ("IntersectionObserver" in window) {
+    var io = new IntersectionObserver(function (es) {
+      es.forEach(function (e) {
+        if (e.isIntersecting) {
+          var i = sps.indexOf(e.target);
+          if (i >= 0) fol.textContent = ROMAN[i] + " / IX";
+        }
+      });
+    }, { threshold: 0.55 });
+    sps.forEach(function (s) { io.observe(s); });
+  }
+
+  document.addEventListener("keydown", function (e) {
+    var i = 0, best = 1e9;
+    sps.forEach(function (s, k) {
+      var d = Math.abs(s.getBoundingClientRect().top);
+      if (d < best) { best = d; i = k; }
+    });
+    if (e.key === "ArrowDown" || e.key === "PageDown") {
+      e.preventDefault(); if (sps[i + 1]) sps[i + 1].scrollIntoView();
+    }
+    if (e.key === "ArrowUp" || e.key === "PageUp") {
+      e.preventDefault(); if (sps[i - 1]) sps[i - 1].scrollIntoView();
+    }
+  });
+})();
+</script>

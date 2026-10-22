@@ -1,0 +1,518 @@
+<title>Tolerance Gallery</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700;800&family=Bodoni+Moda:ital,opsz,wght@0,6..96,400;0,6..96,500;1,6..96,400&family=JetBrains+Mono:wght@400;500&display=swap">
+
+<style>
+/* ═══════════════════════════════════════════════════════════════
+   EDITION A — THE GALLERY
+   A dark hanging wall. Every work is a poster with its own painted
+   field — no two gradients alike, each generated from the unit's
+   own seed. Light follows the cursor across each surface. Clicking
+   a poster opens the full dossier.
+   ═══════════════════════════════════════════════════════════════ */
+:root{
+  --void:#0A0A0C;
+  --wall:#0E0E11;
+  --pan:#15151A;
+  --pan2:#1C1C23;
+  --bone:#F3F0E9;
+  --dim:#9B968E;
+  --mute:#6E6A64;
+  --red:#EC3418;
+  --ember:#FF7A45;
+  --line:rgba(243,240,233,.1);
+  --g:"Archivo","Helvetica Neue",Arial,sans-serif;
+  --s:"Bodoni Moda",Didot,Georgia,serif;
+  --m:"JetBrains Mono",ui-monospace,Menlo,monospace;
+  --r:16px;
+  --pl:max(18px,env(safe-area-inset-left,0px));
+  --pr:max(18px,env(safe-area-inset-right,0px));
+  --max:1340px;
+  --e:cubic-bezier(.2,.9,.24,1);
+  color-scheme:dark;
+}
+*,*::before,*::after{box-sizing:border-box}
+body{margin:0;background:var(--void);color:var(--bone);font-family:var(--g);font-size:15px;line-height:1.6;
+  overflow-x:hidden;-webkit-font-smoothing:antialiased}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:95;background:var(--void)}
+h1,h2,h3{margin:0;font-weight:400;letter-spacing:-.016em;line-height:1.04;font-family:var(--s)}
+.sans{font-family:var(--g);font-weight:700;letter-spacing:-.04em}
+p{margin:0}ul{margin:0;padding:0;list-style:none}
+a{color:inherit;text-decoration:none}
+button{font:inherit;color:inherit;background:none;border:0;cursor:pointer;text-align:left}
+:focus-visible{outline:2px solid var(--red);outline-offset:3px}
+::selection{background:var(--red);color:var(--bone)}
+.wrap{max-width:var(--max);margin-inline:auto;padding-left:var(--pl);padding-right:var(--pr)}
+.m{font-family:var(--m);font-size:10px;letter-spacing:.17em;text-transform:uppercase;color:var(--mute)}
+.m--b{color:var(--bone)}
+.tn{font-variant-numeric:tabular-nums}
+
+.grain{position:fixed;inset:0;z-index:90;pointer-events:none;opacity:.17;mix-blend-mode:overlay;
+  background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='170' height='170'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.86' numOctaves='3' stitchTiles='stitch'/><feColorMatrix type='saturate' values='0'/></filter><rect width='170' height='170' filter='url(%23n)' opacity='.85'/></svg>")}
+.prog{position:fixed;left:0;top:0;height:2px;background:var(--red);z-index:92;width:0}
+
+/* ── chrome, like a proofing window ── */
+.hd{position:sticky;top:env(safe-area-inset-top,0px);z-index:80;background:rgba(10,10,12,.78);
+  backdrop-filter:blur(20px) saturate(1.3);border-bottom:1px solid var(--line)}
+.hd__in{max-width:var(--max);margin-inline:auto;padding-left:var(--pl);padding-right:var(--pr);
+  height:54px;display:flex;align-items:center;gap:14px}
+.dots{display:flex;gap:6px}.dots i{width:9px;height:9px;border-radius:50%;background:rgba(243,240,233,.2)}
+.dots i:first-child{background:rgba(236,52,24,.7)}
+.hd__rule{flex:1;height:1px;background:var(--line)}
+.hd__box{border:1px solid rgba(243,240,233,.22);padding:3px 9px}
+.hd__nav{display:flex;gap:4px}
+.hd__nav button{font-family:var(--m);font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--mute);
+  padding:7px 11px;border-radius:999px;transition:color .25s,background .25s}
+.hd__nav button:hover{color:var(--bone)}
+.hd__nav button[aria-current="true"]{color:var(--bone);background:rgba(243,240,233,.08)}
+@media (max-width:860px){.hd__nav,.hd__box{display:none}}
+
+/* ── reveal ── */
+.up{opacity:0;transform:translateY(22px);transition:opacity .85s var(--e),transform .85s var(--e)}
+.rv .up,.up.rv{opacity:1;transform:none}
+.rv .up:nth-child(2){transition-delay:.05s}.rv .up:nth-child(3){transition-delay:.1s}
+.rv .up:nth-child(4){transition-delay:.15s}.rv .up:nth-child(5){transition-delay:.2s}
+
+/* ── poster: a painted field with light that follows the cursor ── */
+.po{position:relative;overflow:hidden;border-radius:var(--r);background:var(--pan);isolation:isolate;
+  display:flex;flex-direction:column;justify-content:space-between;
+  box-shadow:0 2px 0 rgba(255,255,255,.05) inset, 0 30px 60px -28px rgba(0,0,0,.9);
+  transition:transform .55s var(--e),box-shadow .55s var(--e)}
+.po:hover{transform:translateY(-7px);box-shadow:0 2px 0 rgba(255,255,255,.1) inset,0 56px 90px -34px rgba(0,0,0,1)}
+.po__cv{position:absolute;inset:0;z-index:0;width:100%;height:100%;display:block}
+.po__lt{position:absolute;inset:0;z-index:1;pointer-events:none;opacity:0;transition:opacity .5s;
+  background:radial-gradient(240px circle at var(--mx,50%) var(--my,50%),rgba(255,210,180,.3),transparent 70%);
+  mix-blend-mode:screen}
+.po:hover .po__lt{opacity:1}
+.po__n{position:absolute;inset:0;z-index:2;pointer-events:none;opacity:.22;mix-blend-mode:overlay;
+  background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='140' height='140'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='3' stitchTiles='stitch'/><feColorMatrix type='saturate' values='0'/></filter><rect width='140' height='140' filter='url(%23n)' opacity='.8'/></svg>")}
+.po__in{position:relative;z-index:3;display:flex;flex-direction:column;justify-content:space-between;
+  height:100%;gap:16px;padding:clamp(17px,2vw,26px)}
+.po__k{display:flex;justify-content:space-between;gap:10px}
+.po__t{font-size:clamp(23px,2.6vw,36px);line-height:1.02}
+.po__t--xl{font-size:clamp(32px,4.4vw,64px)}
+.po__dev{font-size:clamp(17px,1.9vw,24px);opacity:.6;margin-top:6px}
+.po__d{font-size:13.5px;line-height:1.62;color:rgba(243,240,233,.72);max-width:42ch;margin-top:10px}
+.pill{display:inline-flex;align-items:center;gap:7px;border:1px solid currentColor;border-radius:999px;
+  padding:5px 11px;font-family:var(--m);font-size:9px;letter-spacing:.14em;text-transform:uppercase}
+.pill--r{color:#FFC9BC;border-color:rgba(255,120,90,.7);background:rgba(236,52,24,.18)}
+
+/* ── hero ── */
+.hero{padding-block:clamp(18px,3vw,34px)}
+.hero__g{display:grid;gap:10px;grid-template-columns:1fr}
+@media (min-width:920px){.hero__g{grid-template-columns:1.62fr 1fr}}
+.hero__a{min-height:clamp(400px,58vh,600px)}
+.hero__h{font-size:clamp(34px,5.2vw,74px);line-height:1;max-width:13ch}
+.hero__h i{font-style:italic}
+.hero__sub{font-size:clamp(14.5px,1.4vw,16.5px);line-height:1.72;color:rgba(243,240,233,.76);max-width:40ch;margin-top:16px}
+.hero__b{display:grid;gap:10px;grid-template-rows:1fr 1fr}
+.stat{min-height:170px}
+.stat__n{font-family:var(--m);font-weight:500;font-size:clamp(40px,5.4vw,62px);letter-spacing:-.04em;line-height:.9}
+
+/* ── gallery ── */
+.sec{display:flex;justify-content:space-between;align-items:baseline;gap:16px;flex-wrap:wrap;
+  padding-block:clamp(30px,4.6vw,58px) 16px}
+.sec h2{font-size:clamp(23px,2.8vw,34px)}
+.gal{display:grid;gap:10px;grid-template-columns:repeat(auto-fill,minmax(min(258px,100%),1fr))}
+.sp2{grid-column:span 2}.sp2r{grid-row:span 2}
+@media (max-width:620px){.sp2{grid-column:span 1}}
+.fil{display:flex;gap:5px;flex-wrap:wrap;margin-bottom:14px}
+.fil button{font-family:var(--m);font-size:10px;letter-spacing:.13em;text-transform:uppercase;color:var(--mute);
+  background:var(--pan);padding:9px 14px;border-radius:999px;transition:background .25s,color .25s}
+.fil button:hover{color:var(--bone)}
+.fil button[aria-pressed="true"]{background:var(--bone);color:var(--void)}
+
+/* ── dossier ── */
+.ds{padding-block:clamp(22px,3.4vw,44px)}
+.ds__back{display:inline-flex;gap:8px;margin-bottom:22px}
+.ds__h{font-size:clamp(34px,6vw,84px);line-height:.98;max-width:15ch}
+.ds__l{font-size:clamp(16px,1.8vw,21px);line-height:1.6;color:var(--dim);max-width:52ch;margin-top:18px}
+.ds__meta{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(112px,100%),1fr));gap:6px;margin-top:26px}
+.mi{background:var(--pan);border-radius:11px;padding:14px}
+.mi b{display:block;font-family:var(--m);font-weight:500;font-size:15px;margin-top:6px;letter-spacing:-.01em}
+.ds__plate{position:relative;height:clamp(230px,38vw,420px);border-radius:var(--r);overflow:hidden;margin-block:clamp(18px,2.6vw,32px)}
+.blk{padding-block:clamp(22px,3.2vw,40px);border-top:1px solid rgba(243,240,233,.07)}
+.pr{display:grid;gap:clamp(20px,3vw,46px);grid-template-columns:1fr}
+@media (min-width:900px){.pr{grid-template-columns:190px 1fr}}
+.pr p{color:var(--dim);line-height:1.8;max-width:64ch;font-size:15.5px}
+.pr p+p{margin-top:15px}
+.pr b{color:var(--bone);font-weight:600}
+.figs{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(124px,100%),1fr));gap:6px;margin-top:22px}
+.fg{background:var(--pan);border-radius:11px;padding:16px}
+.fg b{display:block;font-family:var(--m);font-weight:500;font-size:26px;letter-spacing:-.03em;margin-top:8px}
+.ls{display:grid;grid-template-columns:26px 1fr;gap:14px;padding-block:14px;border-bottom:1px solid rgba(243,240,233,.07)}
+.ls span{font-family:var(--m);font-size:10px;color:var(--red);padding-top:4px}
+.ls p{color:var(--dim);line-height:1.75}
+
+/* ── index rows ── */
+.rows{border-top:1px solid var(--line)}
+.row{display:grid;grid-template-columns:3ch 1fr auto;gap:16px;align-items:baseline;padding-block:15px;width:100%;
+  border-bottom:1px solid rgba(243,240,233,.07);transition:padding-left .4s var(--e),color .25s}
+.row:hover{padding-left:11px}
+.row b{font-family:var(--s);font-weight:400;font-size:clamp(18px,2.1vw,24px);letter-spacing:-.01em}
+.row--g b,.row--g .m{color:var(--red)}
+
+/* ── foot ── */
+.ft{border-top:1px solid var(--line);margin-top:clamp(36px,5vw,72px);background:var(--wall)}
+.ft__g{display:grid;gap:26px;grid-template-columns:1fr;padding-block:clamp(30px,4.4vw,52px)}
+@media (min-width:840px){.ft__g{grid-template-columns:1.7fr 1fr 1fr 1fr}}
+.ft h4{font-family:var(--m);font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:var(--mute);
+  font-weight:400;margin-bottom:13px}
+.ft li{margin-bottom:8px}
+.ft li button{font-size:14px;color:var(--dim);transition:color .22s}
+.ft li button:hover{color:var(--bone)}
+.ft__b{display:flex;flex-wrap:wrap;gap:10px 24px;justify-content:space-between;padding-block:16px 36px;
+  border-top:1px solid rgba(243,240,233,.07)}
+
+@media (prefers-reduced-motion:reduce){*{transition-duration:.01ms!important}.up{opacity:1;transform:none}}
+</style>
+
+<div class="grain" aria-hidden="true"></div>
+<div class="prog" id="prog" aria-hidden="true"></div>
+
+<header class="hd"><div class="hd__in">
+  <span class="dots" aria-hidden="true"><i></i><i></i><i></i></span>
+  <button class="m m--b" data-go="home" type="button" style="font-weight:500">Tolerance&nbsp;&plusmn;</button>
+  <span class="hd__rule"></span>
+  <nav class="hd__nav" id="nav" aria-label="Primary"></nav>
+  <span class="m hd__box tn">2026</span>
+</div></header>
+
+<main id="app"></main>
+
+<script>
+(function () {
+  "use strict";
+  var reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  /* ═════ DATA ═════ */
+  var U = [
+    { id:"savison-life", code:"SVN-E25A", t:"Savison Life", bench:"Companies", y:2025, s:"Running", v:"0,912",
+      role:"Founder, brand, platform", dur:"14 months", seed:7, hue:"red", big:1,
+      lede:"A compliance-gated marketplace for third-party pharmaceutical manufacturing — four portals on one schema.",
+      brief:"Third-party pharma manufacturing in India runs on messaging apps, PDFs and reputation. A buyer seeking a WHO-GMP manufacturer for a specific molecule cannot verify capacity, certification class or audit history without three weeks of phone calls and a site visit. The information exists; none of it is addressable.",
+      built:"A marketplace where verification happens at onboarding rather than being claimed in a listing. Four portals — buyer, manufacturer, administrator, logistics — on a single Postgres schema, so a certificate uploaded by a manufacturer is the same row the buyer's filter queries and the auditor's export reads. Search runs on molecule, dosage form, certification class and monthly capacity.",
+      hard:"Compliance is not a feature you add in month six. Every table needed an audit trail from the first migration, because a marketplace that cannot answer <b>who changed this, and when</b> is not one a regulated buyer will touch. Three weeks up front; it saved the project.",
+      figs:[["Portals","04"],["Schema","01"],["Molecules","340+"],["Checks","11"]],
+      lessons:["We built the manufacturer portal first because manufacturers were easier to reach. Wrong order — buyers create the pull, and we spent four months with supply and no demand.",
+               "Document verification should have been a paid human step from day one. Automating it first produced false confidence and one bad listing we had to pull.",
+               "The admin portal was treated as internal tooling and under-designed. It became the most-used surface in the business."] },
+    { id:"betta-beaut", code:"BTB-X23E", t:"Betta Beaut", bench:"Companies", y:2023, s:"Gapped", v:"0,185",
+      role:"Founder", dur:"18 months", seed:23, hue:"red", big:1,
+      lede:"Salon operations software. The right problem, sold to the wrong person — the clearest failure on this record.",
+      brief:"Independent salons run on paper books, a cash drawer and a stylist's memory. Double bookings, no-shows and stock running out mid-service are daily, and each one costs a chair-hour. The pain is real, constant and measurable.",
+      built:"Scheduling, client history, stock tracking and a commission ledger. Mobile-first, because a stylist's hands are busy and the phone is already in the apron. Fourteen salons ran on it. The product worked.",
+      hard:"The people feeling the pain were not the people holding the budget. Stylists loved it and had no authority to buy. Owners controlled spend, visited twice a week, and experienced none of the problems it solved. <b>Every demo went well with the wrong person in the room.</b>",
+      figs:[["Salons","14"],["Months","18"],["Churn 6mo","64%"],["Fit","0,185"]],
+      lessons:["Find the budget holder before writing a line of code. If the user and the buyer differ, you are selling two products and have built one.",
+               "High usage is not product-market fit. Daily actives were excellent right up until renewal invoices went out.",
+               "I kept rebuilding features in response to stylist feedback. Every one of those sprints was a comfortable way to avoid the sales problem."] },
+    { id:"mortise-bench", code:"MRT-S20J", t:"Mortise Bench", bench:"Wood", y:2020, s:"Shipped", v:"0,961",
+      role:"Design and build", dur:"7 weeks", seed:41, hue:"cool",
+      lede:"A hand-cut mortise and tenon workbench. The tool that made every other piece possible.",
+      brief:"Nothing accurate can be built without a flat, heavy, immovable reference surface. Everything made before this bench was made on a folding table, and every one of those pieces is out of square in a way you feel when you open a drawer.",
+      built:"Beech top at 90mm, laminated from eight boards and flattened by hand over three sessions. Legs drawbored into rails — no hardware anywhere in the frame; the joint tightens as the timber moves. Face vice, tail vice, dog holes on a 96mm grid.",
+      hard:"Drawboring means offsetting the peg hole in the tenon by about a millimetre so driving the peg pulls the joint permanently closed. Half a millimetre the wrong way and you split the cheek of the mortise. <b>I split two before the third went right.</b>",
+      figs:[["Top","90mm"],["Weight","118kg"],["Build","7wk"],["Split","02"]],
+      lessons:["Build the reference surface first. Everything made before it has to be remade.",
+               "Hand-flattening a 90mm top is two days of work and the highest-value thing I have done with a plane.",
+               "Mass is a feature. The bench does not move, so the work does not move, so the cut lands where you put it."] },
+    { id:"indizilla", code:"IDZ-E24C", t:"Indizilla", bench:"Code", y:2024, s:"Running", v:"0,788",
+      role:"Architecture and build", dur:"9 months", seed:58, hue:"cool",
+      lede:"The operations platform behind a marketing agency — orders, jobs, billing and credits on one database.",
+      brief:"The agency ran on six tools that did not speak. An order lived in a spreadsheet, the job on a board, the invoice in accounting software, and the client's credit balance in somebody's head. Reconciling a month took two days.",
+      built:"One Postgres database with orders, jobs, invoices, credits and referrals as first-class tables, and one interface over all of it. A credit issued against a late delivery is the same row the invoice subtracts from and the dashboard displays.",
+      hard:"Credits are deceptively hard. A credit can be partial, can expire, can apply to a line item or a whole invoice, and can be issued after payment. Modelling it as a balance field was wrong three times before it became <b>an append-only ledger</b>.",
+      figs:[["Tools cut","06"],["Reconcile","-78%"],["Tables","31"],["Months","09"]],
+      lessons:["Anything resembling money is an append-only ledger, never a mutable balance. I learned this by corrupting a balance twice.",
+               "The spreadsheet the team already used was a better spec than anything they could describe in a meeting.",
+               "Shipping the orders module alone, before the rest existed, bought nine months of goodwill."] },
+    { id:"folding-wall-table", code:"FWT-X22K", t:"Folding Wall Table", bench:"Wood", y:2022, s:"Gapped", v:"0,185",
+      role:"Design and build", dur:"5 months", seed:77, hue:"red",
+      lede:"A wall-mounted drop-leaf. It sagged within a month, was rebuilt twice, then abandoned.",
+      brief:"A 1.4m dining surface for a flat with no room for a dining table — up for meals, flat to the wall otherwise. The constraint: hold a loaded table with no leg reaching the floor.",
+      built:"A beech leaf on a piano hinge with a folding steel bracket. Version one used a bracket rated for the static load. Version two doubled the brackets. Version three moved to a cantilevered timber arm housed into a wall cleat.",
+      hard:"The static rating was never the problem. The failure mode is <b>dynamic</b> — someone leans on the edge standing up and for a quarter second the bracket sees three times its rating. All three versions sagged at the hinge line. The right answer was a leg, and I did not want it to need a leg.",
+      figs:[["Versions","03"],["Span","1.4m"],["To sag","~4wk"],["Fit","0,185"]],
+      lessons:["Design for the dynamic load. Furniture is used by people who lean.",
+               "I decided it should not need a leg before establishing that it could work without one. That is a preference, not a specification.",
+               "Rebuilding twice without re-examining the premise is a way of looking busy while avoiding the answer."] },
+    { id:"rikencare", code:"RKC-S25B", t:"Rikencare", bench:"Code", y:2025, s:"Shipped", v:"0,840", seed:91, hue:"cool",
+      lede:"Identity and site for a WHO-GMP, ISO 9001:2015 manufacturer in Himachal Pradesh." },
+    { id:"getpharm", code:"GTP-E25D", t:"GetPharm", bench:"Companies", y:2025, s:"Running", v:"0,755", seed:14, hue:"red",
+      lede:"A public marketplace brand on Savison Life's infrastructure — same spine, different front door." },
+    { id:"nirmal-kaya", code:"NRK-P24F", t:"Nirmal Kaya", bench:"Companies", y:2024, s:"Paused", v:"0,480", seed:33, hue:"cool",
+      lede:"A wellness venture, parked while the pharmaceutical side took the oxygen. The record stays up." },
+    { id:"performance-realty", code:"PRF-E26G", t:"Performance Realty", bench:"Companies", y:2026, s:"Running", v:"0,702", seed:52, hue:"red",
+      lede:"Advisory brand with one live listing — an industrial plot in Barwala. Inquiries reach a person." },
+    { id:"slab-desk", code:"SLB-S21H", t:"Slab Desk", bench:"Wood", y:2021, s:"Shipped", v:"0,934", seed:66, hue:"red",
+      lede:"A single-slab sheesham desk on welded steel. Breadboard ends let the top move; the base does not." },
+    { id:"systems-thinking", code:"STW-S23L", t:"Systems Thinking", bench:"Classrooms", y:2023, s:"Shipped", v:"0,826", seed:85, hue:"cool",
+      lede:"A twelve-week evening course for founders on breaking a business into systems." },
+    { id:"build-in-public", code:"BPC-E24M", t:"Build-in-Public", bench:"Classrooms", y:2024, s:"Running", v:"0,774", seed:19, hue:"red",
+      lede:"A monthly open session: someone brings a stuck project, we take it apart on a whiteboard." },
+    { id:"monthly-review", code:"TMR-E26N", t:"Monthly Review", bench:"Classrooms", y:2026, s:"Running", v:"0,690", seed:28, hue:"cool",
+      lede:"A public progress log — what was built, learned, and what gapped. Published either way." },
+    { id:"field-kit", code:"FDK-S25P", t:"Field Kit", bench:"Code", y:2025, s:"Shipped", v:"0,858", seed:47, hue:"red",
+      lede:"Templates and checklists built for internal use. Rebuilding them each job was the real mistake." }
+  ];
+  var DEV = { Wood:"काठ", Code:"कूट", Classrooms:"कक्षा", Companies:"उद्यम" };
+  var NAV = [["home","Gallery"],["index","Index"],["studio","Studio"],["contact","Contact"]];
+
+  function pad(n){ return (n<10?"0":"")+n; }
+  function U_(id){ for(var i=0;i<U.length;i++) if(U[i].id===id) return U[i]; return null; }
+
+  /* ═════ PAINTED FIELDS — each poster gets its own ═════ */
+  function rng(s){ var x=s*9301+49297; return function(){ x=(x*9301+49297)%233280; return x/233280; }; }
+  var PAL = {
+    red:[[255,138,92],[236,52,24],[150,18,6],[42,6,2]],
+    cool:[[150,168,196],[70,82,102],[28,34,44],[8,9,12]]
+  };
+  function paint(cv, seed, hue){
+    var b = cv.getBoundingClientRect();
+    var w = Math.max(120, Math.round(b.width)), h = Math.max(120, Math.round(b.height));
+    if (!w || !h) return;
+    var dpr = Math.min(devicePixelRatio||1, 1.6);
+    cv.width = Math.round(w*dpr); cv.height = Math.round(h*dpr);
+    var c = cv.getContext("2d"); c.setTransform(dpr,0,0,dpr,0,0);
+    var r = rng(seed), p = PAL[hue] || PAL.red;
+    function col(i,a){ var k=p[i%p.length]; return "rgba("+k[0]+","+k[1]+","+k[2]+","+a+")"; }
+    // deep ground
+    var gg = c.createLinearGradient(0,0,w*0.6,h);
+    gg.addColorStop(0, col(2,1)); gg.addColorStop(1, col(3,1));
+    c.fillStyle = gg; c.fillRect(0,0,w,h);
+    // soft masses, large and overlapping
+    for (var i=0;i<5;i++){
+      var cx=r()*w, cy=r()*h, rad=(0.42+r()*0.6)*Math.max(w,h);
+      var g2=c.createRadialGradient(cx,cy,0,cx,cy,rad);
+      g2.addColorStop(0, col(i%2, 0.55+r()*0.35));
+      g2.addColorStop(0.55, col(1, 0.22));
+      g2.addColorStop(1, col(3,0));
+      c.fillStyle=g2; c.fillRect(0,0,w,h);
+    }
+    // one bright core
+    var bx=r()*w*0.8+w*0.1, by=r()*h*0.6+h*0.1;
+    var g3=c.createRadialGradient(bx,by,0,bx,by,Math.max(w,h)*0.34);
+    g3.addColorStop(0, col(0,0.72)); g3.addColorStop(1, col(0,0));
+    c.fillStyle=g3; c.fillRect(0,0,w,h);
+    // settle the edges
+    var v=c.createRadialGradient(w/2,h*0.44,0,w/2,h*0.44,Math.max(w,h)*0.78);
+    v.addColorStop(0,"rgba(0,0,0,0)"); v.addColorStop(1,"rgba(0,0,0,.58)");
+    c.fillStyle=v; c.fillRect(0,0,w,h);
+  }
+  function repaintAll(){
+    [].slice.call(document.querySelectorAll("canvas[data-seed]")).forEach(function(cv){
+      paint(cv, +cv.getAttribute("data-seed"), cv.getAttribute("data-hue"));
+    });
+  }
+
+  function field(seed, hue){ return "<canvas class='po__cv' data-seed='"+seed+"' data-hue='"+hue+"' aria-hidden='true'></canvas>"+
+    "<span class='po__lt'></span><span class='po__n'></span>"; }
+
+  function tag(s){
+    if (s==="Gapped") return "<span class='pill pill--r'>Gapped</span>";
+    return "<span class='pill' style='color:rgba(243,240,233,.8)'>"+s+"</span>";
+  }
+
+  /* ═════ VIEWS ═════ */
+  var V = {};
+
+  V.home = function(){
+    var feat = U.slice(0,3);
+    return "<div class='wrap hero' data-rv>" +
+      "<div class='hero__g'>" +
+        "<article class='po hero__a up' data-unit='savison-life'>"+field(7,"red")+
+          "<div class='po__in'>" +
+            "<div class='po__k'><span class='m' style='color:rgba(243,240,233,.66)'>Tolerance&trade; &mdash; permissible variation</span>" +
+            "<span class='m tn' style='color:rgba(243,240,233,.66)'>&plusmn;0.50mm</span></div>" +
+            "<div><h1 class='hero__h'>A joint either closes, <i>or it gaps.</i></h1>" +
+            "<p class='hero__sub'>A studio working in four materials that publishes the measured fit of every job it takes &mdash; including the two that came out of true.</p></div>" +
+            "<div class='po__k'><span class='pill' style='color:rgba(243,240,233,.8)'>14 units</span>" +
+            "<span class='pill pill--r'>02 gapped</span></div>" +
+          "</div></article>" +
+        "<div class='hero__b'>" +
+          "<article class='po stat up'>"+field(102,"cool")+
+            "<div class='po__in'><span class='m' style='color:rgba(243,240,233,.6)'>Mean fit</span>" +
+            "<div><div class='stat__n tn'>0,719</div><p class='m' style='margin-top:8px;color:rgba(243,240,233,.6)'>across four benches</p></div></div></article>" +
+          "<article class='po stat up'>"+field(211,"red")+
+            "<div class='po__in'><span class='m' style='color:rgba(243,240,233,.66)'>Out of true</span>" +
+            "<div><div class='stat__n tn'>02</div><p class='m' style='margin-top:8px;color:rgba(243,240,233,.66)'>both retained, both written up</p></div></div></article>" +
+        "</div>" +
+      "</div></div>" +
+
+      "<div class='wrap'><div class='sec'><h2>The wall</h2>" +
+        "<button class='m m--b' data-go='index' type='button'>Full index &rarr;</button></div>" +
+        "<div class='fil' id='fil'></div><div class='gal' id='gal'></div></div>" +
+
+      "<div class='wrap'><div class='sec'><h2>The rule</h2><span class='m tn'>Doc 00&ndash;071</span></div>" +
+        "<div class='gal' style='grid-template-columns:1fr'>" +
+        "<article class='po up' style='min-height:230px'>"+field(303,"red")+
+          "<div class='po__in'><span class='m' style='color:rgba(243,240,233,.66)'>Operating principle</span>" +
+          "<h3 style='font-size:clamp(23px,3.6vw,46px);max-width:21ch'>You cannot argue a drawer into fitting. Either it slides, or you recut it and say why.</h3>" +
+          "<div class='po__k'><span class='m' style='color:rgba(243,240,233,.66)'>Learned at a bench, 2019</span></div></div></article></div></div>";
+  };
+
+  V.index = function(){
+    return "<div class='wrap' data-rv><div class='sec'><div class='up'><span class='m'>Index</span>" +
+      "<h2 style='font-size:clamp(28px,4.2vw,52px);margin-top:10px'>Fourteen units, measured</h2>" +
+      "<p style='color:var(--dim);max-width:52ch;margin-top:12px'>Every job taken since 2019, with its bench, year and fit value. Nothing is removed for gapping.</p></div>" +
+      "<span class='m tn'>14 / 14</span></div><div class='rows' id='rows'></div></div>";
+  };
+
+  V.studio = function(){
+    return "<div class='wrap' data-rv><div class='sec'><div class='up'><span class='m'>Studio</span>" +
+      "<h2 style='font-size:clamp(28px,4.2vw,52px);margin-top:10px'>Tolerance&plusmn;</h2></div></div>" +
+      "<div class='pr up' style='padding-bottom:30px'><div><span class='m'>What this is</span></div><div>" +
+      "<p>Tolerance is the permissible limit of variation before a fit fails. It is a machining term and a joinery term, and it is the most accurate description of how this studio works that I have found.</p>" +
+      "<p>The practice runs across four benches &mdash; <b>wood, code, classrooms and companies</b> &mdash; which sounds like a lack of focus until you watch the same rule operate in all four. A joint closes or it gaps. Code runs or it throws. A class lands or it does not. A company makes payroll or it dies.</p>" +
+      "<p>Every job taken since 2019 is on this site with a measured fit value, including the two that gapped. A portfolio shows the things that worked; it is a sales document. <b>A record shows all of it</b>, which is the only version worth anything to someone deciding whether to hand over their money, their timber, or a room full of their students.</p></div></div>" +
+      "<div class='gal' style='grid-template-columns:repeat(auto-fit,minmax(min(210px,100%),1fr))'>" +
+      [["01","Establish the reference","Find the flat surface everything else measures against. In a workshop that is a bench. In a business it is usually one honest number nobody wants to look at."],
+       ["02","Build the smallest real version","Not a prototype and not a deck. The smallest thing that can be put in front of reality and be wrong in public."],
+       ["03","Measure the fit","Did it close? By how much did it miss? A job that half worked is more useful than one abandoned before it could be measured."],
+       ["04","Write it down either way","Published whether it went well or not. The two gapped units are the reason the other twelve are believable."]]
+      .map(function(s,i){ return "<article class='po up' style='min-height:210px'>"+field(400+i*17,i%2?"cool":"red")+
+        "<div class='po__in'><span class='m' style='color:var(--ember)'>"+s[0]+"</span>" +
+        "<div><h3 style='font-size:19px;font-family:var(--g);font-weight:700;letter-spacing:-.03em'>"+s[1]+"</h3>" +
+        "<p class='po__d'>"+s[2]+"</p></div></div></article>"; }).join("") + "</div></div>";
+  };
+
+  V.contact = function(){
+    return "<div class='wrap' data-rv><div class='sec'><div class='up'><span class='m'>Contact</span>" +
+      "<h2 style='font-size:clamp(28px,4.2vw,52px);margin-top:10px'>Tell me what is gapping</h2>" +
+      "<p style='color:var(--dim);max-width:48ch;margin-top:12px'>A specific question gets a specific answer, usually the same day. One person at the other end.</p></div></div>" +
+      "<div class='gal' style='grid-template-columns:repeat(auto-fit,minmax(min(260px,100%),1fr))'>" +
+      [["Email","studio@tolerance.in","Read daily",0],["One sharp question","20 min &middot; &#8377;1,499","Booked same week",1],
+       ["Submit a problem","Public breakdown","Taken apart in the clinic",2],["Property advisory","Performance Realty","Barwala, Haryana",3]]
+      .map(function(r,i){ return "<article class='po up' style='min-height:190px'>"+field(500+i*23,i%2?"red":"cool")+
+        "<div class='po__in'><span class='m' style='color:rgba(243,240,233,.66)'>"+r[0]+"</span>" +
+        "<h3 style='font-size:clamp(21px,2.6vw,30px)'>"+r[1]+"</h3>" +
+        "<div class='po__k'><span class='m' style='color:rgba(243,240,233,.66)'>"+r[2]+"</span><span class='m'>&rarr;</span></div></div></article>"; }).join("") +
+      "</div></div>";
+  };
+
+  V.unit = function(id){
+    var u = U_(id); if (!u) return V.index();
+    var s = "<div class='wrap ds' data-rv><button class='ds__back m m--b' data-go='index' type='button'>&larr; Index</button>" +
+      "<div class='up'><div style='display:flex;justify-content:space-between;gap:14px;flex-wrap:wrap;align-items:center'>" +
+      "<span class='m tn'>"+u.code+"</span>"+tag(u.s)+"</div>" +
+      "<h1 class='ds__h' style='margin-top:14px'>"+u.t+"</h1><p class='ds__l'>"+u.lede+"</p>" +
+      "<div class='ds__meta'>" + [["Bench",u.bench],["Year",u.y],["Role",u.role||"&mdash;"],["Duration",u.dur||"&mdash;"],["Fit",u.v]]
+        .map(function(r){ return "<div class='mi'><span class='m'>"+r[0]+"</span><b class='tn'>"+r[1]+"</b></div>"; }).join("") + "</div>" +
+      "<figure class='po ds__plate'>"+field(u.seed,u.hue)+"<div class='po__in'><span></span>" +
+        "<span class='m' style='color:rgba(243,240,233,.6)'>Plate &mdash; "+u.code+"</span></div></figure></div>";
+
+    if (!u.brief) {
+      return s + "<div class='blk'><div class='pr'><div><span class='m'>Note</span></div><div>" +
+        "<p>Full dossier in preparation. The unit is on the record with its measured fit value.</p></div></div></div></div>";
+    }
+    s += "<div class='blk'><div class='pr'><div><span class='m'>The brief</span></div><div><p>"+u.brief+"</p></div></div></div>" +
+      "<div class='blk'><div class='pr'><div><span class='m'>What was built</span></div><div><p>"+u.built+"</p></div></div></div>" +
+      "<div class='blk'><div class='pr'><div><span class='m'>The hard part</span></div><div><p>"+u.hard+"</p>" +
+      "<div class='figs'>"+u.figs.map(function(f){ return "<div class='fg'><span class='m'>"+f[0]+"</span><b class='tn'>"+f[1]+"</b></div>"; }).join("")+"</div></div></div></div>" +
+      "<div class='blk'><div class='pr'><div><span class='m'>What I would change</span></div><div>" +
+      u.lessons.map(function(l,i){ return "<div class='ls'><span class='tn'>"+pad(i+1)+"</span><p>"+l+"</p></div>"; }).join("") + "</div></div></div>" +
+      "<div class='blk'><div class='pr'><div><span class='m'>Next</span></div><div>" +
+      (function(){ var i=U.indexOf(u), n=U[(i+1)%U.length];
+        return "<button data-unit='"+n.id+"' type='button'><span class='m tn'>"+n.code+"</span>" +
+        "<h3 style='font-size:clamp(24px,3.4vw,42px);margin-top:8px'>"+n.t+" &rarr;</h3></button>"; })() +
+      "</div></div></div></div>";
+    return s;
+  };
+
+  function foot(){
+    return "<footer class='ft'><div class='wrap'><div class='ft__g'>" +
+      "<div><div class='m m--b' style='font-weight:500;margin-bottom:12px'>Tolerance&nbsp;&plusmn;</div>" +
+      "<p style='color:var(--dim);font-size:13.5px;max-width:34ch;line-height:1.7'>The permissible limit of variation before a fit fails. Four benches, fourteen units, two of them gapped.</p></div>" +
+      "<div><h4>Studio</h4><ul>"+NAV.map(function(n){ return "<li><button data-go='"+n[0]+"' type='button'>"+n[1]+"</button></li>"; }).join("")+"</ul></div>" +
+      "<div><h4>Principal units</h4><ul>"+["savison-life","indizilla","mortise-bench","betta-beaut"].map(function(id){
+        return "<li><button data-unit='"+id+"' type='button'>"+U_(id).t+"</button></li>"; }).join("")+"</ul></div>" +
+      "<div><h4>Contact</h4><ul><li><button data-go='contact' type='button'>studio@tolerance.in</button></li>" +
+      "<li><span style='font-size:14px;color:var(--dim)'>Chandigarh, India</span></li></ul></div>" +
+      "</div><div class='ft__b'><span class='m'>&copy; 2026 Tolerance&plusmn;</span>" +
+      "<span class='m tn'>30.73&deg;N 76.77&deg;E</span><span class='m tn'>Rev 14.0</span></div></div></footer>";
+  }
+
+  /* ═════ ROUTER ═════ */
+  var app = document.getElementById("app"), navEl = document.getElementById("nav");
+  NAV.forEach(function(n){ var b=document.createElement("button"); b.type="button";
+    b.setAttribute("data-go",n[0]); b.textContent=n[1]; navEl.appendChild(b); });
+
+  var filter = "All";
+  function mountGal(){
+    var g = document.getElementById("gal"); if (!g) return;
+    var fil = document.getElementById("fil");
+    if (fil && !fil.children.length) {
+      ["All","Wood","Code","Classrooms","Companies"].forEach(function(b){
+        var btn=document.createElement("button"); btn.type="button"; btn.textContent=b==="All"?"All units":b;
+        btn.setAttribute("aria-pressed", b===filter?"true":"false");
+        btn.addEventListener("click",function(){ filter=b; fil.innerHTML=""; mountGal(); });
+        fil.appendChild(btn);
+      });
+    }
+    var list = U.filter(function(u){ return filter==="All" || u.bench===filter; });
+    g.innerHTML = list.map(function(u,i){
+      var cls = u.big ? " sp2" : "";
+      var hgt = u.big ? 340 : 272;
+      return "<article class='po up"+cls+"' data-unit='"+u.id+"' style='min-height:"+hgt+"px'>"+field(u.seed,u.hue)+
+        "<div class='po__in'><div class='po__k'><span class='m' style='color:rgba(243,240,233,.62)'>"+u.code+"</span>" +
+        "<span class='m' style='color:rgba(243,240,233,.62)'>"+u.bench+"</span></div>" +
+        "<div><h3 class='po__t"+(u.big?" po__t--xl":"")+"'>"+u.t+"</h3>" +
+        "<div class='po__dev'>"+(DEV[u.bench]||"")+"</div>" +
+        (u.big?"<p class='po__d'>"+u.lede+"</p>":"") + "</div>" +
+        "<div class='po__k'><span class='m tn' style='color:rgba(243,240,233,.62)'>"+u.y+"</span>"+tag(u.s)+"</div></div></article>";
+    }).join("");
+    repaintAll(); mark();
+  }
+
+  function mountRows(){
+    var r = document.getElementById("rows"); if (!r) return;
+    r.innerHTML = U.map(function(u,i){
+      return "<button class='row"+(u.s==="Gapped"?" row--g":"")+"' data-unit='"+u.id+"' type='button'>" +
+        "<span class='m tn'>"+pad(i+1)+"</span><b>"+u.t+"</b>" +
+        "<span class='m tn'>"+u.bench+" &middot; "+u.y+" &middot; "+u.v+"</span></button>"; }).join("");
+  }
+
+  function render(route, arg){
+    app.innerHTML = "<div>" + (route==="unit" ? V.unit(arg) : (V[route]||V.home)()) + foot() + "</div>";
+    [].slice.call(navEl.children).forEach(function(b){
+      b.setAttribute("aria-current", b.getAttribute("data-go")===(route==="unit"?"index":route) ? "true":"false"); });
+    if (route==="home") mountGal();
+    if (route==="index") mountRows();
+    repaintAll(); scrollTo(0,0); mark();
+  }
+
+  /* reveal + light + progress */
+  function mark(){
+    [].slice.call(document.querySelectorAll("[data-rv],.up")).forEach(function(n){
+      var r = n.getBoundingClientRect();
+      if (r.top < innerHeight*0.9 && r.bottom > -100) n.classList.add("rv");
+    });
+  }
+  addEventListener("scroll", function(){
+    mark();
+    var max = document.body.scrollHeight - innerHeight;
+    document.getElementById("prog").style.width = (max>0 ? scrollY/max*100 : 0).toFixed(2)+"%";
+  }, { passive:true });
+
+  document.addEventListener("pointermove", function(e){
+    var p = e.target.closest && e.target.closest(".po");
+    if (!p) return;
+    var r = p.getBoundingClientRect();
+    p.style.setProperty("--mx", (e.clientX-r.left)+"px");
+    p.style.setProperty("--my", (e.clientY-r.top)+"px");
+  }, { passive:true });
+
+  document.addEventListener("click", function(e){
+    var g = e.target.closest("[data-go]"); if (g){ render(g.getAttribute("data-go")); return; }
+    var u = e.target.closest("[data-unit]"); if (u){ render("unit", u.getAttribute("data-unit")); }
+  });
+
+  var rt; addEventListener("resize", function(){ clearTimeout(rt); rt=setTimeout(repaintAll,200); });
+  if (document.fonts && document.fonts.ready) document.fonts.ready.then(repaintAll);
+
+  render("home");
+})();
+</script>

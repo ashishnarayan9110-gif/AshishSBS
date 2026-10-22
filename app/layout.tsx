@@ -6,6 +6,9 @@ import {
   Space_Grotesk,
   Work_Sans,
   IBM_Plex_Mono,
+  Archivo,
+  Cormorant_Garamond,
+  JetBrains_Mono,
 } from "next/font/google";
 import "./globals.css";
 
@@ -40,6 +43,28 @@ const workSans = Work_Sans({
 const ibmPlexMono = IBM_Plex_Mono({
   variable: "--font-plex-mono",
   weight: ["400", "500", "600"],
+  subsets: ["latin"],
+});
+
+/* The main-site identity. Archivo carries everything structural, Cormorant
+   the display serif, JetBrains the metadata. Scoped to .os in globals.css so
+   realty and smallbiz keep the neutral set. */
+const archivo = Archivo({
+  variable: "--font-archivo",
+  weight: ["300", "400", "500", "600", "700", "800", "900"],
+  subsets: ["latin"],
+});
+
+const cormorant = Cormorant_Garamond({
+  variable: "--font-cormorant",
+  weight: ["300", "400", "500"],
+  style: ["normal", "italic"],
+  subsets: ["latin"],
+});
+
+const jetbrains = JetBrains_Mono({
+  variable: "--font-jetbrains",
+  weight: ["400", "500"],
   subsets: ["latin"],
 });
 
@@ -84,7 +109,7 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${geistSans.variable} ${geistMono.variable} ${anton.variable} ${spaceGrotesk.variable} ${workSans.variable} ${ibmPlexMono.variable} h-full antialiased`}
+      className={`${geistSans.variable} ${geistMono.variable} ${anton.variable} ${spaceGrotesk.variable} ${workSans.variable} ${ibmPlexMono.variable} ${archivo.variable} ${cormorant.variable} ${jetbrains.variable} h-full antialiased`}
     >
       <body className="flex min-h-full flex-col antialiased">
         <script

@@ -1,0 +1,685 @@
+<title>Systems Over Chaos</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Anton&family=Archivo:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@400;500;700&display=swap">
+
+<style>
+/* ──────────────────────────────────────────────────────────
+   CONCEPT — the page is a cut of film shot by the operator.
+   Near-black ground, blown light streaks, grain and scanlines.
+   The man's own claim is "systems over chaos", so the hero sets
+   SYSTEMS rigid and lets CHAOS tear apart next to it. Everything
+   is framed like a viewfinder: crop brackets, reel numbers, a
+   running timecode. Committed single look — this is a dark room.
+   ────────────────────────────────────────────────────────── */
+:root{
+  --black:#101012;
+  --black-2:#17171A;
+  --black-3:#1E1E22;
+  --bone:#F4F1EC;
+  --red:#E8201A;
+  --ember:#D4572A;
+  --ash:#6E6E6E;
+
+  --display:"Anton","Haettenschweiler","Arial Narrow",sans-serif;
+  --serif:"Instrument Serif",Georgia,"Times New Roman",serif;
+  --body:"Archivo","Helvetica Neue",Arial,sans-serif;
+  --mono:"JetBrains Mono",ui-monospace,"SF Mono",Menlo,monospace;
+
+  --gut:max(18px,env(safe-area-inset-left,0px));
+  --gutr:max(18px,env(safe-area-inset-right,0px));
+  --hair:1px solid rgba(244,241,236,.14);
+
+  color-scheme:dark;
+}
+*,*::before,*::after{box-sizing:border-box}
+
+body{
+  margin:0;background:var(--black);color:var(--bone);
+  font-family:var(--body);font-size:16px;line-height:1.5;
+  overflow-x:hidden;-webkit-font-smoothing:antialiased;
+}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:60;background:var(--black)}
+
+h1,h2,h3{margin:0;text-wrap:balance}
+p{margin:0}
+ul{margin:0;padding:0;list-style:none}
+a{color:inherit;text-decoration:none}
+:focus-visible{outline:2px solid var(--ember);outline-offset:3px}
+::selection{background:var(--red);color:var(--bone)}
+img{max-width:100%}
+
+.mono{font-family:var(--mono);font-variant-numeric:tabular-nums}
+
+/* ── film grain + scanlines, fixed over everything ───────── */
+.film{position:fixed;inset:0;z-index:50;pointer-events:none}
+.film__grain{
+  position:absolute;inset:-60px;opacity:.5;mix-blend-mode:overlay;
+  background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='200' height='200'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='4' stitchTiles='stitch'/><feColorMatrix type='saturate' values='0'/></filter><rect width='200' height='200' filter='url(%23n)' opacity='.62'/></svg>");
+  animation:grain 760ms steps(3) infinite;
+}
+@keyframes grain{
+  0%{transform:translate(0,0)}33%{transform:translate(-14px,9px)}66%{transform:translate(11px,-12px)}100%{transform:translate(0,0)}
+}
+.film__scan{
+  position:absolute;inset:0;opacity:.3;
+  background:repeating-linear-gradient(to bottom,rgba(0,0,0,0) 0 2px,rgba(0,0,0,.55) 2px 3px);
+}
+.film__vig{position:absolute;inset:0;background:radial-gradient(130% 95% at 50% 42%,transparent 44%,rgba(0,0,0,.78) 100%)}
+
+/* ── HUD frame ───────────────────────────────────────────── */
+.hud{position:fixed;inset:0;z-index:45;pointer-events:none}
+.hud__br{position:absolute;width:26px;height:26px;border:2px solid rgba(244,241,236,.4)}
+.hud__br--tl{top:calc(12px + env(safe-area-inset-top,0px));left:calc(12px + env(safe-area-inset-left,0px));border-right:0;border-bottom:0}
+.hud__br--tr{top:calc(12px + env(safe-area-inset-top,0px));right:calc(12px + env(safe-area-inset-right,0px));border-left:0;border-bottom:0}
+.hud__br--bl{bottom:calc(12px + env(safe-area-inset-bottom,0px));left:calc(12px + env(safe-area-inset-left,0px));border-right:0;border-top:0}
+.hud__br--br{bottom:calc(12px + env(safe-area-inset-bottom,0px));right:calc(12px + env(safe-area-inset-right,0px));border-left:0;border-top:0}
+
+.hud__side{
+  position:absolute;right:calc(14px + env(safe-area-inset-right,0px));top:50%;
+  transform:translateY(-50%) rotate(180deg);writing-mode:vertical-rl;
+  font-family:var(--mono);font-size:9.5px;letter-spacing:.42em;text-transform:uppercase;
+  color:rgba(244,241,236,.3);
+}
+@media (max-width:760px){.hud__side{display:none}.hud__br{width:18px;height:18px}}
+
+/* ── top bar ─────────────────────────────────────────────── */
+.bar{
+  position:sticky;top:env(safe-area-inset-top,0px);z-index:40;
+  background:rgba(16,16,18,.82);backdrop-filter:blur(14px);
+  border-bottom:var(--hair);
+  padding-left:var(--gut);padding-right:var(--gutr);padding-block:12px;
+  display:flex;align-items:center;justify-content:space-between;gap:14px;
+}
+.bar__id{display:flex;align-items:center;gap:9px;font-family:var(--mono);font-size:11px;letter-spacing:.2em;text-transform:uppercase}
+.rec{width:8px;height:8px;border-radius:50%;background:var(--red);animation:rec 1.5s ease-in-out infinite;flex:none}
+@keyframes rec{0%,100%{opacity:1;box-shadow:0 0 0 0 rgba(232,32,26,.6)}50%{opacity:.35;box-shadow:0 0 0 7px rgba(232,32,26,0)}}
+
+.bar__nav{display:flex;gap:2px;flex-wrap:wrap;justify-content:flex-end}
+.bar__nav a{
+  font-family:var(--mono);font-size:10px;letter-spacing:.16em;text-transform:uppercase;
+  color:var(--ash);padding:5px 9px;border:1px solid transparent;transition:color .2s,border-color .2s;
+}
+.bar__nav a:hover{color:var(--bone);border-color:rgba(244,241,236,.3)}
+.bar__tc{font-family:var(--mono);font-size:11px;color:var(--ember);font-variant-numeric:tabular-nums}
+@media (max-width:860px){.bar__nav{display:none}.bar__tc{font-size:10px}}
+
+/* ── shared section shell ────────────────────────────────── */
+.sec{padding-left:var(--gut);padding-right:var(--gutr);padding-block:clamp(58px,9vw,118px);position:relative}
+.sec--flush{padding-block:0}
+
+.reel{
+  display:flex;align-items:baseline;gap:14px;flex-wrap:wrap;
+  font-family:var(--mono);font-size:10px;letter-spacing:.3em;text-transform:uppercase;color:var(--ash);
+  margin-bottom:16px;
+}
+.reel b{color:var(--red);font-weight:700}
+.reel i{font-style:normal;flex:1;height:1px;background:rgba(244,241,236,.14);min-width:30px}
+
+.sech{
+  font-family:var(--display);text-transform:uppercase;
+  font-size:clamp(38px,8.4vw,104px);line-height:.84;letter-spacing:-.012em;
+  margin-bottom:12px;
+}
+.sech em{font-family:var(--serif);font-style:italic;text-transform:none;color:var(--ember);letter-spacing:-.01em}
+.secp{color:var(--ash);font-size:14.5px;max-width:56ch;margin-bottom:30px}
+
+/* ══════════ HERO ══════════ */
+.hero{
+  position:relative;overflow:hidden;
+  padding-left:var(--gut);padding-right:var(--gutr);
+  padding-block:clamp(46px,7vw,86px) clamp(44px,6vw,76px);
+  border-bottom:var(--hair);
+}
+/* blown-out light streaks behind the type */
+.streaks{position:absolute;inset:-20%;z-index:0;pointer-events:none;filter:blur(46px);opacity:.78}
+.streak{position:absolute;height:clamp(60px,9vw,130px);width:160%;left:-30%;border-radius:999px;transform:rotate(-19deg)}
+.streak--1{top:14%;background:linear-gradient(90deg,transparent,rgba(232,32,26,.9),rgba(212,87,42,.5),transparent);animation:slide 13s ease-in-out infinite}
+.streak--2{top:44%;background:linear-gradient(90deg,transparent,rgba(212,87,42,.85),transparent);animation:slide 17s ease-in-out infinite reverse}
+.streak--3{top:70%;height:clamp(28px,4vw,62px);background:linear-gradient(90deg,transparent,rgba(255,120,60,.6),transparent);animation:slide 21s ease-in-out infinite}
+@keyframes slide{0%,100%{transform:rotate(-19deg) translateX(-14%)}50%{transform:rotate(-19deg) translateX(14%)}}
+
+.hero__in{position:relative;z-index:1}
+
+.hero__meta{
+  display:flex;flex-wrap:wrap;gap:8px 26px;
+  font-family:var(--mono);font-size:10px;letter-spacing:.22em;text-transform:uppercase;color:rgba(244,241,236,.52);
+  margin-bottom:clamp(26px,4vw,44px);
+}
+.hero__meta span{display:flex;align-items:center;gap:7px}
+.hero__meta b{color:var(--ember);font-weight:500}
+
+.type{font-family:var(--display);text-transform:uppercase;line-height:.78;letter-spacing:-.02em}
+.type__sys{font-size:clamp(56px,16.5vw,210px);display:block}
+.type__over{
+  display:flex;align-items:center;gap:clamp(10px,2vw,26px);
+  margin:clamp(4px,1vw,10px) 0;
+}
+.type__over span{
+  font-family:var(--mono);font-size:clamp(11px,1.5vw,17px);letter-spacing:.5em;
+  color:var(--red);text-transform:uppercase;white-space:nowrap;
+}
+.type__over i{flex:1;height:2px;background:var(--red);min-width:20px;display:block}
+
+/* CHAOS — three offset layers that tear apart */
+.chaos{position:relative;display:block;font-size:clamp(56px,16.5vw,210px);color:var(--bone)}
+.chaos span{position:absolute;inset:0;display:block}
+.chaos .g1{color:var(--red);animation:tear1 3.4s steps(2,end) infinite;mix-blend-mode:screen}
+.chaos .g2{color:var(--ember);animation:tear2 4.2s steps(2,end) infinite;mix-blend-mode:screen}
+@keyframes tear1{
+  0%,86%,100%{clip-path:inset(0 0 0 0);transform:translate(0,0);opacity:0}
+  87%{clip-path:inset(12% 0 58% 0);transform:translate(-11px,0);opacity:.95}
+  91%{clip-path:inset(62% 0 14% 0);transform:translate(9px,0);opacity:.95}
+  95%{clip-path:inset(34% 0 40% 0);transform:translate(-6px,0);opacity:.9}
+}
+@keyframes tear2{
+  0%,78%,100%{clip-path:inset(0 0 0 0);transform:translate(0,0);opacity:0}
+  80%{clip-path:inset(44% 0 30% 0);transform:translate(13px,0);opacity:.85}
+  84%{clip-path:inset(8% 0 72% 0);transform:translate(-10px,0);opacity:.85}
+}
+
+.hero__foot{
+  display:grid;grid-template-columns:1fr;gap:26px;
+  margin-top:clamp(30px,4.5vw,52px);padding-top:24px;border-top:var(--hair);
+}
+.hero__lede{font-size:clamp(15px,1.55vw,18.5px);line-height:1.56;max-width:52ch;color:rgba(244,241,236,.86)}
+.hero__lede b{color:var(--bone);font-weight:700}
+.hero__cta{display:flex;flex-wrap:wrap;gap:10px;align-items:flex-start}
+.btn{
+  font-family:var(--mono);font-size:11px;letter-spacing:.2em;text-transform:uppercase;
+  padding:14px 22px;border:1px solid var(--bone);background:transparent;color:var(--bone);
+  cursor:pointer;transition:background .2s,color .2s,transform .2s;
+}
+.btn:hover{background:var(--bone);color:var(--black);transform:translate(-2px,-2px)}
+.btn--red{background:var(--red);border-color:var(--red)}
+.btn--red:hover{background:var(--bone);border-color:var(--bone)}
+
+@media (min-width:880px){
+  .hero__foot{grid-template-columns:1.35fr .65fr;align-items:end}
+}
+
+/* ══════════ TICKERS ══════════ */
+.tick{overflow:hidden;white-space:nowrap;border-block:var(--hair);background:var(--black-2);padding-block:11px}
+.tick--red{background:var(--red);border-color:var(--red)}
+.tick__run{display:inline-block;animation:run 34s linear infinite;will-change:transform}
+.tick--rev .tick__run{animation-direction:reverse}
+.tick__run span{font-family:var(--display);text-transform:uppercase;font-size:clamp(15px,2vw,24px);letter-spacing:.02em;padding-inline:18px}
+.tick__run i{font-style:normal;color:var(--ember);padding-inline:4px}
+.tick--red .tick__run i{color:var(--black)}
+@keyframes run{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+
+/* ══════════ STATS ══════════ */
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(142px,1fr));border-top:var(--hair);border-left:var(--hair)}
+.stat{border-right:var(--hair);border-bottom:var(--hair);padding:22px 16px;min-width:0}
+.stat__n{font-family:var(--display);font-size:clamp(40px,6.4vw,78px);line-height:.84;color:var(--ember);font-variant-numeric:tabular-nums}
+.stat__n small{font-size:.44em;color:var(--ash)}
+.stat__l{font-family:var(--mono);font-size:9.5px;letter-spacing:.2em;text-transform:uppercase;color:var(--ash);margin-top:9px}
+.stat--red .stat__n{color:var(--red)}
+
+/* ══════════ WORK GRID ══════════ */
+.filters{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:22px}
+.chip{
+  font-family:var(--mono);font-size:10px;letter-spacing:.16em;text-transform:uppercase;
+  padding:8px 13px;border:1px solid rgba(244,241,236,.24);background:transparent;color:var(--ash);
+  cursor:pointer;transition:all .18s ease;
+}
+.chip:hover{color:var(--bone);border-color:var(--bone)}
+.chip[aria-pressed="true"]{background:var(--red);border-color:var(--red);color:var(--bone)}
+
+.grid{display:grid;gap:1px;grid-template-columns:repeat(auto-fill,minmax(272px,1fr));background:rgba(244,241,236,.14);border:var(--hair)}
+.card{
+  position:relative;overflow:hidden;background:var(--black);
+  padding:20px 18px 18px;display:flex;flex-direction:column;gap:12px;min-width:0;min-height:206px;
+  transition:background .3s ease;
+}
+.card__ghost{
+  position:absolute;right:-6px;bottom:-26px;z-index:0;
+  font-family:var(--display);font-size:116px;line-height:1;color:rgba(244,241,236,.05);
+  font-variant-numeric:tabular-nums;transition:color .3s ease,transform .45s cubic-bezier(.2,.8,.3,1);
+}
+.card>*:not(.card__ghost){position:relative;z-index:1}
+.card:hover{background:var(--black-3)}
+.card:hover .card__ghost{color:rgba(232,32,26,.22);transform:translate(-6px,-6px)}
+
+.card__top{display:flex;justify-content:space-between;gap:10px;font-family:var(--mono);font-size:9.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--ash)}
+.card__t{font-family:var(--display);text-transform:uppercase;font-size:clamp(20px,2.5vw,27px);line-height:.92;letter-spacing:-.01em;overflow-wrap:anywhere}
+.card__s{font-size:13px;line-height:1.5;color:rgba(244,241,236,.6)}
+.card__f{margin-top:auto;display:flex;align-items:center;justify-content:space-between;gap:10px}
+.card__y{font-family:var(--mono);font-size:10px;color:var(--ash);font-variant-numeric:tabular-nums}
+
+.tag{font-family:var(--mono);font-weight:700;font-size:9px;letter-spacing:.18em;text-transform:uppercase;padding:4px 8px;border:1px solid currentColor;white-space:nowrap}
+.tag--shipped{color:var(--bone)}
+.tag--running{color:var(--ember)}
+.tag--paused{color:var(--ash)}
+.tag--failed{color:var(--red);background:rgba(232,32,26,.12)}
+
+/* ══════════ CREW ══════════ */
+.crew{display:grid;gap:1px;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));background:rgba(244,241,236,.14);border:var(--hair)}
+.dos{background:var(--black);padding:20px 18px;display:flex;flex-direction:column;gap:9px;min-width:0;transition:background .25s}
+.dos:hover{background:var(--black-3)}
+.dos__n{font-family:var(--mono);font-size:9.5px;letter-spacing:.18em;color:var(--ash)}
+.dos__a{font-family:var(--serif);font-style:italic;font-size:clamp(23px,3vw,32px);line-height:1;color:var(--red);overflow-wrap:anywhere}
+.dos__nm{font-weight:700;font-size:14.5px}
+.dos__r{font-family:var(--mono);font-size:9.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--ash)}
+.dos__q{font-size:13px;line-height:1.5;color:rgba(244,241,236,.6)}
+
+/* ══════════ MANIFESTO ══════════ */
+.manifesto{
+  background:var(--red);color:var(--bone);
+  padding-left:var(--gut);padding-right:var(--gutr);padding-block:clamp(56px,8vw,104px);
+}
+.manifesto__q{
+  font-family:var(--serif);font-size:clamp(30px,6.2vw,80px);line-height:1.02;letter-spacing:-.015em;max-width:19ch;
+}
+.manifesto__q em{font-style:italic}
+.manifesto__a{font-family:var(--mono);font-size:10.5px;letter-spacing:.26em;text-transform:uppercase;margin-top:28px;opacity:.78}
+
+/* ══════════ LEDGER ══════════ */
+.ledwrap{overflow-x:auto;border:var(--hair)}
+table.led{border-collapse:collapse;width:100%;min-width:560px}
+.led th,.led td{text-align:left;padding:13px 15px;border-bottom:var(--hair);vertical-align:top}
+.led th{font-family:var(--mono);font-size:9.5px;letter-spacing:.2em;text-transform:uppercase;color:var(--ash);background:var(--black-2)}
+.led tr:last-child td{border-bottom:0}
+.led td:first-child{font-weight:700}
+.led .mono{font-size:11.5px;color:var(--ash);overflow-wrap:anywhere}
+
+/* ══════════ SERVICES ══════════ */
+.svc{display:grid;gap:1px;grid-template-columns:repeat(auto-fit,minmax(278px,1fr));background:rgba(244,241,236,.14);border:var(--hair)}
+.svc__i{background:var(--black);padding:26px 20px;display:flex;flex-direction:column;gap:13px;min-width:0;transition:background .25s}
+.svc__i:hover{background:var(--black-3)}
+.svc__n{font-family:var(--display);font-size:54px;line-height:.76;color:var(--red)}
+.svc__t{font-family:var(--display);text-transform:uppercase;font-size:22px;line-height:.96}
+.svc__d{font-size:13.5px;line-height:1.52;color:rgba(244,241,236,.6)}
+
+/* ══════════ ABOUT ══════════ */
+.about{display:grid;grid-template-columns:1fr;gap:30px}
+.about p{font-size:15.5px;line-height:1.66;max-width:62ch;color:rgba(244,241,236,.82);margin-bottom:15px}
+.about p:last-child{margin-bottom:0}
+.about strong{color:var(--bone)}
+@media (min-width:900px){.about{grid-template-columns:1.1fr .9fr;gap:48px}}
+.sidecard{border:var(--hair);padding:20px;align-self:start}
+.sidecard dt{font-family:var(--mono);font-size:9.5px;letter-spacing:.2em;text-transform:uppercase;color:var(--ash);margin-top:14px}
+.sidecard dt:first-child{margin-top:0}
+.sidecard dd{margin:5px 0 0;font-size:14.5px}
+
+/* ══════════ CONTACT ══════════ */
+.cta{display:grid;gap:1px;grid-template-columns:1fr;background:rgba(244,241,236,.14);border:var(--hair)}
+@media (min-width:760px){.cta{grid-template-columns:1fr 1fr}}
+.cta__r{
+  background:var(--black);padding:24px 20px;
+  display:flex;align-items:baseline;justify-content:space-between;gap:14px;flex-wrap:wrap;
+  transition:background .2s,color .2s;
+}
+.cta__r:hover{background:var(--red)}
+.cta__k{font-family:var(--mono);font-size:9.5px;letter-spacing:.2em;text-transform:uppercase;color:var(--ash)}
+.cta__r:hover .cta__k{color:rgba(244,241,236,.8)}
+.cta__v{font-family:var(--display);text-transform:uppercase;font-size:clamp(19px,3vw,31px);line-height:1;overflow-wrap:anywhere}
+
+.colo{
+  padding-left:var(--gut);padding-right:var(--gutr);padding-block:26px 40px;border-top:var(--hair);
+  display:flex;flex-wrap:wrap;gap:10px 26px;justify-content:space-between;
+  font-family:var(--mono);font-size:9.5px;letter-spacing:.18em;text-transform:uppercase;color:var(--ash);
+}
+
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}
+  .chaos .g1,.chaos .g2{opacity:0}
+  .film__grain{animation:none}
+}
+</style>
+
+<div class="film" aria-hidden="true">
+  <div class="film__grain"></div>
+  <div class="film__scan"></div>
+  <div class="film__vig"></div>
+</div>
+
+<div class="hud" aria-hidden="true">
+  <span class="hud__br hud__br--tl"></span>
+  <span class="hud__br hud__br--tr"></span>
+  <span class="hud__br hud__br--bl"></span>
+  <span class="hud__br hud__br--br"></span>
+  <span class="hud__side">Ashish Narayan &mdash; Operator</span>
+</div>
+
+<header class="bar">
+  <span class="bar__id"><span class="rec"></span>A. NARAYAN</span>
+  <nav class="bar__nav" aria-label="Sections">
+    <a href="#work">Work</a>
+    <a href="#ventures">Ventures</a>
+    <a href="#crew">Crew</a>
+    <a href="#record">Record</a>
+    <a href="#services">Services</a>
+    <a href="#operator">Operator</a>
+  </nav>
+  <span class="bar__tc" id="tc">00:00:00</span>
+</header>
+
+<!-- ══════════ HERO ══════════ -->
+<section class="hero">
+  <div class="streaks" aria-hidden="true">
+    <span class="streak streak--1"></span>
+    <span class="streak streak--2"></span>
+    <span class="streak streak--3"></span>
+  </div>
+
+  <div class="hero__in">
+    <div class="hero__meta">
+      <span><b>&#9679;</b> Rec</span>
+      <span>30.73&deg;N 76.77&deg;E</span>
+      <span>Chandigarh &rarr; Himachal</span>
+      <span>Est. <b>2019</b></span>
+      <span>Reels <b>06</b></span>
+    </div>
+
+    <h1 class="type">
+      <span class="type__sys">Systems</span>
+      <span class="type__over" aria-hidden="true"><i></i><span>Over</span><i></i></span>
+      <span class="chaos">Chaos<span class="g1" aria-hidden="true">Chaos</span><span class="g2" aria-hidden="true">Chaos</span></span>
+    </h1>
+
+    <div class="hero__foot">
+      <p class="hero__lede">
+        I build in four materials &mdash; <b>wood, code, classrooms and companies</b> &mdash;
+        and the method never changes: make the smallest real version, put it in front of
+        reality, write down exactly what happened. <b>Including the times it fell apart.</b>
+        This is the whole record, failures stamped in red and left where they landed.
+      </p>
+      <div class="hero__cta">
+        <a class="btn btn--red" href="#work">Open the record</a>
+        <a class="btn" href="#operator">Who&rsquo;s shooting</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="tick" aria-hidden="true"><div class="tick__run" id="tick1"></div></div>
+
+<!-- ══════════ STATS ══════════ -->
+<section class="sec" style="padding-block:clamp(40px,5vw,66px)">
+  <div class="stats">
+    <div class="stat"><div class="stat__n" id="sPlates">00</div><div class="stat__l">Entries filed</div></div>
+    <div class="stat"><div class="stat__n" id="sRun">00</div><div class="stat__l">Still running</div></div>
+    <div class="stat stat--red"><div class="stat__n" id="sFail">00</div><div class="stat__l">Failed, kept anyway</div></div>
+    <div class="stat"><div class="stat__n">04<small>/04</small></div><div class="stat__l">Materials worked</div></div>
+    <div class="stat"><div class="stat__n" id="sYears">00</div><div class="stat__l">Years on record</div></div>
+  </div>
+</section>
+
+<!-- ══════════ WORK ══════════ -->
+<section class="sec" id="work">
+  <div class="reel"><b>Reel 01</b><i></i><span>The Work</span></div>
+  <h2 class="sech">Everything<br>I&rsquo;ve <em>made</em></h2>
+  <p class="secp">Filed by material and stamped with how it ended. Nothing gets quietly dropped from the record because it didn&rsquo;t work.</p>
+  <div class="filters" id="filters" role="group" aria-label="Filter by material"></div>
+  <div class="grid" id="grid"></div>
+</section>
+
+<div class="tick tick--red tick--rev" aria-hidden="true"><div class="tick__run" id="tick2"></div></div>
+
+<!-- ══════════ VENTURES ══════════ -->
+<section class="sec" id="ventures">
+  <div class="reel"><b>Reel 02</b><i></i><span>Ventures</span></div>
+  <h2 class="sech">Businesses,<br>not <em>portfolios</em></h2>
+  <p class="secp">Status changes. The record doesn&rsquo;t get rewritten to match.</p>
+  <div class="grid" id="ventures-grid"></div>
+</section>
+
+<!-- ══════════ CREW ══════════ -->
+<section class="sec" id="crew">
+  <div class="reel"><b>Reel 03</b><i></i><span>The Crew</span></div>
+  <h2 class="sech">Nobody<br>did this <em>alone</em></h2>
+  <p class="secp">The people who knew the thing I didn&rsquo;t, fixed what I broke, or told me the truth when it would have been easier not to.</p>
+  <div class="crew" id="crew-grid"></div>
+</section>
+
+<!-- ══════════ MANIFESTO ══════════ -->
+<section class="manifesto">
+  <blockquote class="manifesto__q">A joint either closes or it doesn&rsquo;t. <em>You cannot argue a drawer into fitting.</em></blockquote>
+  <div class="manifesto__a">Learned at a bench &mdash; applies to every line of code since</div>
+</section>
+
+<!-- ══════════ RECORD ══════════ -->
+<section class="sec" id="record">
+  <div class="reel"><b>Reel 04</b><i></i><span>The Record</span></div>
+  <h2 class="sech">Checkable,<br>not <em>claimed</em></h2>
+  <p class="secp">Credentials with their codes attached, so none of it has to be taken on trust.</p>
+  <div class="ledwrap">
+    <table class="led">
+      <thead><tr><th scope="col">Certification</th><th scope="col">Issuer</th><th scope="col">Valid</th><th scope="col">Credential code</th></tr></thead>
+      <tbody id="led"></tbody>
+    </table>
+  </div>
+</section>
+
+<!-- ══════════ SERVICES ══════════ -->
+<section class="sec" id="services">
+  <div class="reel"><b>Reel 05</b><i></i><span>Services</span></div>
+  <h2 class="sech">Borrow the<br><em>years</em></h2>
+  <p class="secp">For when taking the shortcut directly beats waiting for me to write it up.</p>
+  <div class="svc" id="svc"></div>
+</section>
+
+<!-- ══════════ OPERATOR ══════════ -->
+<section class="sec" id="operator">
+  <div class="reel"><b>Reel 06</b><i></i><span>The Operator</span></div>
+  <h2 class="sech">Who&rsquo;s<br><em>shooting</em></h2>
+  <div class="about">
+    <div>
+      <p>I started with furniture. A bench, hand tools, and the unforgiving fact that a joint either closes or it doesn&rsquo;t. <strong>You cannot argue a drawer into fitting.</strong> That taught me more about building software than any framework has.</p>
+      <p>Then classrooms &mdash; explaining a thing properly is the fastest way to find out you only half understood it. Then companies, where the same rule applies at a larger scale, with other people&rsquo;s money attached and a lot less patience in the room.</p>
+      <p>What carries across all four is one habit: <strong>build the smallest real version, put it in front of reality, and write down what happened.</strong> Including when what happened was that it failed. A portfolio of only successes is a sales page. A record of both is evidence.</p>
+    </div>
+    <dl class="sidecard">
+      <dt>Based</dt><dd>Chandigarh, working across Himachal</dd>
+      <dt>Materials</dt><dd>Wood, code, classrooms, companies</dd>
+      <dt>Currently</dt><dd>Savison Life &mdash; compliance-gated pharma marketplace</dd>
+      <dt>Method</dt><dd>Smallest real version, in front of reality, written down</dd>
+      <dt>Open to</dt><dd>Systems design, audits, one sharp 20-minute question</dd>
+    </dl>
+  </div>
+</section>
+
+<!-- ══════════ CONTACT ══════════ -->
+<section class="sec" id="contact" style="padding-top:0">
+  <div class="reel"><b>End</b><i></i><span>Reach out</span></div>
+  <h2 class="sech">Start a<br><em>conversation</em></h2>
+  <p class="secp">Not a lead form. Tell me what&rsquo;s actually stuck.</p>
+  <div class="cta">
+    <a class="cta__r" href="#contact"><span class="cta__k">Email</span><span class="cta__v">ashish.sbs</span></a>
+    <a class="cta__r" href="#contact"><span class="cta__k">Submit an idea</span><span class="cta__v">Public breakdown</span></a>
+    <a class="cta__r" href="#contact"><span class="cta__k">Strategy call</span><span class="cta__v">20 min &middot; &#8377;1,499</span></a>
+    <a class="cta__r" href="#contact"><span class="cta__k">Realty</span><span class="cta__v">Performance Realty</span></a>
+  </div>
+</section>
+
+<footer class="colo">
+  <span>Systems Over Chaos &mdash; Ed. 03</span>
+  <span>Anton / Instrument Serif / JetBrains Mono</span>
+  <span>&copy; 2026 Ashish Narayan</span>
+</footer>
+
+<script>
+(function () {
+  "use strict";
+
+  var WORK = [
+    { n:1,  t:"Savison Life",           m:"Companies", y:2025, s:"running",
+      d:"India's compliance-gated B2B marketplace for third-party pharma manufacturing. Founded, branded and built from zero &mdash; four portals on one schema." },
+    { n:2,  t:"Rikencare Lifesciences", m:"Code",      y:2025, s:"shipped",
+      d:"Brand system and website for a WHO-GMP, ISO 9001:2015 manufacturer in Himachal. Identity, typography, build." },
+    { n:3,  t:"Indizilla",              m:"Code",      y:2024, s:"running",
+      d:"Client operations platform behind a marketing agency &mdash; orders, jobs, billing, credits, referrals on one Postgres database." },
+    { n:4,  t:"GetPharm",               m:"Companies", y:2025, s:"running",
+      d:"Public-facing marketplace brand on Savison Life's infrastructure. Same spine, different front door." },
+    { n:5,  t:"Nirmal Kaya",            m:"Companies", y:2024, s:"paused",
+      d:"Wellness management venture. Parked while the pharma side took the oxygen &mdash; the record stays up." },
+    { n:6,  t:"Betta Beaut",            m:"Companies", y:2023, s:"failed",
+      d:"Salon technology infrastructure. Correct problem, wrong buyer: the people feeling the pain weren't the ones holding the budget." },
+    { n:7,  t:"Performance Realty",     m:"Companies", y:2026, s:"running",
+      d:"Advisory brand with one live listing &mdash; HSIIDC SCO, Barwala. Inquiry straight to email, no funnel theatre." },
+    { n:8,  t:"Slab Desk, 2.4m",        m:"Wood",      y:2021, s:"shipped",
+      d:"Single-slab sheesham desk on a welded base. Breadboard ends let the top move; the base does not. Still in daily use." },
+    { n:9,  t:"Mortise Bench",          m:"Wood",      y:2020, s:"shipped",
+      d:"Hand-cut mortise and tenon workbench. Built to make the rest of the furniture possible &mdash; the tool that makes the tools." },
+    { n:10, t:"Folding Wall Table",     m:"Wood",      y:2022, s:"failed",
+      d:"Wall-mounted drop-leaf for a small flat. Hinge geometry was wrong under load; it sagged inside a month. Rebuilt twice, then abandoned." },
+    { n:11, t:"Systems Thinking, Wkly", m:"Classrooms",y:2023, s:"shipped",
+      d:"Twelve-week evening course for founders on breaking a business into systems. Taught live, notes published after every session." },
+    { n:12, t:"Build-in-Public Clinic", m:"Classrooms",y:2024, s:"running",
+      d:"Monthly open session: someone brings a stuck project, we take it apart on a whiteboard in front of everyone." },
+    { n:13, t:"The Monthly Review",     m:"Classrooms",y:2026, s:"running",
+      d:"Public progress log &mdash; what was built, what was learned, what failed. Published whether or not the month went well." },
+    { n:14, t:"Field Kit",              m:"Code",      y:2025, s:"shipped",
+      d:"The templates and checklists built for myself, kept because rebuilding them from scratch each time was the actual mistake." }
+  ];
+
+  var VENTURES = [
+    { n:1, t:"Savison Life", m:"Pharma",    y:2025, s:"running", d:"Compliance-first marketplace connecting manufacturers and buyers. The one that made everything else possible." },
+    { n:2, t:"GetPharm",     m:"Pharma",    y:2025, s:"running", d:"Public-facing marketplace brand on Savison Life's infrastructure." },
+    { n:3, t:"Nirmal Kaya",  m:"Wellness",  y:2024, s:"paused",  d:"Wellness management venture. Paused, not deleted." },
+    { n:4, t:"Betta Beaut",  m:"Salon tech",y:2023, s:"failed",  d:"Logged in full, because what killed it is the useful part." }
+  ];
+
+  var CREW = [
+    { n:1, a:"The Millimetre",   nm:"Placeholder", r:"Master carpenter",      q:"Measures twice, then measures again specifically to prove you wrong." },
+    { n:2, a:"The Regulator",    nm:"Placeholder", r:"Compliance lead",       q:"Has never once been impressed by a demo, which is exactly why the demo got better." },
+    { n:3, a:"First Customer",   nm:"Placeholder", r:"Buyer, Savison Life",   q:"Paid before the product was finished and told everyone about it anyway." },
+    { n:4, a:"The Sounding Board", nm:"Placeholder", r:"Operator",            q:"Answers at 2am with one question that makes the other forty irrelevant." }
+  ];
+
+  var CERTS = [
+    { t:"Content Marketing Certified", i:"HubSpot Academy", v:"Jul 2026 &mdash; Aug 2028", c:"0195fafd0409450eb0c3e05fe07c2002" },
+    { t:"Social Media Certified",      i:"HubSpot Academy", v:"Aug 2026 &mdash; Sep 2028", c:"11a5616f019147219ec3d589f2dd9376" }
+  ];
+
+  var SERVICES = [
+    { n:"01", t:"Systems Design", d:"Take a business running on memory and WhatsApp and give it a spine &mdash; orders, jobs, billing, handoffs, and who owns each one." },
+    { n:"02", t:"Business Audit", d:"A hard look at where the operation actually leaks. You get the list, ranked, with what I'd fix first and why." },
+    { n:"03", t:"Strategy Call",  d:"Twenty minutes, one specific question, no preamble. Come prepared and it's the cheapest consulting you'll buy." }
+  ];
+
+  var LABEL = { shipped:"Shipped", running:"Running", paused:"Paused", failed:"Failed" };
+
+  function el(tag, cls, html) {
+    var n = document.createElement(tag);
+    if (cls) n.className = cls;
+    if (html != null) n.innerHTML = html;
+    return n;
+  }
+  function pad(n) { return (n < 10 ? "0" : "") + n; }
+
+  function card(p) {
+    var a = el("article", "card");
+    a.appendChild(el("span", "card__ghost", pad(p.n)));
+    var top = el("div", "card__top");
+    top.appendChild(el("span", null, "No. " + pad(p.n)));
+    top.appendChild(el("span", null, p.m));
+    a.appendChild(top);
+    a.appendChild(el("h3", "card__t", p.t));
+    a.appendChild(el("p", "card__s", p.d));
+    var f = el("div", "card__f");
+    f.appendChild(el("span", "card__y", p.y));
+    f.appendChild(el("span", "tag tag--" + p.s, LABEL[p.s]));
+    a.appendChild(f);
+    return a;
+  }
+
+  /* work grid + filters */
+  var gridEl = document.getElementById("grid");
+  var active = "All";
+
+  function draw() {
+    gridEl.textContent = "";
+    WORK.filter(function (p) { return active === "All" || p.m === active; })
+        .forEach(function (p) { gridEl.appendChild(card(p)); });
+  }
+
+  var mats = ["All"];
+  WORK.forEach(function (p) { if (mats.indexOf(p.m) === -1) mats.push(p.m); });
+
+  var fEl = document.getElementById("filters");
+  mats.forEach(function (m) {
+    var b = el("button", "chip", m === "All" ? "All &middot; " + WORK.length : m);
+    b.type = "button";
+    b.setAttribute("aria-pressed", m === "All" ? "true" : "false");
+    b.addEventListener("click", function () {
+      active = m;
+      Array.prototype.forEach.call(fEl.children, function (c) {
+        c.setAttribute("aria-pressed", c === b ? "true" : "false");
+      });
+      draw();
+    });
+    fEl.appendChild(b);
+  });
+  draw();
+
+  var vEl = document.getElementById("ventures-grid");
+  VENTURES.forEach(function (v) { vEl.appendChild(card(v)); });
+
+  var cEl = document.getElementById("crew-grid");
+  CREW.forEach(function (c) {
+    var d = el("article", "dos");
+    d.appendChild(el("span", "dos__n", "No. " + pad(c.n)));
+    d.appendChild(el("h3", "dos__a", "&ldquo;" + c.a + "&rdquo;"));
+    d.appendChild(el("span", "dos__nm", c.nm));
+    d.appendChild(el("span", "dos__r", c.r));
+    d.appendChild(el("p", "dos__q", c.q));
+    cEl.appendChild(d);
+  });
+
+  var lEl = document.getElementById("led");
+  CERTS.forEach(function (c) {
+    var tr = el("tr");
+    tr.appendChild(el("td", null, c.t));
+    tr.appendChild(el("td", null, c.i));
+    tr.appendChild(el("td", "mono", c.v));
+    tr.appendChild(el("td", "mono", c.c));
+    lEl.appendChild(tr);
+  });
+
+  var sEl = document.getElementById("svc");
+  SERVICES.forEach(function (s) {
+    var d = el("div", "svc__i");
+    d.appendChild(el("span", "svc__n", s.n));
+    d.appendChild(el("h3", "svc__t", s.t));
+    d.appendChild(el("p", "svc__d", s.d));
+    sEl.appendChild(d);
+  });
+
+  /* stats */
+  function count(s) { return WORK.filter(function (p) { return p.s === s; }).length; }
+  var years = new Date().getFullYear() - 2019;
+  document.getElementById("sPlates").textContent = pad(WORK.length);
+  document.getElementById("sRun").textContent    = pad(count("running"));
+  document.getElementById("sFail").textContent   = pad(count("failed"));
+  document.getElementById("sYears").textContent  = pad(years);
+
+  /* tickers */
+  function fill(id, items) {
+    var html = items.map(function (t) { return "<span>" + t + "</span>"; }).join("");
+    document.getElementById(id).innerHTML = html + html;
+  }
+  fill("tick1", WORK.map(function (p) {
+    return p.t + " <i>/</i> " + LABEL[p.s].toUpperCase();
+  }));
+  fill("tick2", [
+    "Wood <i>/</i> Code <i>/</i> Classrooms <i>/</i> Companies",
+    "Build the smallest real version",
+    "Put it in front of reality",
+    "Write down what happened",
+    "Failures stay on the record"
+  ]);
+
+  /* running timecode — the operator is always rolling */
+  var tc = document.getElementById("tc");
+  var t0 = Date.now();
+  function tick() {
+    var s = Math.floor((Date.now() - t0) / 1000);
+    tc.textContent = pad(Math.floor(s / 3600)) + ":" + pad(Math.floor(s / 60) % 60) + ":" + pad(s % 60);
+  }
+  tick();
+  setInterval(tick, 1000);
+})();
+</script>

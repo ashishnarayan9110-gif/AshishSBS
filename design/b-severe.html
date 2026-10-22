@@ -1,0 +1,682 @@
+<title>Tolerance Shelf</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;700;900&family=Bodoni+Moda:ital,opsz,wght@0,6..96,400;0,6..96,700;1,6..96,400&family=JetBrains+Mono:wght@400;700&display=swap">
+
+<style>
+/* ═══════════════════════════════════════════════════════════════
+   EDITION B — THE SHELF
+   No colour anywhere, by rule. Every image is ASCII dithered: a
+   tonal field sampled into a character grid, each cell chosen by
+   ink coverage. The imagery is literally made of type.
+
+   The landing has no grid — the operator hangs in space and the
+   record drifts around him. Grids return the moment you enter the
+   volume.
+   ═══════════════════════════════════════════════════════════════ */
+:root{
+  --ink:#08080A;
+  --paper:#FBFAF8;
+  --g:"Archivo","Helvetica Neue",Arial,sans-serif;
+  --s:"Bodoni Moda",Didot,Georgia,serif;
+  --m:"JetBrains Mono",ui-monospace,Menlo,monospace;
+  --pl:max(18px,env(safe-area-inset-left,0px));
+  --pr:max(18px,env(safe-area-inset-right,0px));
+  --max:1360px;
+  --e:cubic-bezier(.2,.9,.24,1);
+  color-scheme:dark;
+}
+*,*::before,*::after{box-sizing:border-box}
+body{margin:0;background:var(--ink);color:var(--paper);font-family:var(--g);font-size:15px;line-height:1.55;
+  overflow-x:hidden;-webkit-font-smoothing:antialiased;font-feature-settings:"kern","liga"}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:95;background:var(--ink)}
+h1,h2,h3{margin:0;line-height:.98;letter-spacing:-.028em}
+p{margin:0}ul{margin:0;padding:0;list-style:none}
+a{color:inherit;text-decoration:none}
+button{font:inherit;color:inherit;background:none;border:0;cursor:pointer;text-align:left}
+:focus-visible{outline:2px solid currentColor;outline-offset:3px}
+::selection{background:var(--paper);color:var(--ink)}
+.wrap{max-width:var(--max);margin-inline:auto;padding-left:var(--pl);padding-right:var(--pr)}
+.m{font-family:var(--m);font-size:9.5px;letter-spacing:.2em;text-transform:uppercase;opacity:.6}
+.m--b{opacity:1}
+.tn{font-variant-numeric:tabular-nums}
+
+/* ── the glass: scanlines + phosphor bloom, no colour ── */
+.crt{position:fixed;inset:0;z-index:92;pointer-events:none;
+  background:repeating-linear-gradient(to bottom,rgba(0,0,0,0) 0 2px,rgba(0,0,0,.26) 2px 3px);opacity:.5}
+.vig{position:fixed;inset:0;z-index:91;pointer-events:none;
+  background:radial-gradient(128% 96% at 50% 46%,transparent 40%,rgba(0,0,0,.84) 100%)}
+.prog{position:fixed;left:0;top:0;height:2px;background:var(--paper);z-index:94;width:0}
+
+/* ── ASCII rendering ── */
+.ax{font-family:var(--m);font-weight:400;white-space:pre;display:block;margin:0;
+  letter-spacing:0;line-height:1.0;user-select:none;-webkit-user-select:none}
+.ax--glow{text-shadow:0 0 6px rgba(251,250,248,.5),0 0 22px rgba(251,250,248,.18)}
+
+/* ═════ LANDING — free space, no grid ═════ */
+.space{position:relative;min-height:100svh;overflow:hidden;display:grid;place-items:center}
+.space__fig{position:relative;z-index:3;display:grid;place-items:center;will-change:transform}
+.space__fig .ax{font-size:clamp(4.4px,1.08vw,11px);opacity:.96}
+.space__sig{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);z-index:2;pointer-events:none;
+  width:min(72vw,620px);aspect-ratio:1;border-radius:50%;
+  background:radial-gradient(circle,rgba(251,250,248,.1),transparent 66%);filter:blur(30px)}
+
+/* things hovering in the space */
+.drift{position:absolute;z-index:4;will-change:transform}
+.drift__in{font-family:var(--m);font-size:10px;letter-spacing:.14em;text-transform:uppercase;
+  padding:9px 13px;border:1px solid rgba(251,250,248,.26);background:rgba(8,8,10,.52);
+  backdrop-filter:blur(7px);white-space:nowrap;transition:border-color .4s,background .4s}
+.drift__in b{display:block;font-family:var(--s);font-size:22px;letter-spacing:-.01em;margin-top:4px;text-transform:none}
+.drift:hover .drift__in{border-color:var(--paper);background:rgba(251,250,248,.1)}
+.drift--q .drift__in{border-style:dashed;opacity:.72}
+.drift--strike b{text-decoration:line-through;text-decoration-thickness:.05em}
+@media (max-width:760px){ .drift--hide{display:none} }
+
+.wires{position:absolute;inset:0;z-index:1;pointer-events:none;opacity:.3}
+.wires line{stroke:rgba(251,250,248,.5);stroke-width:.7;stroke-dasharray:2 5}
+
+.space__name{position:absolute;left:50%;bottom:clamp(74px,13vh,132px);transform:translateX(-50%);z-index:5;
+  text-align:center;pointer-events:none;width:min(92vw,680px)}
+.space__name h1{font-family:var(--s);font-weight:400;font-size:clamp(34px,7.6vw,96px);line-height:.92;letter-spacing:-.022em}
+.space__name h1 sup{font-family:var(--m);font-size:.16em;vertical-align:super;opacity:.55;letter-spacing:.08em}
+.space__name p{font-family:var(--m);font-size:10px;letter-spacing:.24em;text-transform:uppercase;opacity:.6;margin-top:16px}
+.cursorblk{display:inline-block;width:.5em;height:1em;background:var(--paper);vertical-align:-.12em;
+  margin-left:.18em;animation:blk 1.08s steps(2,end) infinite}
+@keyframes blk{0%,50%{opacity:1}50.01%,100%{opacity:0}}
+.enter{position:absolute;left:50%;bottom:clamp(26px,5vh,54px);transform:translateX(-50%);z-index:6;
+  font-family:var(--m);font-size:10px;letter-spacing:.24em;text-transform:uppercase;
+  padding:12px 22px;border:1px solid rgba(251,250,248,.36);transition:background .3s,color .3s,border-color .3s}
+.enter:hover{background:var(--paper);color:var(--ink);border-color:var(--paper)}
+
+/* ═════ CHROME (hidden on landing) ═════ */
+.hd{position:sticky;top:env(safe-area-inset-top,0px);z-index:80;background:var(--ink);
+  border-bottom:1px solid rgba(251,250,248,.22)}
+.hd__in{max-width:var(--max);margin-inline:auto;padding-left:var(--pl);padding-right:var(--pr);
+  height:46px;display:flex;align-items:center;justify-content:space-between;gap:16px}
+.hd__n{display:flex;gap:18px}
+.hd__n button{font-family:var(--m);font-size:9.5px;letter-spacing:.2em;text-transform:uppercase;opacity:.55;transition:opacity .3s}
+.hd__n button:hover,.hd__n button[aria-current="true"]{opacity:1}
+.hd__n button[aria-current="true"]{text-decoration:underline;text-underline-offset:4px}
+@media (max-width:760px){.hd__n button:not(:last-child){display:none}}
+.hd[hidden]{display:none}
+
+/* ── reveal ── */
+.up{opacity:0;transform:translateY(20px);transition:opacity .8s var(--e),transform .8s var(--e)}
+.rv .up,.up.rv{opacity:1;transform:none}
+.rv .up:nth-child(2){transition-delay:.05s}.rv .up:nth-child(3){transition-delay:.1s}
+
+/* ═════ GRID RETURNS ═════ */
+.mast{padding-block:clamp(30px,6vh,74px) clamp(20px,3vh,40px);border-bottom:1px solid rgba(251,250,248,.22)}
+.mast__t{font-family:var(--s);font-weight:400;font-size:clamp(50px,16vw,220px);line-height:.8;letter-spacing:-.022em}
+.mast__t sup{font-size:.16em;vertical-align:super;font-family:var(--m);letter-spacing:.08em;opacity:.5}
+.mast__r{display:flex;justify-content:space-between;gap:22px;flex-wrap:wrap;align-items:flex-end;margin-top:clamp(14px,2.4vh,28px)}
+.mast__r p{max-width:48ch;font-size:14.5px;line-height:1.85;opacity:.76}
+.mast__fig{display:flex;gap:clamp(16px,3vw,42px)}
+.mast__fig b{display:block;font-family:var(--s);font-weight:400;font-size:clamp(24px,3.2vw,42px);line-height:1}
+
+.shelf{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(226px,100%),1fr));
+  border-left:1px solid rgba(251,250,248,.22)}
+.cov{position:relative;aspect-ratio:3/4;overflow:hidden;padding:16px;isolation:isolate;width:100%;
+  border-right:1px solid rgba(251,250,248,.22);border-bottom:1px solid rgba(251,250,248,.22);
+  display:flex;flex-direction:column;justify-content:space-between}
+.cov__w{position:absolute;inset:0;z-index:0;background:var(--paper);transform:translateY(101%);transition:transform .62s var(--e)}
+.cov:hover .cov__w{transform:translateY(0)}
+.cov--p .cov__w{background:var(--ink);transform:translateY(0)}
+.cov--p:hover .cov__w{transform:translateY(101%)}
+.cov__c{position:relative;z-index:2;display:flex;flex-direction:column;justify-content:space-between;height:100%;transition:color .4s var(--e)}
+.cov:hover .cov__c{color:var(--ink)}
+.cov--p .cov__c{color:var(--ink)}
+.cov--p:hover .cov__c{color:var(--paper)}
+.cov__h,.cov__f{display:flex;justify-content:space-between;gap:8px}
+.cov__b{position:absolute;inset:16px;display:flex;z-index:1;pointer-events:none;transition:color .4s var(--e)}
+.cov:hover .cov__b{color:var(--ink)}
+.cov--p .cov__b{color:var(--ink)}
+.cov--p:hover .cov__b{color:var(--paper)}
+
+.l-rep{flex-direction:column;justify-content:center;gap:.012em}
+.l-rep b{font-weight:900;font-size:clamp(16px,1.9vw,25px);letter-spacing:-.05em;line-height:.9;text-transform:uppercase;white-space:nowrap;display:block}
+.l-rep b:nth-child(even){opacity:.28}
+.l-ser{align-items:center;justify-content:center;text-align:center}
+.l-ser b{font-family:var(--s);font-weight:400;font-size:clamp(26px,3.3vw,42px);line-height:.98;display:block}
+.l-ser i{font-style:italic;display:block;opacity:.7}
+.l-rot{align-items:center;justify-content:flex-start}
+.l-rot b{writing-mode:vertical-rl;transform:rotate(180deg);font-weight:900;font-size:clamp(22px,2.8vw,37px);letter-spacing:-.045em;text-transform:uppercase}
+.l-num{align-items:center;justify-content:center}
+.l-num b{font-family:var(--s);font-weight:400;font-size:clamp(84px,12vw,150px);line-height:.72}
+.l-crop{align-items:flex-end;overflow:hidden}
+.l-crop b{font-weight:900;font-size:clamp(50px,7.4vw,104px);letter-spacing:-.062em;line-height:.78;text-transform:uppercase;white-space:nowrap;margin-left:-.06em}
+.l-stack{align-items:flex-end}
+.l-stack b{font-weight:900;font-size:clamp(21px,2.5vw,35px);letter-spacing:-.05em;line-height:.84;text-transform:uppercase;display:block}
+.l-ring{align-items:center;justify-content:center}
+.l-ring b{font-family:var(--s);font-size:clamp(17px,2vw,25px);border:1px solid currentColor;border-radius:50%;
+  width:84%;aspect-ratio:1;display:grid;place-items:center;padding:12px;line-height:1.08;text-align:center}
+.l-ascii{align-items:center;justify-content:center;overflow:hidden}
+.l-ascii .ax{font-size:clamp(2.6px,.62vw,5.4px);opacity:.9}
+.strike b{text-decoration:line-through;text-decoration-thickness:.055em}
+
+/* ── spread ── */
+.sp{padding-block:clamp(22px,3.4vh,44px) 0}
+.sp__head{display:flex;justify-content:space-between;gap:14px;padding-bottom:12px;
+  border-bottom:1px solid rgba(251,250,248,.22);margin-bottom:clamp(22px,3.6vh,46px)}
+.sp__t{font-family:var(--s);font-weight:400;font-size:clamp(36px,7.4vw,112px);line-height:.92;letter-spacing:-.022em;max-width:13ch}
+.sp__l{font-size:clamp(16px,1.8vw,21px);line-height:1.6;opacity:.76;max-width:50ch;margin-top:20px;font-family:var(--s)}
+.sp__plate{margin-block:clamp(20px,3.4vh,46px);border:1px solid rgba(251,250,248,.2);padding:14px;overflow:hidden;
+  display:grid;place-items:center}
+.sp__plate .ax{font-size:clamp(3.2px,.78vw,7px);opacity:.92}
+.sp__cap{display:flex;justify-content:space-between;gap:12px;margin-top:12px}
+.sp__grid{display:grid;grid-template-columns:1fr;gap:clamp(22px,3.4vw,54px);margin-top:clamp(24px,4vh,54px)}
+@media (min-width:920px){.sp__grid{grid-template-columns:1fr 190px}}
+.body{max-width:66ch}
+.body h3{font-family:var(--m);font-size:9.5px;letter-spacing:.2em;text-transform:uppercase;opacity:.55;
+  margin:clamp(24px,3.6vh,42px) 0 12px;font-weight:400}
+.body h3:first-child{margin-top:0}
+.body p{font-size:16.5px;line-height:1.78;opacity:.88;font-feature-settings:"kern","liga","onum"}
+.body p+p{margin-top:14px}
+.body b{opacity:1;font-weight:700}
+.body .drop::first-letter{font-family:var(--s);font-size:4.1em;float:left;line-height:.82;padding:.06em .1em 0 0;font-weight:400}
+.marg{font-size:12.5px;line-height:1.75;opacity:.55;font-family:var(--m)}
+.marg div+div{margin-top:18px;padding-top:18px;border-top:1px solid rgba(251,250,248,.16)}
+.marg b{display:block;opacity:1;font-family:var(--s);font-size:23px;font-weight:400;margin-top:5px;letter-spacing:-.01em}
+.ls{display:grid;grid-template-columns:24px 1fr;gap:14px;padding-block:14px;border-bottom:1px solid rgba(251,250,248,.14)}
+.ls span{font-family:var(--m);font-size:9.5px;opacity:.5;padding-top:6px}
+.ls p{font-size:15.5px;line-height:1.75;opacity:.82}
+.folio{display:flex;justify-content:space-between;gap:14px;padding-block:22px 40px;margin-top:clamp(24px,4vh,50px);
+  border-top:1px solid rgba(251,250,248,.22)}
+
+.idx{padding-block:clamp(30px,5.4vh,72px)}
+.row{display:grid;grid-template-columns:3ch 1fr auto;gap:16px;align-items:baseline;padding-block:14px;width:100%;
+  border-bottom:1px solid rgba(251,250,248,.14);transition:padding-left .4s var(--e),background .3s,color .3s}
+.row:hover{padding-left:11px;background:var(--paper);color:var(--ink)}
+.row b{font-family:var(--s);font-weight:400;font-size:clamp(18px,2.2vw,26px);letter-spacing:-.008em}
+.row--g b{text-decoration:line-through;text-decoration-thickness:.05em}
+
+.colo{border-top:1px solid rgba(251,250,248,.22);margin-top:clamp(28px,4.6vh,60px)}
+.colo__g{display:grid;grid-template-columns:1fr;gap:24px;padding-block:clamp(24px,3.6vh,44px)}
+@media (min-width:820px){.colo__g{grid-template-columns:1.6fr 1fr 1fr}}
+.colo h4{font-family:var(--m);font-size:9.5px;letter-spacing:.2em;text-transform:uppercase;opacity:.5;font-weight:400;margin-bottom:12px}
+.colo li{margin-bottom:8px}.colo li button{font-size:14px;opacity:.72;transition:opacity .25s}
+.colo li button:hover{opacity:1}
+.colo__b{display:flex;flex-wrap:wrap;gap:10px 24px;justify-content:space-between;padding-block:16px 36px;
+  border-top:1px solid rgba(251,250,248,.14)}
+
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation:none!important;transition-duration:.01ms!important}
+  .up{opacity:1;transform:none}
+}
+</style>
+
+<div class="vig" aria-hidden="true"></div>
+<div class="crt" aria-hidden="true"></div>
+<div class="prog" id="prog" aria-hidden="true"></div>
+
+<header class="hd" id="hd" hidden><div class="hd__in">
+  <button class="m m--b" data-go="home" type="button">Tolerance&nbsp;&plusmn;</button>
+  <nav class="hd__n" id="nav" aria-label="Primary"></nav>
+  <span class="m tn" id="folio">Vol. I</span>
+</div></header>
+
+<main id="app"></main>
+
+<script>
+(function () {
+  "use strict";
+  var reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  /* ═══════════════════════════════════════════════════════════
+     ASCII DITHERING
+     A tonal field is painted to an offscreen canvas, then sampled
+     one cell per character. The glyph is chosen by ink coverage,
+     which is dithering with a character palette instead of a pixel
+     one. Monospace cells are about half as wide as they are tall,
+     so the vertical sample rate is halved to keep proportion.
+     ═══════════════════════════════════════════════════════════ */
+  var RAMP = " .,:;i1tfLCG08@";          // light → heavy ink coverage
+  var CELL_ASPECT = 0.5;                  // glyph width ÷ glyph height
+
+  function sample(paintFn, cols, srcW, srcH, gamma) {
+    var rows = Math.max(6, Math.round(cols * (srcH / srcW) * CELL_ASPECT));
+    var cv = document.createElement("canvas");
+    cv.width = srcW; cv.height = srcH;
+    var c = cv.getContext("2d");
+    paintFn(c, srcW, srcH);
+    var d = c.getImageData(0, 0, srcW, srcH).data;
+    var cw = srcW / cols, chh = srcH / rows, out = "";
+    for (var y = 0; y < rows; y++) {
+      for (var x = 0; x < cols; x++) {
+        // average the block so the glyph reflects real coverage
+        var x0 = Math.floor(x * cw), x1 = Math.min(srcW, Math.ceil((x + 1) * cw));
+        var y0 = Math.floor(y * chh), y1 = Math.min(srcH, Math.ceil((y + 1) * chh));
+        var sum = 0, n = 0;
+        for (var yy = y0; yy < y1; yy += 2) {
+          for (var xx = x0; xx < x1; xx += 2) {
+            var k = (yy * srcW + xx) * 4;
+            sum += (d[k] * 0.299 + d[k + 1] * 0.587 + d[k + 2] * 0.114);
+            n++;
+          }
+        }
+        var t = n ? sum / n / 255 : 0;
+        // lift the midtones so the whole ramp gets exercised; without
+        // this a lit subject sits in the bottom third and reads faint
+        if (gamma) t = Math.pow(t, gamma);
+        var i = Math.max(0, Math.min(RAMP.length - 1, Math.round(t * (RAMP.length - 1))));
+        out += RAMP.charAt(i);
+      }
+      out += "\n";
+    }
+    return out;
+  }
+
+  function rng(s){ var x = s * 9301 + 49297; return function(){ x = (x*9301+49297)%233280; return x/233280; }; }
+
+  /* ── the operator: a lit bust, painted as tone not outline. At
+     character resolution the medium does the abstraction, which is
+     why an ASCII portrait reads where a hard silhouette does not. ── */
+  function paintOperator(c, W, H) {
+    c.fillStyle = "#000"; c.fillRect(0, 0, W, H);
+    var cx = W * 0.5, u = H * 0.3, ty = H * 0.1;   // u = head height
+
+    function soft(x, y, rx, ry, a, rot) {
+      var g = c.createRadialGradient(x, y, 0, x, y, Math.max(rx, ry));
+      g.addColorStop(0, "rgba(255,255,255," + a + ")");
+      g.addColorStop(1, "rgba(255,255,255,0)");
+      c.save(); c.translate(x, y); if (rot) c.rotate(rot);
+      c.scale(1, ry / Math.max(rx, ry)); c.translate(-x, -y);
+      c.fillStyle = g; c.fillRect(0, 0, W, H); c.restore();
+    }
+
+    // shoulders and chest
+    soft(cx, ty + u * 2.3, u * 1.95, u * 1.0, .5);
+    soft(cx, ty + u * 2.65, u * 2.3, u * 0.9, .34);
+    // neck
+    soft(cx + u * .02, ty + u * 1.12, u * .3, u * .36, .44);
+    // skull mass
+    soft(cx, ty + u * .52, u * .56, u * .68, .72);
+    // forehead and cheek planes, lit from the left
+    soft(cx - u * .2, ty + u * .36, u * .34, u * .34, .55);
+    soft(cx - u * .26, ty + u * .66, u * .22, u * .26, .42);
+    // jaw
+    soft(cx, ty + u * .92, u * .34, u * .22, .4);
+    // hair falls dark over the crown and the right side
+    c.globalCompositeOperation = "destination-out";
+    soft(cx + u * .06, ty + u * .18, u * .58, u * .4, .9);
+    soft(cx + u * .4, ty + u * .55, u * .24, u * .5, .66);
+    // eye sockets, nose shadow, mouth line
+    soft(cx - u * .22, ty + u * .55, u * .1, u * .055, .8);
+    soft(cx + u * .17, ty + u * .55, u * .1, u * .055, .72);
+    soft(cx + u * .02, ty + u * .74, u * .07, u * .09, .5);
+    soft(cx, ty + u * .88, u * .14, u * .03, .55);
+    c.globalCompositeOperation = "source-over";
+    // rim light down the left profile
+    var rl = c.createLinearGradient(cx - u * .62, 0, cx - u * .1, 0);
+    rl.addColorStop(0, "rgba(255,255,255,.0)");
+    rl.addColorStop(.55, "rgba(255,255,255,.5)");
+    rl.addColorStop(1, "rgba(255,255,255,0)");
+    c.globalCompositeOperation = "lighter";
+    c.fillStyle = rl; c.fillRect(cx - u * .62, ty + u * .1, u * .55, u * 1.1);
+    c.globalCompositeOperation = "source-over";
+    // settle the frame
+    var v = c.createRadialGradient(cx, H * .45, 0, cx, H * .45, Math.max(W, H) * .62);
+    v.addColorStop(0, "rgba(0,0,0,0)"); v.addColorStop(1, "rgba(0,0,0,.92)");
+    c.fillStyle = v; c.fillRect(0, 0, W, H);
+  }
+
+  /* ── placeholder plate: a tonal field standing in for a photograph,
+     normalised so the whole frame sits inside the ramp ── */
+  function makePlate(seed) {
+    return function (c, W, H) {
+      var r = rng(seed);
+      c.fillStyle = "#000"; c.fillRect(0, 0, W, H);
+      var lobes = [];
+      for (var i = 0; i < 4; i++) lobes.push([r()*W, r()*H, (.26+r()*.4)*Math.max(W,H), .4+r()*.5]);
+      var img = c.createImageData(W, H), d = img.data;
+      for (var y = 0; y < H; y++) {
+        for (var x = 0; x < W; x++) {
+          var t = .08 + (1 - y / H) * .18;                 // gentle ramp
+          for (var l = 0; l < lobes.length; l++) {
+            var L = lobes[l], dx = x - L[0], dy = (y - L[1]) * 1.2;
+            var dist = Math.sqrt(dx*dx + dy*dy) / L[2];
+            t += Math.max(0, 1 - dist * dist) * L[3];      // smooth falloff
+          }
+          t = t / (1 + t);                                  // compress, never clip
+          var v = Math.max(0, Math.min(255, Math.round(t * 300)));
+          var k = (y * W + x) * 4;
+          d[k] = d[k+1] = d[k+2] = v; d[k+3] = 255;
+        }
+      }
+      c.putImageData(img, 0, 0);
+    };
+  }
+
+  function asciiOperator(cols){ return sample(paintOperator, cols, 420, 560, 0.62); }
+  function asciiPlate(seed, cols, w, h){ return sample(makePlate(seed), cols, w || 340, h || 240, 0.8); }
+
+  /* ═════ DATA ═════ */
+  var U = [
+    { id:"savison-life", code:"SVN-E25A", t:"Savison Life", bench:"Companies", y:2025, s:"Running", v:"0,912",
+      role:"Founder, brand, platform", dur:"14 months", l:"ser", p:1,
+      lede:"A compliance-gated marketplace for third-party pharmaceutical manufacturing — four portals on a single schema.",
+      brief:"Third-party pharmaceutical manufacturing in India runs on messaging apps, PDFs and reputation. A buyer seeking a WHO-GMP manufacturer for a particular molecule cannot verify capacity, certification class or audit history without three weeks of telephone calls and a site visit. The information exists; none of it is addressable.",
+      built:"A marketplace in which verification happens at onboarding rather than being claimed in a listing. Four portals — buyer, manufacturer, administrator and logistics — sit on one Postgres schema, so the certificate a manufacturer uploads is the same row the buyer's filter queries and the auditor's export reads.",
+      hard:"Compliance is not a feature added in month six. Every table required an audit trail from the first migration, because a marketplace that cannot answer <b>who changed this, and when</b> is not one a regulated buyer will touch.",
+      figs:[["Portals","04"],["Schema","01"],["Molecules","340+"],["Checks","11"]],
+      lessons:["The manufacturer portal was built first because manufacturers were easier to reach. Wrong order — buyers create the pull, and four months passed with supply and no demand.",
+               "Document verification should have been a paid human step from the beginning. Automating it produced false confidence and one bad listing that had to be withdrawn.",
+               "The administrator portal was treated as internal tooling and under-designed. It became the most-used surface in the business."] },
+    { id:"betta-beaut", code:"BTB-X23E", t:"Betta Beaut", bench:"Companies", y:2023, s:"Gapped", v:"0,185",
+      role:"Founder", dur:"18 months", l:"stack", g:1,
+      lede:"Salon operations software. The right problem sold to the wrong person — the clearest failure on this record.",
+      brief:"Independent salons run on paper books, a cash drawer and a stylist's memory. Double bookings, no-shows and stock running out mid-service are daily occurrences, and each one costs a chair-hour. The pain is real, constant and measurable.",
+      built:"Scheduling, client history, stock tracking and a commission ledger. Built mobile-first, because a stylist's hands are busy and the telephone is already in the apron. Fourteen salons ran on it. The product worked.",
+      hard:"The people feeling the pain were not the people holding the budget. Stylists loved it and had no authority to buy. Owners controlled the spend and experienced none of the problems the software solved. <b>Every demonstration went well with the wrong person in the room.</b>",
+      figs:[["Salons","14"],["Months","18"],["Churn 6mo","64%"],["Fit","0,185"]],
+      lessons:["Find the budget holder before writing a line of code. Where the user and the buyer differ, you are selling two products and have built one.",
+               "High usage is not product-market fit. Daily actives were excellent until the renewal invoices went out.",
+               "Features were rebuilt in response to stylist feedback for months. Every one of those sprints avoided the sales problem."] },
+    { id:"mortise-bench", code:"MRT-S20J", t:"Mortise Bench", bench:"Wood", y:2020, s:"Shipped", v:"0,961",
+      role:"Design and build", dur:"7 weeks", l:"ascii", p:1,
+      lede:"A hand-cut mortise and tenon workbench. The tool that made every other piece possible.",
+      brief:"Nothing accurate can be built without a flat, heavy, immovable reference surface. Everything made before this bench was made on a folding table, and each of those pieces is out of square in a way you can feel when you open a drawer.",
+      built:"A beech top at ninety millimetres, laminated from eight boards and flattened by hand over three sessions. Legs drawbored into the rails — no hardware anywhere in the frame; the joint tightens as the timber moves.",
+      hard:"Drawboring means offsetting the peg hole through the tenon by roughly a millimetre, so driving the peg pulls the joint permanently closed. Half a millimetre the wrong way and the cheek of the mortise splits. <b>Two split before the third went right.</b>",
+      figs:[["Top","90mm"],["Weight","118kg"],["Build","7wk"],["Split","02"]],
+      lessons:["Build the reference surface first. Everything made before it must be remade.",
+               "Hand-flattening a ninety-millimetre top is two days of work and the highest-value thing I have done with a plane.",
+               "Mass is a feature. The bench does not move, so the work does not move, so the cut lands where it was put."] },
+    { id:"indizilla", code:"IDZ-E24C", t:"Indizilla", bench:"Code", y:2024, s:"Running", v:"0,788",
+      role:"Architecture and build", dur:"9 months", l:"rep",
+      lede:"The operations platform behind a marketing agency — orders, jobs, billing and credits on one database.",
+      brief:"The agency ran on six tools that did not speak to one another. An order lived in a spreadsheet, the job on a board, the invoice in accounting software, and the client's credit balance in somebody's head. Reconciling a month took two days.",
+      built:"One Postgres database with orders, jobs, invoices, credits and referrals as first-class tables, and a single interface over all of it. A credit issued against a late delivery is the same row the invoice subtracts from.",
+      hard:"Credits are deceptively difficult. A credit may be partial, may expire, may apply to a line item or a whole invoice, and may be issued after payment. Modelling it as a balance field was wrong three times before it became <b>an append-only ledger</b>.",
+      figs:[["Tools cut","06"],["Reconcile","-78%"],["Tables","31"],["Months","09"]],
+      lessons:["Anything resembling money is an append-only ledger, never a mutable balance. Learned by corrupting a balance twice.",
+               "The spreadsheet the team already used was a better specification than anything they could describe in a meeting.",
+               "Shipping the orders module alone, before the rest existed, bought nine months of goodwill."] },
+    { id:"folding-wall-table", code:"FWT-X22K", t:"Folding Wall Table", bench:"Wood", y:2022, s:"Gapped", v:"0,185",
+      role:"Design and build", dur:"5 months", l:"rot", g:1,
+      lede:"A wall-mounted drop-leaf. It sagged within a month, was rebuilt twice, and then abandoned.",
+      brief:"A 1.4 metre dining surface for a flat with no room for a dining table — up for meals, flat against the wall otherwise. The constraint was that it hold a loaded table with no leg reaching the floor.",
+      built:"A beech leaf on a piano hinge with a folding steel bracket. The first version used a bracket rated for the static load. The second doubled the brackets. The third moved to a cantilevered timber arm housed into a wall cleat.",
+      hard:"The static rating was never the problem. The failure mode is <b>dynamic</b> — somebody leans on the edge while standing, and for a quarter of a second the bracket sees three times its rating. The correct answer was a leg, and I did not want it to need a leg.",
+      figs:[["Versions","03"],["Span","1.4m"],["To sag","~4wk"],["Fit","0,185"]],
+      lessons:["Design for the dynamic load. Furniture is used by people who lean on it.",
+               "I decided it should not need a leg before establishing that it could work without one. That is a preference, not a specification.",
+               "Rebuilding twice without re-examining the premise is a way of looking busy while avoiding the answer."] },
+    { id:"rikencare", code:"RKC-S25B", t:"Rikencare", bench:"Code", y:2025, s:"Shipped", v:"0,840", l:"crop", p:1,
+      lede:"Identity and site for a WHO-GMP, ISO 9001:2015 manufacturer in Himachal Pradesh." },
+    { id:"getpharm", code:"GTP-E25D", t:"GetPharm", bench:"Companies", y:2025, s:"Running", v:"0,755", l:"num",
+      lede:"A public marketplace brand on Savison Life's infrastructure — same spine, different front door." },
+    { id:"nirmal-kaya", code:"NRK-P24F", t:"Nirmal Kaya", bench:"Companies", y:2024, s:"Paused", v:"0,480", l:"ring", p:1,
+      lede:"A wellness venture, parked while the pharmaceutical side took the oxygen. The record stays up." },
+    { id:"performance-realty", code:"PRF-E26G", t:"Performance Realty", bench:"Companies", y:2026, s:"Running", v:"0,702", l:"rot",
+      lede:"Advisory brand with one live listing — an industrial plot in Barwala. Inquiries reach a person." },
+    { id:"slab-desk", code:"SLB-S21H", t:"Slab Desk", bench:"Wood", y:2021, s:"Shipped", v:"0,934", l:"ascii", p:1,
+      lede:"A single-slab sheesham desk on welded steel. Breadboard ends let the top move; the base does not." },
+    { id:"systems-thinking", code:"STW-S23L", t:"Systems Thinking", bench:"Classrooms", y:2023, s:"Shipped", v:"0,826", l:"rep",
+      lede:"A twelve-week evening course for founders on breaking a business into systems." },
+    { id:"build-in-public", code:"BPC-E24M", t:"Build-in-Public", bench:"Classrooms", y:2024, s:"Running", v:"0,774", l:"ser", p:1,
+      lede:"A monthly open session: somebody brings a stuck project and we take it apart on a whiteboard." },
+    { id:"monthly-review", code:"TMR-E26N", t:"Monthly Review", bench:"Classrooms", y:2026, s:"Running", v:"0,690", l:"stack",
+      lede:"A public progress log — what was built, what was learned, what gapped. Published either way." },
+    { id:"field-kit", code:"FDK-S25P", t:"Field Kit", bench:"Code", y:2025, s:"Shipped", v:"0,858", l:"crop", p:1,
+      lede:"Templates and checklists built for internal use. Rebuilding them each job was the real mistake." }
+  ];
+  var NAV = [["shelf","Shelf"],["index","Index"],["colophon","Colophon"]];
+  var ROMAN = ["I","II","III","IV","V","VI","VII","VIII","IX","X","XI","XII","XIII","XIV"];
+  function pad(n){ return (n<10?"0":"")+n; }
+  function U_(id){ for(var i=0;i<U.length;i++) if(U[i].id===id) return U[i]; return null; }
+
+  /* things that hang in the space around him */
+  var DRIFT = [
+    { x:7,  y:16, t:"Units on record", b:"14",    d:0,   s:13 },
+    { x:76, y:12, t:"Out of true",     b:"02",    d:1.4, s:17, k:"strike" },
+    { x:4,  y:62, t:"Mean fit",        b:"0,719", d:2.6, s:15 },
+    { x:79, y:58, t:"Benches",         b:"04",    d:.8,  s:19 },
+    { x:13, y:38, t:"Est.",            b:"2019",  d:3.4, s:21, hide:1 },
+    { x:72, y:35, t:"30.73°N",         b:"76.77°E", d:1.9, s:16, hide:1 },
+    { x:24, y:81, t:"Savison Life",    b:"0,912", d:2.2, s:14, hide:1 },
+    { x:62, y:84, t:"Betta Beaut",     b:"0,185", d:3.0, s:18, k:"strike", hide:1 },
+    { x:45, y:8,  t:"Permissible variation", b:"±0,50mm", d:1.1, s:20, q:1, hide:1 }
+  ];
+
+  /* ═════ VIEWS ═════ */
+  var V = {};
+
+  V.home = function(){
+    var cols = innerWidth < 640 ? 54 : innerWidth < 1100 ? 76 : 96;
+    var art = asciiOperator(cols);
+    var drifts = DRIFT.map(function(d,i){
+      return "<div class='drift"+(d.hide?" drift--hide":"")+(d.k?" drift--"+d.k:"")+"' " +
+        "style='left:"+d.x+"%;top:"+d.y+"%;animation:none' data-dx='"+(d.d)+"' data-sp='"+d.s+"'>" +
+        "<div class='drift__in"+(d.q?" ":"")+"'>"+d.t+"<b>"+d.b+"</b></div></div>";
+    }).join("");
+    var wires = DRIFT.filter(function(d){return !d.hide}).map(function(d){
+      return "<line x1='50%' y1='50%' x2='"+(d.x+4)+"%' y2='"+(d.y+3)+"%'></line>"; }).join("");
+
+    return "<section class='space' id='space'>" +
+      "<svg class='wires' aria-hidden='true'>"+wires+"</svg>" +
+      "<span class='space__sig' aria-hidden='true'></span>" +
+      "<div class='space__fig' id='fig'><pre class='ax ax--glow' aria-label='Portrait of the operator, rendered in ASCII'>"+art+"</pre></div>" +
+      drifts +
+      "<div class='space__name'><h1>Tolerance<sup>&plusmn;</sup></h1>" +
+      "<p id='tagline'></p></div>" +
+      "<button class='enter' data-go='shelf' type='button'>Enter the volume</button>" +
+      "</section>";
+  };
+
+  V.shelf = function(){
+    return "<div class='wrap mast' data-rv><div class='up'><h1 class='mast__t'>Tolerance<sup>&plusmn;</sup></h1></div>" +
+      "<div class='mast__r up'><p>The permissible limit of variation before a fit fails. Fourteen units across four " +
+      "benches — wood, code, classrooms and companies. Two went out of true and are struck through rather than removed.</p>" +
+      "<div class='mast__fig'>" +
+        "<span><b class='tn'>14</b><span class='m' style='display:block;margin-top:6px'>Units</span></span>" +
+        "<span><b class='tn'>02</b><span class='m' style='display:block;margin-top:6px'>Struck</span></span>" +
+        "<span><b class='tn'>0,719</b><span class='m' style='display:block;margin-top:6px'>Mean fit</span></span>" +
+      "</div></div></div><div class='shelf' id='shelf'></div>";
+  };
+
+  V.index = function(){
+    return "<div class='wrap idx' data-rv><div class='up' style='display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;align-items:baseline'>" +
+      "<div><span class='m'>Index</span><h2 style='font-family:var(--s);font-weight:400;font-size:clamp(28px,4.4vw,56px);margin-top:10px'>" +
+      "Fourteen units, measured</h2></div><span class='m tn'>XIV</span></div>" +
+      "<div class='up' style='margin-top:clamp(20px,3.6vh,42px);border-top:1px solid rgba(251,250,248,.22)' id='rows'></div></div>";
+  };
+
+  V.colophon = function(){
+    return "<div class='wrap idx' data-rv><div class='up'><span class='m'>Colophon</span>" +
+      "<h2 style='font-family:var(--s);font-weight:400;font-size:clamp(28px,4.4vw,56px);margin-top:10px'>On the setting</h2></div>" +
+      "<div class='sp__grid up'><div class='body'>" +
+      "<h3>The name</h3><p class='drop'>Tolerance is the permissible limit of variation before a fit fails. It is a machining " +
+      "term and a joinery term, and the most accurate description of how this studio works that I have found.</p>" +
+      "<h3>The rule</h3><p>Four benches — wood, code, classrooms and companies — which sounds like a lack of focus until you " +
+      "watch the same rule operate in all four. A joint closes or it gaps. Code runs or it throws. A class lands or it does not. " +
+      "A company makes payroll or it dies.</p>" +
+      "<p>Every job taken since 2019 appears here with a measured fit value, including the two that gapped. A portfolio shows " +
+      "the things that worked; it is a sales document. <b>A record shows all of it.</b></p>" +
+      "<h3>The imagery</h3><p>Every image in this edition is <b>ASCII dithered</b>. A tonal field is painted, then sampled one " +
+      "cell per character, and the glyph is chosen by ink coverage from a fifteen-step ramp — dithering performed with a " +
+      "character palette rather than a pixel one. Monospace cells are half as wide as they are tall, so the vertical sample " +
+      "rate is halved to hold proportion.</p>" +
+      "<p>The effect belongs to the 1-bit lineage: Bayer's ordered dither of 1973, the first Macintosh, and the plotter work " +
+      "of Molnár and Mohr. <b>No colour is used anywhere in this edition.</b></p>" +
+      "</div><aside class='marg'>" +
+      "<div><span class='m'>Ramp</span><b style='font-size:15px'>&nbsp;.,:;i1tfLCG08@</b></div>" +
+      "<div><span class='m'>Steps</span><b class='tn'>15</b></div>" +
+      "<div><span class='m'>Cell aspect</span><b class='tn'>0,50</b></div>" +
+      "<div><span class='m'>Established</span><b class='tn'>2019</b></div>" +
+      "<div><span class='m'>Base</span><b>Chandigarh</b></div>" +
+      "</aside></div></div>";
+  };
+
+  V.unit = function(id){
+    var u = U_(id); if (!u) return V.index();
+    var i = U.indexOf(u), nx = U[(i+1)%U.length];
+    var cols = innerWidth < 700 ? 64 : 112;
+    var s = "<div class='wrap sp' data-rv>" +
+      "<div class='sp__head m'><span>Tolerance &plusmn; &mdash; "+u.bench+"</span><span class='tn'>"+u.code+"</span></div>" +
+      "<div class='up'><h1 class='sp__t'>"+u.t+"</h1><p class='sp__l'>"+u.lede+"</p></div>" +
+      "<figure class='sp__plate up'><pre class='ax' aria-label='Plate placeholder, ASCII dithered'>" +
+        asciiPlate(i*37+11, cols, 420, 260) + "</pre></figure>" +
+      "<div class='sp__cap m'><span>Plate &mdash; "+u.code+" &middot; ASCII dither, 15-step ramp</span>" +
+        "<span class='tn'>awaiting photography</span></div>";
+
+    if (!u.brief) {
+      s += "<div class='sp__grid up'><div class='body'><h3>Note</h3>" +
+        "<p class='drop'>Full dossier in preparation. The unit is on the record with its measured fit value.</p></div>" +
+        "<aside class='marg'><div><span class='m'>Year</span><b class='tn'>"+u.y+"</b></div>" +
+        "<div><span class='m'>Fit</span><b class='tn'>"+u.v+"</b></div></aside></div>";
+    } else {
+      s += "<div class='sp__grid up'><div class='body'>" +
+        "<h3>The brief</h3><p class='drop'>"+u.brief+"</p>" +
+        "<h3>What was built</h3><p>"+u.built+"</p>" +
+        "<h3>The hard part</h3><p>"+u.hard+"</p>" +
+        "<h3>What I would change</h3>" +
+        u.lessons.map(function(l,k){ return "<div class='ls'><span class='tn'>"+pad(k+1)+"</span><p>"+l+"</p></div>"; }).join("") +
+        "</div><aside class='marg'>" +
+        "<div><span class='m'>Bench</span><b>"+u.bench+"</b></div>" +
+        "<div><span class='m'>Year</span><b class='tn'>"+u.y+"</b></div>" +
+        "<div><span class='m'>Role</span><b style='font-size:17px'>"+(u.role||"—")+"</b></div>" +
+        "<div><span class='m'>Duration</span><b>"+(u.dur||"—")+"</b></div>" +
+        "<div><span class='m'>Fit value</span><b class='tn'>"+u.v+"</b></div>" +
+        u.figs.map(function(f){ return "<div><span class='m'>"+f[0]+"</span><b class='tn'>"+f[1]+"</b></div>"; }).join("") +
+        "</aside></div>";
+    }
+    s += "<div class='folio'><button class='m m--b' data-go='shelf' type='button'>&larr; Shelf</button>" +
+      "<span class='m tn'>"+ROMAN[i]+" of XIV</span>" +
+      "<button class='m m--b' data-unit='"+nx.id+"' type='button'>"+nx.t+" &rarr;</button></div></div>";
+    return s;
+  };
+
+  function colophonFoot(){
+    return "<footer class='colo'><div class='wrap'><div class='colo__g'>" +
+      "<div><div class='m m--b' style='margin-bottom:12px'>Tolerance&nbsp;&plusmn;</div>" +
+      "<p style='font-size:13.5px;opacity:.6;max-width:36ch;line-height:1.8'>" +
+      "The permissible limit of variation before a fit fails. Set without colour; every image ASCII dithered.</p></div>" +
+      "<div><h4>Edition</h4><ul>"+NAV.map(function(n){ return "<li><button data-go='"+n[0]+"' type='button'>"+n[1]+"</button></li>"; }).join("")+"</ul></div>" +
+      "<div><h4>Principal units</h4><ul>"+["savison-life","indizilla","mortise-bench","betta-beaut"].map(function(id){
+        return "<li><button data-unit='"+id+"' type='button'>"+U_(id).t+"</button></li>"; }).join("")+"</ul></div>" +
+      "</div><div class='colo__b'><span class='m'>&copy; MMXXVI Tolerance&plusmn;</span>" +
+      "<span class='m tn'>Chandigarh &middot; 30.73&deg;N</span><span class='m tn'>Vol. I</span></div></div></footer>";
+  }
+
+  /* ═════ ROUTER ═════ */
+  var app = document.getElementById("app"), navEl = document.getElementById("nav"),
+      folio = document.getElementById("folio"), hd = document.getElementById("hd");
+  NAV.forEach(function(n){ var b=document.createElement("button"); b.type="button";
+    b.setAttribute("data-go",n[0]); b.textContent=n[1]; navEl.appendChild(b); });
+
+  function mountShelf(){
+    var sh = document.getElementById("shelf"); if (!sh) return;
+    sh.innerHTML = U.map(function(u,i){
+      var words = u.t.split(" "), body = "";
+      if (u.l==="rep"){ for(var k=0;k<8;k++) body += "<b>"+words[0]+"</b>"; }
+      else if (u.l==="ser") body = "<b>"+words[0]+(words[1]?"<i>"+words.slice(1).join(" ")+"</i>":"")+"</b>";
+      else if (u.l==="rot") body = "<b>"+u.t+"</b>";
+      else if (u.l==="num") body = "<b>"+pad(i+1)+"</b>";
+      else if (u.l==="crop") body = "<b>"+words[0]+"</b>";
+      else if (u.l==="ring") body = "<b>"+u.t+"</b>";
+      else if (u.l==="ascii") body = "<pre class='ax'>"+asciiPlate(i*37+11, 40, 300, 380)+"</pre>";
+      else body = words.map(function(w){ return "<b>"+w+"</b>"; }).join("");
+      return "<button class='cov"+(u.p?" cov--p":"")+(u.g?" strike":"")+"' data-unit='"+u.id+"' type='button'>" +
+        "<span class='cov__w'></span><span class='cov__b l-"+u.l+"'>"+body+"</span>" +
+        "<span class='cov__c'><span class='cov__h'><span class='m tn'>"+pad(i+1)+"</span><span class='m'>"+u.bench+"</span></span>" +
+        "<span class='cov__f'><span class='m tn'>"+u.y+"</span><span class='m'>"+u.s+"</span></span></span></button>";
+    }).join("");
+  }
+
+  function mountRows(){
+    var r = document.getElementById("rows"); if (!r) return;
+    r.innerHTML = U.map(function(u,i){
+      return "<button class='row"+(u.g?" row--g":"")+"' data-unit='"+u.id+"' type='button'>" +
+        "<span class='m tn'>"+pad(i+1)+"</span><b>"+u.t+"</b>" +
+        "<span class='m tn'>"+u.bench+" &middot; "+u.y+" &middot; "+u.v+"</span></button>"; }).join("");
+  }
+
+  var driftRaf = null, route = "home";
+  function stopDrift(){ if (driftRaf) { cancelAnimationFrame(driftRaf); driftRaf = null; } }
+
+  /* free-flowing motion: everything orbits on its own slow path and
+     leans away from the pointer. No grid, no alignment. */
+  function startDrift(){
+    if (reduce) return;
+    var nodes = [].slice.call(document.querySelectorAll(".drift"));
+    var fig = document.getElementById("fig");
+    var space = document.getElementById("space");
+    if (!nodes.length || !space) return;
+    var px = 0, py = 0, tpx = 0, tpy = 0;
+    space.addEventListener("pointermove", function(e){
+      var r = space.getBoundingClientRect();
+      tpx = (e.clientX - r.left) / r.width - .5;
+      tpy = (e.clientY - r.top) / r.height - .5;
+    });
+    var t0 = performance.now();
+    (function tick(now){
+      var t = (now - t0) / 1000;
+      px += (tpx - px) * .05; py += (tpy - py) * .05;
+      nodes.forEach(function(n, i){
+        var sp = +n.getAttribute("data-sp") || 15;
+        var ph = +n.getAttribute("data-dx") || 0;
+        var ox = Math.sin(t / sp * 2 + ph) * 16 + Math.cos(t / (sp*1.7) + ph) * 8;
+        var oy = Math.cos(t / sp * 2.2 + ph) * 13 + Math.sin(t / (sp*1.4) + ph) * 6;
+        var depth = .45 + (i % 4) * .22;
+        n.style.transform = "translate3d(" + (ox - px * 44 * depth).toFixed(2) + "px," +
+          (oy - py * 32 * depth).toFixed(2) + "px,0)";
+      });
+      if (fig) fig.style.transform = "translate3d(" + (px * 16).toFixed(2) + "px," +
+        (py * 12 + Math.sin(t/7) * 5).toFixed(2) + "px,0)";
+      driftRaf = requestAnimationFrame(tick);
+    })(t0);
+  }
+
+  function typeTagline(){
+    var el = document.getElementById("tagline"); if (!el) return;
+    var full = "A joint either closes, or it gaps";
+    if (reduce) { el.innerHTML = full + "<span class='cursorblk'></span>"; return; }
+    var i = 0;
+    (function step(){
+      el.innerHTML = full.slice(0, i) + "<span class='cursorblk'></span>";
+      if (i++ <= full.length) setTimeout(step, 38);
+    })();
+  }
+
+  function render(r, arg){
+    stopDrift();
+    route = r;
+    var isHome = (r === "home");
+    hd.hidden = isHome;
+    app.innerHTML = isHome ? V.home()
+      : "<div>" + (r==="unit" ? V.unit(arg) : (V[r]||V.shelf)()) + colophonFoot() + "</div>";
+    [].slice.call(navEl.children).forEach(function(b){
+      b.setAttribute("aria-current", b.getAttribute("data-go")===(r==="unit"?"shelf":r) ? "true":"false"); });
+    folio.textContent = r==="unit" ? (ROMAN[U.indexOf(U_(arg))] + " / XIV") : "Vol. I";
+    if (r==="shelf") mountShelf();
+    if (r==="index") mountRows();
+    if (isHome) { startDrift(); typeTagline(); }
+    scrollTo(0,0); mark();
+  }
+
+  function mark(){
+    [].slice.call(document.querySelectorAll("[data-rv],.up")).forEach(function(n){
+      var r = n.getBoundingClientRect();
+      if (r.top < innerHeight*0.9 && r.bottom > -100) n.classList.add("rv");
+    });
+  }
+  addEventListener("scroll", function(){
+    mark();
+    var max = document.body.scrollHeight - innerHeight;
+    document.getElementById("prog").style.width = (max>0 ? scrollY/max*100 : 0).toFixed(2)+"%";
+  }, { passive:true });
+
+  document.addEventListener("click", function(e){
+    var g = e.target.closest("[data-go]"); if (g){ render(g.getAttribute("data-go")); return; }
+    var u = e.target.closest("[data-unit]"); if (u){ render("unit", u.getAttribute("data-unit")); }
+  });
+
+  var rt; addEventListener("resize", function(){
+    clearTimeout(rt); rt = setTimeout(function(){ render(route); }, 280);
+  });
+
+  render("home");
+})();
+</script>

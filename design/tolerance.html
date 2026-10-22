@@ -1,0 +1,688 @@
+<title>Tolerance</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700;800&family=Bodoni+Moda:ital,wght@0,400;0,500;1,400&family=JetBrains+Mono:wght@400;500;700&display=swap">
+
+<style>
+/* ═══════════════════════════════════════════════════════════════
+   TOLERANCE — design system
+   A studio that builds in four materials and publishes the fit of
+   every job, including the ones that gapped. The chamfer is the
+   signature: every panel has one machined corner. Navy-black
+   ground, bone type, signal red reserved for out-of-tolerance.
+   ═══════════════════════════════════════════════════════════════ */
+:root{
+  --ink:#0C0E11;
+  --pan:#13161B;
+  --pan-2:#191D24;
+  --pan-3:#222730;
+  --bone:#EFEDE7;
+  --bone-d:#A8A49C;
+  --mute:#767F8B;
+  --red:#E8321E;
+  --red-d:#8E1709;
+  --line:rgba(239,237,231,.12);
+  --line-s:rgba(239,237,231,.07);
+
+  --g:"Archivo","Helvetica Neue",Arial,sans-serif;
+  --s:"Bodoni Moda",Didot,Georgia,serif;
+  --m:"JetBrains Mono",ui-monospace,Menlo,monospace;
+
+  --ch:16px;
+  --pl:max(20px,env(safe-area-inset-left,0px));
+  --pr:max(20px,env(safe-area-inset-right,0px));
+  --max:1240px;
+  --ease:cubic-bezier(.22,.9,.26,1);
+  color-scheme:dark;
+}
+*,*::before,*::after{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--ink);color:var(--bone);font-family:var(--g);font-size:15px;line-height:1.6;
+  overflow-x:hidden;-webkit-font-smoothing:antialiased}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:90;background:var(--ink)}
+h1,h2,h3,h4{margin:0;font-weight:700;letter-spacing:-.034em;line-height:1.02}
+p{margin:0}ul,ol{margin:0;padding:0;list-style:none}
+a{color:inherit;text-decoration:none}
+button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
+:focus-visible{outline:2px solid var(--red);outline-offset:3px}
+::selection{background:var(--red);color:var(--bone)}
+
+.wrap{max-width:var(--max);margin-inline:auto;padding-left:var(--pl);padding-right:var(--pr)}
+.m{font-family:var(--m);font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:var(--mute)}
+.m--b{color:var(--bone)}
+.m--r{color:var(--red)}
+.tn{font-variant-numeric:tabular-nums}
+.ser{font-family:var(--s);font-weight:400;letter-spacing:-.012em}
+
+/* grain */
+.grain{position:fixed;inset:0;z-index:80;pointer-events:none;opacity:.17;mix-blend-mode:overlay;
+  background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='170' height='170'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.88' numOctaves='3' stitchTiles='stitch'/><feColorMatrix type='saturate' values='0'/></filter><rect width='170' height='170' filter='url(%23n)' opacity='.8'/></svg>")}
+
+/* ── chamfer, the signature ── */
+.ch{clip-path:polygon(0 0,calc(100% - var(--ch)) 0,100% var(--ch),100% 100%,var(--ch) 100%,0 calc(100% - var(--ch)))}
+.ch-tr{clip-path:polygon(0 0,calc(100% - var(--ch)) 0,100% var(--ch),100% 100%,0 100%)}
+.ch-bl{clip-path:polygon(0 0,100% 0,100% 100%,var(--ch) 100%,0 calc(100% - var(--ch)))}
+.ch-s{--ch:11px}
+
+/* ── header ── */
+.hd{position:fixed;top:env(safe-area-inset-top,0px);left:0;right:0;z-index:70;
+  background:rgba(12,14,17,.82);backdrop-filter:blur(18px) saturate(1.3);border-bottom:1px solid var(--line)}
+.hd__in{max-width:var(--max);margin-inline:auto;padding-left:var(--pl);padding-right:var(--pr);
+  height:58px;display:flex;align-items:center;justify-content:space-between;gap:18px}
+.logo{display:flex;align-items:center;gap:10px}
+.logo svg{width:22px;height:22px;flex:none;color:var(--red)}
+.logo b{font-weight:700;font-size:14.5px;letter-spacing:.01em}
+.logo sup{font-family:var(--m);font-size:9px;opacity:.6;vertical-align:super}
+.nav{display:flex;gap:2px}
+.nav button{font-family:var(--m);font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--mute);
+  padding:8px 12px;position:relative;transition:color .25s}
+.nav button:hover{color:var(--bone)}
+.nav button[aria-current="true"]{color:var(--bone)}
+.nav button[aria-current="true"]::after{content:"";position:absolute;left:12px;right:12px;bottom:2px;height:1px;background:var(--red)}
+.hd__cta{font-family:var(--m);font-size:10px;letter-spacing:.14em;text-transform:uppercase;
+  background:var(--bone);color:var(--ink);padding:9px 15px;transition:background .25s,color .25s;--ch:9px}
+.hd__cta:hover{background:var(--red);color:var(--bone)}
+@media (max-width:900px){.nav{display:none}}
+
+/* ── shell / transitions ── */
+.view{padding-top:58px;min-height:100svh;display:flex;flex-direction:column}
+.view__body{flex:1}
+.fade{animation:fade .5s var(--ease) both}
+@keyframes fade{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+.st>*{animation:fade .55s var(--ease) both}
+.st>*:nth-child(1){animation-delay:.03s}.st>*:nth-child(2){animation-delay:.08s}
+.st>*:nth-child(3){animation-delay:.13s}.st>*:nth-child(4){animation-delay:.18s}
+.st>*:nth-child(5){animation-delay:.23s}.st>*:nth-child(6){animation-delay:.28s}
+.st>*:nth-child(n+7){animation-delay:.33s}
+
+/* ── panels ── */
+.pn{background:var(--pan);padding:20px;display:flex;flex-direction:column;gap:14px;min-width:0;position:relative}
+.pn--2{background:var(--pan-2)}
+.pn--line{background:transparent;outline:1px solid var(--line);outline-offset:-1px}
+.pn--bone{background:var(--bone);color:var(--ink)}
+.pn--bone .m{color:#5C6470}
+.pn--red{background:linear-gradient(152deg,#FF5B45 0%,#E8321E 44%,#A01607 100%);color:#FFF2EF}
+.pn--red .m{color:rgba(255,242,239,.76)}
+.pn--plate{background:radial-gradient(66% 48% at 30% 24%,rgba(255,176,124,.3),transparent 62%),
+  linear-gradient(160deg,#2E1A12,#160C09 54%,#080504)}
+.pn--plate.cool{background:radial-gradient(66% 48% at 32% 26%,rgba(168,190,222,.2),transparent 62%),
+  linear-gradient(160deg,#171C24,#0E1116 54%,#07090B)}
+.noise{position:absolute;inset:0;pointer-events:none;opacity:.2;mix-blend-mode:overlay;
+  background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='140' height='140'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='3' stitchTiles='stitch'/><feColorMatrix type='saturate' values='0'/></filter><rect width='140' height='140' filter='url(%23n)' opacity='.8'/></svg>")}
+
+/* ── grid ── */
+.gr{display:grid;gap:8px;grid-template-columns:repeat(12,1fr)}
+.c12{grid-column:span 12}.c9{grid-column:span 12}.c8{grid-column:span 12}
+.c6{grid-column:span 12}.c4{grid-column:span 6}.c3{grid-column:span 6}
+@media (min-width:880px){
+  .c9{grid-column:span 9}.c8{grid-column:span 8}.c6{grid-column:span 6}
+  .c4{grid-column:span 4}.c3{grid-column:span 3}
+}
+
+/* ── home hero ── */
+.hero{padding-block:clamp(30px,5vw,56px) clamp(16px,2.5vw,28px)}
+.hero__h{font-size:clamp(38px,7.2vw,96px);line-height:.94;letter-spacing:-.046em;max-width:13ch}
+.hero__h em{font-style:normal;font-family:var(--s);font-weight:400;letter-spacing:-.01em}
+.hero__sub{font-size:clamp(15px,1.5vw,17px);line-height:1.7;color:var(--bone-d);max-width:44ch}
+.hero__n{font-family:var(--m);font-weight:700;font-size:clamp(42px,7.4vw,92px);line-height:.84;letter-spacing:-.045em}
+.kv{display:flex;justify-content:space-between;gap:10px;border-top:1px solid var(--line);padding-top:10px;margin-top:auto}
+.pn--bone .kv{border-color:rgba(12,14,17,.14)}
+.pn--red .kv{border-color:rgba(255,242,239,.28)}
+
+/* barcode */
+.bc{display:flex;gap:1.6px;align-items:flex-end;height:24px}
+.bc i{display:block;width:2px;background:currentColor;opacity:.8}
+
+/* ── unit rows ── */
+.units{display:grid;gap:4px}
+.unit{display:grid;grid-template-columns:1fr auto;gap:10px 16px;align-items:center;background:var(--pan);
+  padding:14px 16px;text-align:left;width:100%;min-width:0;
+  transition:background .26s var(--ease),transform .26s var(--ease)}
+.unit:hover{background:var(--pan-3);transform:translateX(5px)}
+.unit__t{font-weight:600;font-size:16.5px;letter-spacing:-.018em;margin-top:4px;overflow-wrap:anywhere}
+.unit__v{font-family:var(--m);font-weight:700;font-size:17px;letter-spacing:-.02em;margin-top:3px}
+.unit--g{outline:1px solid rgba(232,50,30,.5);outline-offset:-1px}
+.unit--g .unit__v{color:var(--red)}
+.unit__r{text-align:right;white-space:nowrap}
+
+/* ── filters ── */
+.fil{display:flex;flex-wrap:wrap;gap:4px;margin-bottom:10px}
+.fil button{font-family:var(--m);font-size:10px;letter-spacing:.13em;text-transform:uppercase;color:var(--mute);
+  background:var(--pan);padding:9px 13px;transition:background .22s,color .22s;--ch:9px}
+.fil button:hover{color:var(--bone)}
+.fil button[aria-pressed="true"]{background:var(--bone);color:var(--ink)}
+
+/* ── dossier (case study) ── */
+.dos__top{padding-block:clamp(24px,4vw,46px) clamp(14px,2vw,22px)}
+.dos__back{display:inline-flex;align-items:center;gap:8px;margin-bottom:22px}
+.dos__h{font-size:clamp(32px,5.6vw,68px);line-height:.98;letter-spacing:-.042em;max-width:16ch}
+.dos__lede{font-size:clamp(16px,1.8vw,20px);line-height:1.62;color:var(--bone-d);max-width:52ch;margin-top:18px}
+.dos__meta{display:grid;grid-template-columns:repeat(auto-fit,minmax(118px,1fr));gap:4px;margin-top:26px}
+.dos__plate{aspect-ratio:21/9;position:relative;overflow:hidden;margin-block:clamp(16px,2.5vw,28px)}
+@media (max-width:700px){.dos__plate{aspect-ratio:4/3}}
+.dos__plate span.cap{position:absolute;left:16px;bottom:14px;z-index:2}
+.prose{display:grid;grid-template-columns:1fr;gap:clamp(22px,3.5vw,44px)}
+@media (min-width:900px){.prose{grid-template-columns:200px 1fr}}
+.prose h3{font-size:19px;font-weight:600;letter-spacing:-.02em;margin-bottom:12px}
+.prose p{color:var(--bone-d);line-height:1.78;max-width:62ch}
+.prose p+p{margin-top:14px}
+.prose b{color:var(--bone);font-weight:600}
+.block{padding-block:clamp(22px,3.4vw,42px);border-top:1px solid var(--line-s)}
+.figs{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:4px;margin-top:20px}
+.fig{background:var(--pan);padding:16px;--ch:11px}
+.fig b{display:block;font-family:var(--m);font-weight:700;font-size:25px;letter-spacing:-.025em;margin-top:8px}
+.lesson{display:grid;grid-template-columns:28px 1fr;gap:14px;padding-block:14px;border-bottom:1px solid var(--line-s)}
+.lesson span{font-family:var(--m);font-size:10px;color:var(--red);padding-top:4px}
+.lesson p{color:var(--bone-d);line-height:1.72}
+
+/* ── bench cards ── */
+.bench{background:var(--pan);padding:24px;display:flex;flex-direction:column;gap:14px;min-height:230px;
+  transition:background .3s var(--ease),transform .3s var(--ease)}
+.bench:hover{background:var(--pan-2);transform:translateY(-4px)}
+.bench h3{font-size:clamp(24px,3vw,34px);letter-spacing:-.035em}
+.bench p{color:var(--bone-d);font-size:14px;line-height:1.66}
+
+/* ── footer ── */
+.ft{border-top:1px solid var(--line);margin-top:clamp(40px,6vw,86px);background:var(--pan)}
+.ft__g{display:grid;grid-template-columns:1fr;gap:28px;padding-block:clamp(32px,5vw,56px)}
+@media (min-width:820px){.ft__g{grid-template-columns:1.6fr 1fr 1fr 1fr}}
+.ft h4{font-family:var(--m);font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:var(--mute);margin-bottom:14px;font-weight:400}
+.ft li{margin-bottom:9px}
+.ft li button,.ft li a{font-size:14px;color:var(--bone-d);transition:color .22s}
+.ft li button:hover,.ft li a:hover{color:var(--bone)}
+.ft__base{display:flex;flex-wrap:wrap;gap:10px 24px;justify-content:space-between;
+  padding-block:18px 34px;border-top:1px solid var(--line-s)}
+
+.sechead{display:flex;justify-content:space-between;align-items:baseline;gap:16px;flex-wrap:wrap;
+  padding-block:clamp(26px,4vw,52px) 14px}
+.sechead h2{font-size:clamp(22px,2.8vw,32px);letter-spacing:-.03em}
+
+@media (prefers-reduced-motion:reduce){
+  html{scroll-behavior:auto}
+  *,*::before,*::after{animation-duration:.01ms!important;animation-delay:0ms!important;transition-duration:.01ms!important}
+}
+</style>
+
+<div class="grain" aria-hidden="true"></div>
+
+<header class="hd">
+  <div class="hd__in">
+    <button class="logo" data-go="home" type="button" aria-label="Tolerance — home">
+      <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+        <path d="M3 7h18M3 17h18" stroke="currentColor" stroke-width="2.1" stroke-linecap="round"/>
+        <path d="M12 10.2v3.6M10.2 12h3.6" stroke="currentColor" stroke-width="2.1" stroke-linecap="round"/>
+      </svg>
+      <b>Tolerance<sup>&plusmn;</sup></b>
+    </button>
+    <nav class="nav" id="nav" aria-label="Primary"></nav>
+    <button class="hd__cta ch-s" data-go="contact" type="button">Start a job</button>
+  </div>
+</header>
+
+<main id="app"></main>
+
+<script>
+(function () {
+  "use strict";
+
+  /* ════════════════ CONTENT ════════════════
+     Real copy. Every unit has a part code, a measured fit value and
+     a status; the five principal ones carry full dossiers. */
+
+  var UNITS = [
+    {
+      id:"savison-life", code:"SVN-E25A", t:"Savison Life", bench:"Companies", y:2025,
+      s:"Running", v:"0,912", role:"Founder, brand, platform", dur:"14 months",
+      lede:"A compliance-gated marketplace for third-party pharmaceutical manufacturing in India — four portals running on one schema.",
+      brief:"Third-party pharma manufacturing in India runs on WhatsApp, PDFs and reputation. A buyer looking for a WHO-GMP manufacturer for a specific molecule has no way to verify capacity, certification class or audit history without three weeks of phone calls and a site visit. The information exists; none of it is addressable.",
+      built:"A marketplace where verification happens at onboarding rather than being claimed in a listing. Four portals — buyer, manufacturer, administrator and logistics — sit on a single Postgres schema, so a certificate uploaded by a manufacturer is the same row the buyer's filter queries and the auditor's export reads. Search runs on molecule, dosage form, certification class and monthly capacity.",
+      hard:"Compliance is not a feature you add in month six. Every table needed an audit trail from the first migration, because a marketplace that cannot answer <b>who changed this, and when</b> is not a marketplace a regulated buyer will use. That decision cost roughly three weeks up front and saved the project.",
+      figs:[["Portals",'04'],["Schema",'01'],["Molecules indexed",'340+'],["Onboarding checks",'11']],
+      lessons:[
+        "We built the manufacturer portal first because manufacturers were easier to reach. Wrong order — buyers create the pull, and we spent four months with supply and no demand.",
+        "Document verification should have been a paid human step from day one. Automating it first produced false confidence and one bad listing we had to pull.",
+        "The admin portal was treated as internal tooling and under-designed. It became the most-used surface in the business."
+      ],
+      plate:"warm"
+    },
+    {
+      id:"betta-beaut", code:"BTB-X23E", t:"Betta Beaut", bench:"Companies", y:2023,
+      s:"Gapped", v:"0,185", role:"Founder", dur:"18 months",
+      lede:"Salon operations software. The right problem, sold to the wrong person — and the clearest failure on this record.",
+      brief:"Independent salons run on paper appointment books, a cash drawer and a stylist's memory. Double bookings, no-shows and stock running out mid-service are daily, and every one of them costs a chair-hour. The pain is real, constant, and easy to measure.",
+      built:"Appointment scheduling, client history, stock tracking and a simple commission ledger. Built mobile-first because a stylist's hands are busy and the phone is already in the apron. Fourteen salons used it. The product worked.",
+      hard:"The people feeling the pain were not the people holding the budget. Stylists loved it and had no authority to buy. Owners controlled spend, visited the floor twice a week, and experienced none of the problems the software solved. Every demo went well with the wrong person in the room. <b>Eighteen months, no second round.</b>",
+      figs:[["Salons live",'14'],["Months",'18'],["Churn at 6mo",'64%'],["Fit value",'0,185']],
+      lessons:[
+        "Find the budget holder before writing a line of code. If the user and the buyer are different people, you are selling two products and have built one.",
+        "High usage is not product-market fit. Our daily active rate was excellent right up until the renewal invoices went out.",
+        "I kept rebuilding features in response to stylist feedback. Every one of those sprints was a comfortable way to avoid the sales problem."
+      ],
+      plate:"warm"
+    },
+    {
+      id:"mortise-bench", code:"MRT-S20J", t:"Mortise Bench", bench:"Wood", y:2020,
+      s:"Shipped", v:"0,961", role:"Design and build", dur:"7 weeks",
+      lede:"A hand-cut mortise and tenon workbench. The tool that made every other piece of furniture possible.",
+      brief:"Nothing accurate can be built without a flat, heavy, immovable reference surface. Everything made before this bench was made on a folding table, and every one of those pieces is out of square in a way you can feel when you open a drawer.",
+      built:"Beech top at 90mm, laminated from eight boards and flattened by hand over three sessions. Legs joined to rails with drawbored mortise and tenon — no bolts, no hardware, the joint tightens as the wood moves. A face vice and a tail vice. Dog holes on a 96mm grid.",
+      hard:"Drawboring means offsetting the peg hole in the tenon by about 1mm so that driving the peg pulls the joint closed permanently. Get it wrong by half a millimetre in the wrong direction and you split the cheek of the mortise. <b>I split two before the third went right.</b>",
+      figs:[["Top thickness",'90mm'],["Weight",'118kg'],["Build time",'7wk'],["Joints split",'02']],
+      lessons:[
+        "Build the reference surface first. Everything made before it has to be remade.",
+        "Hand-flattening a 90mm top is two days of work and the single highest-value thing I have ever done with a plane.",
+        "Mass is a feature. The bench does not move, so the work does not move, so the cut is where you put it."
+      ],
+      plate:"cool"
+    },
+    {
+      id:"indizilla", code:"IDZ-E24C", t:"Indizilla", bench:"Code", y:2024,
+      s:"Running", v:"0,788", role:"Architecture and build", dur:"9 months",
+      lede:"The operations platform behind a marketing agency — orders, jobs, billing, credits and referrals on a single database.",
+      brief:"The agency ran on six tools that did not speak to each other. An order lived in a spreadsheet, the job in a project board, the invoice in accounting software, and the client's credit balance in somebody's head. Reconciling a month took two days.",
+      built:"One Postgres database with orders, jobs, invoices, credits and referrals as first-class tables, and one interface over all of it. A credit issued against a late delivery is the same row the invoice subtracts from and the client dashboard displays. Month-end reconciliation went from two days to an afternoon.",
+      hard:"Credits are deceptively difficult. A credit can be partial, can expire, can apply to one line item or a whole invoice, and can be issued after the invoice is paid. Modelling it as a simple balance field was wrong three separate times before it became a ledger of immutable entries.",
+      figs:[["Tools replaced",'06'],["Reconcile time",'-78%'],["Tables",'31'],["Months",'09']],
+      lessons:[
+        "Anything resembling money should be an append-only ledger, not a mutable balance. I learned this by corrupting a balance twice.",
+        "The spreadsheet the team already used was a better spec than anything they could describe in a meeting.",
+        "Shipping the orders module alone, before the rest existed, bought nine months of goodwill."
+      ],
+      plate:"cool"
+    },
+    {
+      id:"folding-wall-table", code:"FWT-X22K", t:"Folding Wall Table", bench:"Wood", y:2022,
+      s:"Gapped", v:"0,185", role:"Design and build", dur:"5 months",
+      lede:"A wall-mounted drop-leaf for a small flat. It sagged within a month, was rebuilt twice, then abandoned.",
+      brief:"A 1.4m dining surface for a flat with no room for a dining table — up for meals, flat against the wall the rest of the time. The constraint was that it had to hold a loaded table without a leg reaching the floor.",
+      built:"A beech leaf on a piano hinge with a folding steel bracket. Version one used a bracket rated for the static load. Version two doubled the bracket count. Version three moved to a cantilevered timber arm housed into a wall cleat.",
+      hard:"The static load rating was never the problem. The failure mode is <b>dynamic</b> — someone leans on the edge while standing up, and for a quarter of a second the bracket sees three times its rated load. All three versions eventually sagged at the hinge line. The right answer was a leg, and I did not want it to need a leg.",
+      figs:[["Versions",'03'],["Span",'1.4m'],["Time to sag",'~4wk'],["Fit value",'0,185']],
+      lessons:[
+        "Design for the dynamic load, not the static one. Furniture is used by people who lean.",
+        "I had decided the piece should not need a leg before I had established that it could work without one. That is a preference, not a specification.",
+        "Rebuilding twice without re-examining the premise is a way of looking busy while avoiding the actual answer."
+      ],
+      plate:"warm"
+    },
+    { id:"rikencare", code:"RKC-S25B", t:"Rikencare Lifesciences", bench:"Code", y:2025, s:"Shipped", v:"0,840", role:"Brand and build", dur:"4 months",
+      lede:"Identity and site for a WHO-GMP, ISO 9001:2015 third-party manufacturer in Himachal Pradesh." },
+    { id:"getpharm", code:"GTP-E25D", t:"GetPharm", bench:"Companies", y:2025, s:"Running", v:"0,755", role:"Brand, product", dur:"6 months",
+      lede:"A public-facing marketplace brand built on Savison Life's infrastructure — same spine, different front door." },
+    { id:"nirmal-kaya", code:"NRK-P24F", t:"Nirmal Kaya", bench:"Companies", y:2024, s:"Paused", v:"0,480", role:"Founder", dur:"8 months",
+      lede:"A wellness management venture, parked while the pharmaceutical side took the oxygen. The record stays up." },
+    { id:"performance-realty", code:"PRF-E26G", t:"Performance Realty", bench:"Companies", y:2026, s:"Running", v:"0,702", role:"Brand, site", dur:"3 months",
+      lede:"Advisory brand with one live listing — an HSIIDC industrial plot in Barwala. Inquiries reach a person, not a funnel." },
+    { id:"slab-desk", code:"SLB-S21H", t:"Slab Desk, 2.4m", bench:"Wood", y:2021, s:"Shipped", v:"0,934", role:"Design and build", dur:"9 weeks",
+      lede:"A single-slab sheesham desk on a welded steel base. Breadboard ends let the top move seasonally; the base does not." },
+    { id:"systems-thinking", code:"STW-S23L", t:"Systems Thinking Weekly", bench:"Classrooms", y:2023, s:"Shipped", v:"0,826", role:"Curriculum, teaching", dur:"12 weeks",
+      lede:"A twelve-week evening course for founders on breaking a business into systems. Taught live, notes published after each session." },
+    { id:"build-in-public", code:"BPC-E24M", t:"Build-in-Public Clinic", bench:"Classrooms", y:2024, s:"Running", v:"0,774", role:"Host", dur:"Monthly",
+      lede:"An open session where someone brings a project that is stuck and we take it apart on a whiteboard in front of the room." },
+    { id:"monthly-review", code:"TMR-E26N", t:"The Monthly Review", bench:"Classrooms", y:2026, s:"Running", v:"0,690", role:"Writing", dur:"Ongoing",
+      lede:"A public progress log — what was built, what was learned, what gapped. Published whether or not the month went well." },
+    { id:"field-kit", code:"FDK-S25P", t:"Field Kit", bench:"Code", y:2025, s:"Shipped", v:"0,858", role:"Design and build", dur:"Ongoing",
+      lede:"The templates and checklists built for internal use. Rebuilding them from scratch on every job was the actual mistake." }
+  ];
+
+  var BENCHES = [
+    { id:"wood", t:"Wood", n:"03", d:"A bench, hand tools, and joints that either close or gap. The original teacher — everything that followed is this same rule at a different scale.", note:"Furniture, fixtures, one-off commissions." },
+    { id:"code", t:"Code", n:"04", d:"Marketplaces, operations platforms and brand systems. It runs or it throws, and the compiler has never once negotiated.", note:"Postgres, TypeScript, boring infrastructure." },
+    { id:"classrooms", t:"Classrooms", n:"03", d:"Courses and open clinics. Explaining something properly is the fastest way to discover you only half understood it.", note:"Twelve-week formats, monthly sessions." },
+    { id:"companies", t:"Companies", n:"04", d:"Founded, branded, built, and in one case buried. Payroll remains the most honest test I know of.", note:"Two running, one paused, one gapped." }
+  ];
+
+  var SERVICES = [
+    { t:"Systems design", d:"Take an operation running on memory and messaging apps and give it a spine — orders, jobs, billing, handoffs, and a named owner for each.", from:"6 weeks" },
+    { t:"Operational audit", d:"A hard look at where the operation actually leaks, ranked, with what I would fix first and the reasoning behind the order.", from:"2 weeks" },
+    { t:"Build", d:"Design and implementation of the thing itself, by the person who did the audit. Postgres, TypeScript, and no architecture you cannot staff.", from:"12 weeks" },
+    { t:"One sharp question", d:"Twenty minutes on a single specific problem. Come prepared and it is the cheapest consulting you will ever buy.", from:"₹1,499" }
+  ];
+
+  var NAV = [
+    { id:"home", t:"Index" }, { id:"work", t:"Work" }, { id:"benches", t:"Benches" },
+    { id:"services", t:"Services" }, { id:"studio", t:"Studio" }
+  ];
+
+  /* ════════════════ HELPERS ════════════════ */
+  function h(tag, cls, html){ var n=document.createElement(tag); if(cls)n.className=cls; if(html!=null)n.innerHTML=html; return n; }
+  function pad(n){ return (n<10?"0":"")+n; }
+  function esc(s){ return String(s).replace(/[&<>"]/g,function(c){return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]}); }
+  function unit(id){ for(var i=0;i<UNITS.length;i++) if(UNITS[i].id===id) return UNITS[i]; return null; }
+  function barcode(seed, n){
+    var out="", s=seed;
+    for(var i=0;i<(n||44);i++){ s=(s*9301+49297)%233280; out+="<i style='height:"+(32+(s/233280)*68).toFixed(0)+"%'></i>"; }
+    return out;
+  }
+  function plate(kind, cap, cls){
+    return "<figure class='pn pn--plate "+(kind==="cool"?"cool ":"")+(cls||"")+"' style='padding:0'>"+
+      "<span class='noise'></span>"+
+      (cap?"<span class='cap m' style='color:rgba(239,237,231,.6)'>"+cap+"</span>":"")+"</figure>";
+  }
+  function statusTag(s){
+    var c = s==="Gapped" ? "var(--red)" : s==="Paused" ? "var(--mute)" : "var(--bone)";
+    return "<span class='m tn' style='color:"+c+"'>"+s+"</span>";
+  }
+
+  /* ════════════════ VIEWS ════════════════ */
+  var V = {};
+
+  V.home = function () {
+    var featured = ["savison-life","mortise-bench","betta-beaut"].map(unit);
+    return "" +
+    "<div class='wrap hero'>" +
+      "<div class='gr st'>" +
+        "<section class='pn ch c8' style='min-height:clamp(260px,34vw,330px);justify-content:space-between'>" +
+          "<div style='display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap'>" +
+            "<span class='m'>Tolerance&trade; &mdash; permissible variation</span><span class='m tn'>&plusmn;0.50 mm</span></div>" +
+          "<h1 class='hero__h'>A joint either closes, <em>or it gaps.</em></h1>" +
+          "<p class='hero__sub'>A studio that works in four materials and publishes the fit of every job &mdash; " +
+            "including the two that came out of true.</p>" +
+          "<div class='kv'><span class='m'>Chandigarh &middot; est. 2019</span><span class='m tn'>14 units on record</span></div>" +
+        "</section>" +
+
+        "<section class='pn pn--red ch-tr c4' style='justify-content:space-between'>" +
+          "<span class='m'>Out of true</span>" +
+          "<div><div class='hero__n tn'>02</div>" +
+            "<p class='m' style='margin-top:10px;line-height:1.7'>units that gapped. Both retained, both written up at full length.</p></div>" +
+          "<div class='bc' aria-hidden='true'>"+barcode(11,40)+"</div>" +
+        "</section>" +
+
+        "<div class='pn ch-s c3'><span class='m'>Mean fit</span><div class='hero__n tn' style='font-size:30px'>0,719</div></div>" +
+        "<div class='pn ch-s c3'><span class='m'>Still running</span><div class='hero__n tn' style='font-size:30px'>06</div></div>" +
+        "<div class='pn ch-s c3'><span class='m'>Benches</span><div class='hero__n tn' style='font-size:30px'>04</div></div>" +
+        "<div class='pn pn--line ch-s c3'><span class='m'>Years on record</span><div class='hero__n tn' style='font-size:30px'>07</div></div>" +
+      "</div>" +
+
+      "<div class='sechead'><h2>Selected units</h2>" +
+        "<button class='m m--b' data-go='work' type='button'>All fourteen &rarr;</button></div>" +
+      "<div class='gr'>" +
+        featured.map(function(u,i){
+          return "<article class='pn "+(i===0?"ch c6":"ch-bl c3")+"' data-unit='"+u.id+"' " +
+            "style='cursor:pointer;min-height:"+(i===0?"300px":"300px")+";justify-content:space-between;overflow:hidden'>" +
+            "<div style='display:flex;justify-content:space-between;gap:10px'><span class='m tn'>"+u.code+"</span>"+statusTag(u.s)+"</div>" +
+            "<div><h3 style='font-size:clamp(21px,2.5vw,30px)'>"+u.t+"</h3>" +
+            "<p style='color:var(--bone-d);font-size:14px;line-height:1.62;margin-top:10px;max-width:40ch'>"+u.lede+"</p></div>" +
+            "<div class='kv'><span class='m tn'>"+u.bench+" &middot; "+u.y+"</span>" +
+            "<span class='m tn' style='color:"+(u.s==="Gapped"?"var(--red)":"var(--bone)")+"'>"+u.v+"</span></div>" +
+          "</article>";
+        }).join("") +
+      "</div>" +
+
+      "<div class='sechead'><h2>The rule</h2><span class='m tn'>Doc 00&ndash;071</span></div>" +
+      "<div class='gr'>" +
+        "<div class='pn pn--bone ch c8' style='min-height:190px;justify-content:space-between'>" +
+          "<span class='m'>Operating principle</span>" +
+          "<h3 class='ser' style='font-size:clamp(22px,3.3vw,40px);max-width:21ch;font-weight:400'>" +
+            "You cannot argue a drawer into fitting. Either it slides, or you recut it and say why.</h3>" +
+          "<div class='kv'><span class='m'>Learned at a bench, 2019</span><span class='m tn'>Applied since</span></div></div>" +
+        "<div class='pn ch-bl c4' style='justify-content:space-between;min-height:190px'>" +
+          "<span class='m'>Benches</span>" +
+          "<div class='gr' style='grid-template-columns:1fr 1fr;gap:4px'>" +
+            BENCHES.map(function(b){ return "<div class='pn pn--2 ch-s' style='padding:13px'>" +
+              "<span class='m'>"+b.t+"</span><b class='tn' style='font-family:var(--m);font-size:22px'>"+b.n+"</b></div>"; }).join("") +
+          "</div></div>" +
+      "</div>" +
+    "</div>";
+  };
+
+  V.work = function () {
+    return "" +
+    "<div class='wrap'>" +
+      "<div class='sechead st'><div><span class='m'>02 &mdash; Unit index</span>" +
+        "<h2 style='font-size:clamp(28px,4.4vw,52px);margin-top:10px'>Fourteen units, measured</h2>" +
+        "<p style='color:var(--bone-d);max-width:52ch;margin-top:12px'>Every job this studio has taken, with the bench it was built on, " +
+        "the year it closed and the fit value it achieved. Nothing is removed for gapping.</p></div>" +
+        "<span class='m tn'>14 / 14</span></div>" +
+      "<div class='fil' id='fil'></div>" +
+      "<div class='units' id='units'></div>" +
+    "</div>";
+  };
+
+  V.benches = function () {
+    return "<div class='wrap'>" +
+      "<div class='sechead st'><div><span class='m'>03 &mdash; Benches</span>" +
+      "<h2 style='font-size:clamp(28px,4.4vw,52px);margin-top:10px'>Four materials, one rule</h2>" +
+      "<p style='color:var(--bone-d);max-width:52ch;margin-top:12px'>Different benches, the same question answered at four different speeds: " +
+      "did it hold, or did it not?</p></div></div>" +
+      "<div class='gr'>" + BENCHES.map(function(b,i){
+        return "<article class='bench "+(i%2?"ch-bl":"ch")+" c6'>" +
+          "<div style='display:flex;justify-content:space-between'><span class='m'>Bench 0"+(i+1)+"</span>" +
+          "<span class='m tn'>"+b.n+" units</span></div>" +
+          "<h3>"+b.t+"</h3><p>"+b.d+"</p>" +
+          "<div class='kv'><span class='m'>"+b.note+"</span></div></article>";
+      }).join("") + "</div>" +
+      "<div class='sechead'><h2>Units by bench</h2></div>" +
+      "<div class='gr'>" + BENCHES.map(function(b){
+        var list = UNITS.filter(function(u){ return u.bench===b.t; });
+        return "<div class='pn ch-s c3'><span class='m'>"+b.t+"</span><ul style='margin-top:4px'>" +
+          list.map(function(u){ return "<li style='margin-bottom:7px'><button data-unit='"+u.id+"' type='button' " +
+            "style='font-size:14px;color:var(--bone-d);text-align:left'>"+u.t+"</button></li>"; }).join("") +
+          "</ul></div>";
+      }).join("") + "</div></div>";
+  };
+
+  V.services = function () {
+    return "<div class='wrap'>" +
+      "<div class='sechead st'><div><span class='m'>04 &mdash; Services</span>" +
+      "<h2 style='font-size:clamp(28px,4.4vw,52px);margin-top:10px'>Four ways in</h2>" +
+      "<p style='color:var(--bone-d);max-width:52ch;margin-top:12px'>Scoped work, priced from. Every engagement starts with the same " +
+      "question: what is actually gapping?</p></div></div>" +
+      "<div class='gr'>" + SERVICES.map(function(s,i){
+        return "<article class='pn "+(i%2?"ch-bl":"ch")+" c6' style='min-height:200px;justify-content:space-between'>" +
+          "<div style='display:flex;justify-content:space-between'><span class='m'>0"+(i+1)+"</span>" +
+          "<span class='m tn'>from "+s.from+"</span></div>" +
+          "<div><h3 style='font-size:clamp(21px,2.6vw,30px)'>"+s.t+"</h3>" +
+          "<p style='color:var(--bone-d);font-size:14px;line-height:1.66;margin-top:10px;max-width:44ch'>"+s.d+"</p></div>" +
+          "<div class='kv'><button class='m m--b' data-go='contact' type='button'>Enquire &rarr;</button></div></article>";
+      }).join("") + "</div></div>";
+  };
+
+  V.studio = function () {
+    return "<div class='wrap'>" +
+      "<div class='sechead st'><div><span class='m'>05 &mdash; Studio</span>" +
+      "<h2 style='font-size:clamp(28px,4.4vw,52px);margin-top:10px'>Tolerance&plusmn;</h2></div></div>" +
+      "<div class='gr'>" +
+        "<div class='pn ch c8'><div class='prose'><div><span class='m'>What this is</span></div><div>" +
+          "<p>Tolerance is the permissible limit of variation before a fit fails. It is a machining term and a joinery term, " +
+          "and it is the most accurate description of how this studio works that I have found.</p>" +
+          "<p>The practice runs across four benches &mdash; <b>wood, code, classrooms and companies</b> &mdash; which sounds like a " +
+          "lack of focus until you watch the same rule operate in all four. A joint closes or it gaps. Code runs or it throws. " +
+          "A class lands or it does not. A company makes payroll or it dies. Each one tells you immediately whether you were right, " +
+          "and none of them care how you felt about it.</p>" +
+          "<p>Every job taken since 2019 is on this site with a measured fit value, including the two that gapped. " +
+          "A portfolio shows the things that worked; it is a sales document. <b>A record shows all of it</b>, which is the only " +
+          "version worth anything to someone deciding whether to hand over their money, their timber, or a room full of their students.</p>" +
+        "</div></div></div>" +
+        "<div class='pn pn--2 ch-bl c4' style='gap:18px'>" +
+          "<span class='m'>Fact sheet</span>" +
+          ["Founded|2019","Base|Chandigarh","Coordinates|30.73&deg;N 76.77&deg;E","Benches|04","Units|14","Gapped|02","Mean fit|0,719"]
+            .map(function(r){ var p=r.split("|"); return "<div class='kv' style='margin:0'><span class='m'>"+p[0]+
+              "</span><span class='m tn m--b'>"+p[1]+"</span></div>"; }).join("") +
+        "</div>" +
+      "</div>" +
+      "<div class='sechead'><h2>Method</h2></div>" +
+      "<div class='gr'>" +
+        [["01","Establish the reference","Before anything is built, find the flat surface everything else measures against. In a workshop that is a bench. In a business it is usually one honest number nobody wants to look at."],
+         ["02","Build the smallest real version","Not a prototype and not a deck. The smallest thing that can be put in front of reality and be wrong in public."],
+         ["03","Measure the fit","Did it close? By how much did it miss? A job that half worked is more useful than a job that was abandoned before it could be measured."],
+         ["04","Write it down either way","Published whether it went well or not. The two gapped units on this site are the reason the other twelve are believable."]]
+        .map(function(s){ return "<div class='pn ch-s c3' style='min-height:200px;justify-content:flex-start;gap:12px'>" +
+          "<span class='m m--r'>"+s[0]+"</span><h3 style='font-size:18px'>"+s[1]+"</h3>" +
+          "<p style='color:var(--bone-d);font-size:13.5px;line-height:1.66'>"+s[2]+"</p></div>"; }).join("") +
+      "</div></div>";
+  };
+
+  V.contact = function () {
+    return "<div class='wrap'>" +
+      "<div class='sechead st'><div><span class='m'>Contact</span>" +
+      "<h2 style='font-size:clamp(28px,4.4vw,52px);margin-top:10px'>Tell me what is gapping</h2>" +
+      "<p style='color:var(--bone-d);max-width:50ch;margin-top:12px'>A specific question gets a specific answer, usually the same day. " +
+      "Not a lead form &mdash; there is one person at the other end.</p></div></div>" +
+      "<div class='gr'>" +
+        [["Email","studio@tolerance.in","Direct, read daily"],
+         ["One sharp question","20 minutes &middot; &#8377;1,499","Booked for the same week"],
+         ["Submit a problem","Public breakdown","Taken apart in the monthly clinic"],
+         ["Property advisory","Performance Realty","Industrial plots, Barwala"]]
+        .map(function(r,i){ return "<div class='pn "+(i%2?"ch-bl":"ch")+" c6' style='min-height:150px;justify-content:space-between'>" +
+          "<span class='m'>"+r[0]+"</span><h3 class='ser' style='font-size:clamp(21px,2.8vw,32px);font-weight:400'>"+r[1]+"</h3>" +
+          "<div class='kv'><span class='m'>"+r[2]+"</span><span class='m'>&rarr;</span></div></div>"; }).join("") +
+      "</div></div>";
+  };
+
+  V.unit = function (id) {
+    var u = unit(id);
+    if (!u) return V.work();
+    var deep = !!u.brief;
+    var s = "<div class='wrap dos__top st'>" +
+      "<button class='dos__back m m--b' data-go='work' type='button'>&larr; Unit index</button>" +
+      "<div style='display:flex;justify-content:space-between;gap:14px;flex-wrap:wrap;align-items:baseline'>" +
+        "<span class='m tn'>"+u.code+"</span>"+statusTag(u.s)+"</div>" +
+      "<h1 class='dos__h' style='margin-top:14px'>"+u.t+"</h1>" +
+      "<p class='dos__lede'>"+u.lede+"</p>" +
+      "<div class='dos__meta'>" +
+        [["Bench",u.bench],["Year",u.y],["Role",u.role||"&mdash;"],["Duration",u.dur||"&mdash;"],["Fit value",u.v]]
+        .map(function(r){ return "<div class='pn ch-s' style='padding:14px'><span class='m'>"+r[0]+
+          "</span><b class='tn' style='font-family:var(--m);font-weight:700;font-size:15px;margin-top:6px;display:block'>"+r[1]+"</b></div>"; }).join("") +
+      "</div>" +
+      plate(u.plate||"cool","Plate &mdash; surface held for photography","dos__plate ch") +
+    "</div>";
+
+    if (!deep) {
+      s += "<div class='wrap'><div class='block'><div class='prose'><div><span class='m'>Note</span></div>" +
+        "<div><p>Full dossier in preparation. The unit is on the record with its measured fit value; " +
+        "the written build notes follow the same structure as the principal units.</p>" +
+        "<p style='margin-top:16px'><button class='m m--b' data-go='work' type='button'>&larr; Back to the index</button></p></div></div></div></div>";
+      return s;
+    }
+
+    s += "<div class='wrap'>" +
+      "<div class='block'><div class='prose'><div><span class='m'>The brief</span></div><div><p>"+u.brief+"</p></div></div></div>" +
+      "<div class='block'><div class='prose'><div><span class='m'>What was built</span></div><div><p>"+u.built+"</p></div></div></div>" +
+      "<div class='block'><div class='prose'><div><span class='m'>The hard part</span></div><div><p>"+u.hard+"</p>" +
+        "<div class='figs'>" + u.figs.map(function(f){
+          return "<div class='fig'><span class='m'>"+f[0]+"</span><b>"+f[1]+"</b></div>"; }).join("") + "</div>" +
+      "</div></div></div>" +
+      "<div class='block'><div class='prose'><div><span class='m'>What I would change</span></div><div>" +
+        u.lessons.map(function(l,i){ return "<div class='lesson'><span class='tn'>"+pad(i+1)+"</span><p>"+l+"</p></div>"; }).join("") +
+      "</div></div></div>" +
+      "<div class='block' style='border-bottom:1px solid var(--line-s)'><div class='prose'><div><span class='m'>Next unit</span></div><div>" +
+        (function(){
+          var i = UNITS.indexOf(u), nx = UNITS[(i+1)%UNITS.length];
+          return "<button data-unit='"+nx.id+"' type='button' style='text-align:left'>" +
+            "<span class='m tn'>"+nx.code+"</span>" +
+            "<h3 style='font-size:clamp(23px,3.2vw,38px);margin-top:8px'>"+nx.t+" &rarr;</h3></button>";
+        })() +
+      "</div></div></div>" +
+    "</div>";
+    return s;
+  };
+
+  /* ════════════════ FOOTER ════════════════ */
+  function footer() {
+    return "<footer class='ft'><div class='wrap'><div class='ft__g'>" +
+      "<div><div class='logo' style='margin-bottom:14px'>" +
+        "<svg viewBox='0 0 24 24' fill='none' style='width:22px;height:22px;color:var(--red)'>" +
+        "<path d='M3 7h18M3 17h18' stroke='currentColor' stroke-width='2.1' stroke-linecap='round'/>" +
+        "<path d='M12 10.2v3.6M10.2 12h3.6' stroke='currentColor' stroke-width='2.1' stroke-linecap='round'/></svg>" +
+        "<b>Tolerance<sup>&plusmn;</sup></b></div>" +
+        "<p style='color:var(--bone-d);font-size:13.5px;max-width:34ch;line-height:1.7'>" +
+        "The permissible limit of variation before a fit fails. Four benches, fourteen units, two of them gapped.</p>" +
+        "<div class='bc' style='margin-top:18px;color:var(--mute)' aria-hidden='true'>"+barcode(29,52)+"</div></div>" +
+      "<div><h4>Studio</h4><ul>" +
+        ["work|Unit index","benches|Benches","services|Services","studio|About"].map(function(r){
+          var p=r.split("|"); return "<li><button data-go='"+p[0]+"' type='button'>"+p[1]+"</button></li>"; }).join("") +
+      "</ul></div>" +
+      "<div><h4>Principal units</h4><ul>" +
+        ["savison-life","indizilla","mortise-bench","betta-beaut"].map(function(id){
+          var u=unit(id); return "<li><button data-unit='"+id+"' type='button'>"+u.t+"</button></li>"; }).join("") +
+      "</ul></div>" +
+      "<div><h4>Contact</h4><ul>" +
+        "<li><button data-go='contact' type='button'>studio@tolerance.in</button></li>" +
+        "<li><button data-go='contact' type='button'>One sharp question</button></li>" +
+        "<li><span style='font-size:14px;color:var(--bone-d)'>Chandigarh, India</span></li>" +
+      "</ul></div>" +
+      "</div><div class='ft__base'>" +
+        "<span class='m'>&copy; 2026 Tolerance&plusmn;</span>" +
+        "<span class='m tn'>30.73&deg;N 76.77&deg;E</span>" +
+        "<span class='m tn'>Rev 14.0</span>" +
+      "</div></div></footer>";
+  }
+
+  /* ════════════════ ROUTER ════════════════ */
+  var app = document.getElementById("app");
+  var navEl = document.getElementById("nav");
+  var current = "home";
+
+  NAV.forEach(function (n) {
+    var b = h("button", null, n.t);
+    b.type = "button"; b.setAttribute("data-go", n.id);
+    navEl.appendChild(b);
+  });
+
+  function setNav(id) {
+    Array.prototype.forEach.call(navEl.children, function (b) {
+      b.setAttribute("aria-current", b.getAttribute("data-go") === id ? "true" : "false");
+    });
+  }
+
+  function render(route, arg) {
+    current = route;
+    var html = route === "unit" ? V.unit(arg) : (V[route] || V.home)();
+    app.innerHTML = "<div class='view fade'><div class='view__body'>" + html + "</div>" + footer() + "</div>";
+    setNav(route === "unit" ? "work" : route);
+    if (route === "work") mountWork();
+    window.scrollTo({ top: 0, behavior: "instant" in window ? "instant" : "auto" });
+  }
+
+  /* work view: filter + sort */
+  var filter = "All", sortKey = "n";
+  function mountWork() {
+    var benches = ["All"].concat(BENCHES.map(function (b) { return b.t; }));
+    var fil = document.getElementById("fil");
+    benches.forEach(function (b) {
+      var btn = h("button", "ch-s", b === "All" ? "All units" : b);
+      btn.type = "button";
+      btn.setAttribute("aria-pressed", b === filter ? "true" : "false");
+      btn.addEventListener("click", function () { filter = b; mountWork(); });
+      fil.appendChild(btn);
+    });
+    var sortBtn = h("button", "ch-s", sortKey === "n" ? "Sort: index" : "Sort: fit");
+    sortBtn.type = "button";
+    sortBtn.style.marginLeft = "auto";
+    sortBtn.addEventListener("click", function () { sortKey = sortKey === "n" ? "v" : "n"; mountWork(); });
+    fil.appendChild(sortBtn);
+
+    var list = UNITS.filter(function (u) { return filter === "All" || u.bench === filter; });
+    if (sortKey === "v") list = list.slice().sort(function (a, b) { return parseFloat(b.v.replace(",", ".")) - parseFloat(a.v.replace(",", ".")); });
+
+    var box = document.getElementById("units");
+    box.innerHTML = "";
+    list.forEach(function (u, i) {
+      var b = h("button", "unit ch-s" + (u.s === "Gapped" ? " unit--g" : ""));
+      b.type = "button"; b.setAttribute("data-unit", u.id);
+      b.style.animation = "fade .4s var(--ease) both"; b.style.animationDelay = (i * 0.022) + "s";
+      b.innerHTML =
+        "<span style='min-width:0'><span class='m tn'>" + u.code + " &middot; " + u.bench + "</span>" +
+        "<span class='unit__t'>" + u.t + "</span></span>" +
+        "<span class='unit__r'><span class='m tn'>" + u.y + " &middot; " + u.s + "</span>" +
+        "<span class='unit__v tn'>" + u.v + "</span></span>";
+      box.appendChild(b);
+    });
+  }
+
+  document.addEventListener("click", function (e) {
+    var g = e.target.closest("[data-go]");
+    if (g) { e.preventDefault(); render(g.getAttribute("data-go")); return; }
+    var u = e.target.closest("[data-unit]");
+    if (u) { e.preventDefault(); render("unit", u.getAttribute("data-unit")); }
+  });
+
+  document.addEventListener("keydown", function (e) {
+    if (e.key === "Escape" && current === "unit") render("work");
+  });
+
+  render("home");
+})();
+</script>

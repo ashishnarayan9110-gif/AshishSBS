@@ -1,0 +1,423 @@
+<title>Closes Or Gaps</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@300;400;500&family=Bodoni+Moda:ital,wght@0,400;0,500;0,600;1,400&family=JetBrains+Mono:wght@400&display=swap">
+
+<style>
+/* ──────────────────────────────────────────────────────────────
+   One rule, held everywhere: each screen is quiet except for a
+   single loud moment. Everything else sits at reading size,
+   precisely placed, with a great deal of air around it. Large
+   graded colour fields carry the feeling; type stays small and
+   gets out of the way. Nothing rotates, nothing bleeds off an
+   edge, nothing overlaps — restraint is the whole effect.
+   ────────────────────────────────────────────────────────────── */
+:root{
+  --ink:#0E0E10;
+  --ink-2:#17171A;
+  --bone:#F4F2EC;
+  --bone-2:#EAE6DE;
+  --red:#D4190B;
+  --ash:#8B8782;
+  --ash-d:#6C6964;
+
+  /* Display is a Didone — high contrast, visibly not a system grotesque.
+     Archivo stays for body and UI, where neutral is correct. */
+  --g:"Archivo","Helvetica Neue",Arial,sans-serif;
+  --s:"Bodoni Moda","Didot","Bodoni MT",Georgia,serif;
+  --m:"JetBrains Mono",ui-monospace,Menlo,monospace;
+
+  /* the scale. Only --d may appear once per screen. */
+  --micro:10px;
+  --small:13px;
+  --body:15.5px;
+  --lead:clamp(18px,1.9vw,22px);
+  --d:clamp(32px,4.9vw,74px);
+
+  --pl:max(26px,env(safe-area-inset-left,0px));
+  --pr:max(26px,env(safe-area-inset-right,0px));
+  --max:1180px;
+
+  color-scheme:dark;
+}
+*,*::before,*::after{box-sizing:border-box}
+body{
+  margin:0;background:var(--ink);color:var(--bone);
+  font-family:var(--g);font-size:var(--body);line-height:1.6;font-weight:400;
+  overflow-x:hidden;-webkit-font-smoothing:antialiased;
+}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:60;background:var(--ink)}
+/* Didone wants near-normal tracking and a little more leading than a
+   grotesque — negative tracking collapses the hairlines. */
+h1,h2,h3{margin:0;font-family:var(--s);font-weight:400;letter-spacing:-.012em;line-height:1.04}
+p{margin:0}ul{margin:0;padding:0;list-style:none}
+a{color:inherit;text-decoration:none}
+:focus-visible{outline:1px solid currentColor;outline-offset:4px}
+::selection{background:var(--red);color:var(--bone)}
+
+.wrap{max-width:var(--max);margin-inline:auto;padding-left:var(--pl);padding-right:var(--pr)}
+.k{font-family:var(--m);font-size:var(--micro);letter-spacing:.22em;text-transform:uppercase;color:var(--ash)}
+.sm{font-size:var(--small);color:var(--ash)}
+.tn{font-variant-numeric:tabular-nums}
+.d{font-family:var(--s);font-size:var(--d);font-weight:400;letter-spacing:-.014em;line-height:1.04}
+
+/* the one grain pass, very light */
+.grain{position:fixed;inset:0;z-index:55;pointer-events:none;opacity:.14;mix-blend-mode:overlay;
+  background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='170' height='170'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='3' stitchTiles='stitch'/><feColorMatrix type='saturate' values='0'/></filter><rect width='170' height='170' filter='url(%23n)' opacity='.75'/></svg>")}
+
+/* ── header, almost nothing ── */
+.top{position:fixed;top:env(safe-area-inset-top,0px);left:0;right:0;z-index:50;
+  mix-blend-mode:difference;color:#fff;pointer-events:none}
+.top__in{max-width:var(--max);margin-inline:auto;padding-left:var(--pl);padding-right:var(--pr);
+  padding-block:22px;display:flex;justify-content:space-between;gap:16px}
+.top a{pointer-events:auto;opacity:.6;transition:opacity .3s}
+.top a:hover{opacity:1}
+.top__set{display:flex;gap:22px}
+@media (max-width:720px){.top__set a:not(:last-child){display:none}}
+
+/* ── fields ── */
+.field{position:relative;overflow:hidden}
+.f-ink{background:linear-gradient(168deg,#191A1D 0%,#101113 46%,#0A0A0C 100%)}
+.f-ink::before{content:"";position:absolute;inset:0;pointer-events:none;
+  background:radial-gradient(72% 56% at 22% 16%,rgba(212,25,11,.12),transparent 64%)}
+.f-bone{background:linear-gradient(168deg,#F8F6F1 0%,#F1EEE7 52%,#E7E3DA 100%);color:var(--ink)}
+.f-bone .k,.f-bone .sm{color:var(--ash-d)}
+.f-red{background:radial-gradient(118% 92% at 26% 14%,#E8371F 0%,#D4190B 46%,#8E0E04 100%);color:#FBEEEB}
+.f-red .k,.f-red .sm{color:rgba(251,238,235,.66)}
+
+/* ══ 01 — the opener. Loud: the field itself. The sentence is the
+   only type above reading size, anchored low with the red empty above it. ══ */
+.opener{min-height:100svh;display:flex;flex-direction:column;justify-content:space-between;
+  gap:clamp(40px,8vh,90px);padding-block:clamp(96px,15vh,172px) clamp(32px,6vh,72px)}
+.opener__top{display:flex;justify-content:space-between;gap:18px;flex-wrap:wrap}
+.opener__h{max-width:16ch;color:#FBEEEB}
+.opener__h i{font-style:italic;font-weight:400;color:rgba(251,238,235,.76)}
+.opener__meta{display:flex;gap:clamp(22px,5vw,64px);flex-wrap:wrap;
+  border-top:1px solid rgba(251,238,235,.24);padding-top:17px}
+.opener__meta span{display:flex;gap:9px;align-items:baseline}
+.opener__meta b{color:#FBEEEB;font-weight:500;font-size:var(--small)}
+
+/* ══ 02 — the premise, on ink. Loud: nothing. ══ */
+.still{min-height:82svh;display:flex;align-items:center;padding-block:clamp(70px,12vh,140px)}
+.still__g{display:grid;grid-template-columns:1fr;gap:30px;width:100%;align-items:start}
+.still p{max-width:42ch;font-size:var(--body);line-height:1.78;color:#BFBAB3}
+.still p + p{margin-top:20px}
+.still p b{font-weight:500;color:var(--bone)}
+@media (min-width:880px){.still__g{grid-template-columns:auto 1fr;gap:clamp(40px,8vw,110px)}}
+
+/* ══ 03 — index. Loud: the whiteness and the rhythm. ══ */
+.idx{padding-block:clamp(80px,13vh,150px)}
+.idx__h{display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap;margin-bottom:clamp(30px,5vh,56px)}
+.idx__rows{border-top:1px solid rgba(14,14,16,.14)}
+.r{display:grid;grid-template-columns:3ch 1fr auto;gap:18px;align-items:baseline;
+  padding-block:15px;border-bottom:1px solid rgba(14,14,16,.1);
+  transition:padding-left .35s cubic-bezier(.2,.8,.3,1),color .25s}
+.r:hover{padding-left:10px}
+.r__n{font-family:var(--m);font-size:var(--micro);color:var(--ash-d)}
+.r__t{font-family:var(--s);font-size:var(--lead);font-weight:400;letter-spacing:-.008em;min-width:0;overflow-wrap:anywhere}
+.r__s{font-family:var(--m);font-size:var(--micro);letter-spacing:.14em;text-transform:uppercase;color:var(--ash-d);white-space:nowrap}
+.r--f .r__t,.r--f .r__s{color:var(--red)}
+@media (max-width:560px){.r{grid-template-columns:3ch 1fr}.r__s{grid-column:2;margin-top:4px}}
+
+/* ══ 04 — one project, held. Loud: the plate. ══ */
+.one{padding-block:clamp(70px,12vh,140px)}
+.one__g{display:grid;grid-template-columns:1fr;gap:clamp(26px,4vh,46px)}
+/* Held surface. Drop <img class="plate__img" src="…" alt=""> inside and the
+   grade, bloom, grain and caption all keep working unchanged. */
+.plate{position:relative;width:100%;aspect-ratio:16/9;overflow:hidden;margin:0;isolation:isolate;
+  background:
+    radial-gradient(70% 54% at 30% 26%,rgba(255,176,128,.3),transparent 62%),
+    linear-gradient(162deg,#2B1B15 0%,#150D0B 52%,#090606 100%);}
+.plate__img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:0;
+  filter:url(#duo) url(#smear) contrast(1.06)}
+.plate--cool .plate__img{filter:url(#duoCool) contrast(1.04)}
+/* halation — the bloom you get shooting into a light source */
+.plate__bloom{position:absolute;inset:0;z-index:1;pointer-events:none;mix-blend-mode:screen;
+  background:radial-gradient(56% 40% at 30% 26%,rgba(255,172,116,.26),transparent 64%)}
+.plate--cool .plate__bloom{background:radial-gradient(56% 40% at 32% 28%,rgba(176,198,230,.2),transparent 64%)}
+/* fine grain, over the photograph only — never over the interface */
+.plate::after{content:"";position:absolute;inset:0;z-index:2;pointer-events:none;opacity:.17;mix-blend-mode:overlay;
+  background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='150' height='150'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='3' stitchTiles='stitch'/><feColorMatrix type='saturate' values='0'/></filter><rect width='150' height='150' filter='url(%23n)' opacity='.8'/></svg>")}
+.plate--cool{background:
+    radial-gradient(70% 54% at 32% 28%,rgba(168,190,222,.22),transparent 62%),
+    linear-gradient(162deg,#1A1D23 0%,#101216 52%,#08090B 100%)}
+.plate__k{position:absolute;left:18px;bottom:16px;right:18px;z-index:3;
+  display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}
+.plate__k span{color:rgba(244,242,236,.62)}
+
+.one__pair{display:grid;grid-template-columns:1fr;gap:clamp(12px,1.6vw,20px)}
+@media (min-width:720px){.one__pair{grid-template-columns:1fr 1fr}}
+.plate--s{aspect-ratio:4/3}
+.one__t{display:grid;grid-template-columns:1fr;gap:22px}
+.one__t p{max-width:50ch;color:#BFBAB3;line-height:1.75}
+@media (min-width:880px){.one__t{grid-template-columns:1fr 1fr;gap:56px}}
+@media (max-width:620px){.plate{aspect-ratio:4/3}}
+
+/* ══ 05 — the two that gapped. Loud: the numeral. ══ */
+.gap{min-height:88svh;display:flex;align-items:center;padding-block:clamp(70px,12vh,140px)}
+.gap__g{display:grid;grid-template-columns:1fr;gap:clamp(30px,5vh,56px);width:100%;align-items:center}
+.gap__n{font-family:var(--s);font-size:clamp(90px,17vw,210px);font-weight:400;letter-spacing:-.01em;
+  line-height:.84;color:var(--red);font-variant-numeric:tabular-nums}
+.gap__c{display:grid;gap:26px;max-width:46ch}
+.gap__c p{font-size:var(--small);line-height:1.95;color:#BFBAB3}
+.gap__c p b{color:var(--bone);font-weight:500}
+@media (min-width:880px){.gap__g{grid-template-columns:auto 1fr;gap:clamp(40px,7vw,100px)}}
+
+/* ══ 06 — materials. Loud: nothing. Pure rhythm. ══ */
+.mat{padding-block:clamp(80px,13vh,150px)}
+.mat__rows{border-top:1px solid rgba(244,242,236,.1);margin-top:clamp(28px,5vh,52px)}
+.mat__r{display:grid;grid-template-columns:1fr;gap:10px;padding-block:clamp(22px,3.4vh,34px);
+  border-bottom:1px solid rgba(244,242,236,.08)}
+.mat__r h3{font-size:var(--lead);font-weight:400;letter-spacing:-.008em}
+.mat__r p{font-size:var(--small);color:var(--ash);line-height:1.8;max-width:52ch}
+.mat__r span{font-family:var(--m);font-size:var(--micro);letter-spacing:.14em;text-transform:uppercase;color:var(--ash)}
+@media (min-width:820px){
+  .mat__r{grid-template-columns:200px 1fr 90px;gap:34px;align-items:baseline}
+  .mat__r span{text-align:right}
+}
+
+/* ══ 07 — the rule. Loud: the serif line. ══ */
+.rule{min-height:88svh;display:flex;align-items:center;padding-block:clamp(70px,12vh,140px)}
+.rule__g{width:100%}
+.rule h2{font-weight:400;font-size:clamp(30px,5.4vw,80px);line-height:1.08;
+  letter-spacing:-.012em;max-width:17ch}
+.rule h2 i{font-style:italic;color:var(--red)}
+.rule .by{margin-top:clamp(28px,5vh,56px);font-size:var(--small);color:var(--ash-d);line-height:1.9}
+
+/* ══ 08 — close. Loud: nothing. ══ */
+.end{padding-block:clamp(80px,13vh,150px) clamp(40px,7vh,80px)}
+.end__rows{border-top:1px solid rgba(244,242,236,.1);margin-top:clamp(28px,5vh,52px)}
+.end__r{display:flex;justify-content:space-between;align-items:baseline;gap:18px;
+  padding-block:18px;border-bottom:1px solid rgba(244,242,236,.08);
+  transition:padding-left .35s cubic-bezier(.2,.8,.3,1),color .25s}
+.end__r:hover{padding-left:10px;color:var(--red)}
+.end__r b{font-family:var(--s);font-size:var(--lead);font-weight:400;letter-spacing:-.008em}
+.end__f{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;margin-top:clamp(40px,7vh,80px)}
+
+@media (prefers-reduced-motion:reduce){*{transition-duration:.01ms!important}}
+</style>
+
+<div class="grain" aria-hidden="true"></div>
+
+<!-- ══ The grade. Every photograph on the site runs through these, so one
+     shoot, one look. Shadows fall to charcoal, midtones to red, highlights
+     to terracotta; the smear drags horizontally because that is what a slow
+     shutter records — CSS blur() is isotropic and only fogs an image. ══ -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false"><defs>
+  <filter id="duo" color-interpolation-filters="sRGB">
+    <feColorMatrix type="matrix" values="0.34 0.5 0.16 0 0  0.34 0.5 0.16 0 0  0.34 0.5 0.16 0 0  0 0 0 1 0"/>
+    <feComponentTransfer>
+      <feFuncR type="table" tableValues="0.05 0.84 1"/>
+      <feFuncG type="table" tableValues="0.05 0.30 0.78"/>
+      <feFuncB type="table" tableValues="0.07 0.13 0.58"/>
+    </feComponentTransfer>
+  </filter>
+  <filter id="duoCool" color-interpolation-filters="sRGB">
+    <feColorMatrix type="matrix" values="0.34 0.5 0.16 0 0  0.34 0.5 0.16 0 0  0.34 0.5 0.16 0 0  0 0 0 1 0"/>
+    <feComponentTransfer>
+      <feFuncR type="table" tableValues="0.06 0.38 0.92"/>
+      <feFuncG type="table" tableValues="0.07 0.40 0.89"/>
+      <feFuncB type="table" tableValues="0.09 0.42 0.86"/>
+    </feComponentTransfer>
+  </filter>
+  <filter id="smear" x="-12%" y="-12%" width="124%" height="124%" color-interpolation-filters="sRGB">
+    <feGaussianBlur stdDeviation="11 0.45" result="drag"/>
+    <feMerge><feMergeNode in="drag"/><feMergeNode in="SourceGraphic"/></feMerge>
+  </filter>
+</defs></svg>
+
+<header class="top">
+  <div class="top__in">
+    <span class="k">Ashish Narayan</span>
+    <span class="top__set">
+      <a class="k" href="#index">Index</a>
+      <a class="k" href="#materials">Materials</a>
+      <a class="k" href="#contact">Contact</a>
+    </span>
+  </div>
+</header>
+
+<!-- ══ 01 ══ -->
+<section class="field f-red">
+  <div class="wrap opener">
+    <div class="opener__top">
+      <span class="k">Ashish Narayan</span>
+      <span class="k tn">Chandigarh &middot; 30.73&deg;N</span>
+    </div>
+    <h1 class="d opener__h">A record of work that had to hold &mdash; <i>including the two that didn&rsquo;t.</i></h1>
+    <div class="opener__meta">
+      <span class="k">Entries <b class="tn">14</b></span>
+      <span class="k">Gapped <b class="tn">02</b></span>
+      <span class="k">Benches <b class="tn">04</b></span>
+      <span class="k">Since <b class="tn">2019</b></span>
+    </div>
+  </div>
+</section>
+
+<!-- ══ 02 ══ -->
+<section class="field f-ink">
+  <div class="wrap still">
+    <div class="still__g">
+      <span class="k">01 &mdash; The premise</span>
+      <div>
+        <p><b>A record, not a portfolio.</b> A portfolio shows the things that worked.
+          This shows all of it, which is the only version worth anything to someone
+          deciding whether to trust me with their money, their timber, or a room full
+          of their students.</p>
+        <p>Fourteen entries across four benches, built over seven years. Wood, code,
+          classrooms, companies. The same question each time, answered at a different
+          speed: did it hold, or did it gap?</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ 03 ══ -->
+<section class="field f-bone" id="index">
+  <div class="wrap idx">
+    <div class="idx__h">
+      <span class="k">02 &mdash; Index, in order</span>
+      <span class="k tn">Fourteen entries</span>
+    </div>
+    <div class="idx__rows" id="rows"></div>
+  </div>
+</section>
+
+<!-- ══ 04 ══ -->
+<section class="field f-ink">
+  <div class="wrap one">
+    <div class="one__g">
+      <span class="k">03 &mdash; Selected</span>
+
+      <figure class="plate">
+        <!-- <img class="plate__img" src="assets/savison-floor.jpg" alt=""> -->
+        <span class="plate__bloom" aria-hidden="true"></span>
+        <figcaption class="plate__k k"><span>Savison Life &mdash; floor two</span><span class="tn">1/15s &middot; f2.0</span></figcaption>
+      </figure>
+
+      <div class="one__t">
+        <h2 class="d" style="font-size:clamp(26px,3.6vw,52px)">Savison Life</h2>
+        <p>India&rsquo;s compliance-gated marketplace for third-party pharmaceutical
+          manufacturing &mdash; founded, branded and built from zero. Four portals on one
+          schema. Running since 2025.</p>
+      </div>
+
+      <div class="one__pair">
+        <figure class="plate plate--s">
+          <!-- <img class="plate__img" src="assets/bench.jpg" alt=""> -->
+          <span class="plate__bloom" aria-hidden="true"></span>
+          <figcaption class="plate__k k"><span>Mortise Bench &mdash; raking light</span><span class="tn">1/10s</span></figcaption>
+        </figure>
+        <figure class="plate plate--s plate--cool">
+          <!-- <img class="plate__img" src="assets/night-desk.jpg" alt=""> -->
+          <span class="plate__bloom" aria-hidden="true"></span>
+          <figcaption class="plate__k k"><span>Indizilla &mdash; night desk</span><span class="tn">1/8s</span></figcaption>
+        </figure>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ 05 ══ -->
+<section class="field f-ink" style="border-top:1px solid rgba(244,242,236,.08)">
+  <div class="wrap gap">
+    <div class="gap__g">
+      <span class="gap__n">02</span>
+      <div class="gap__c">
+        <span class="k">04 &mdash; The two that gapped</span>
+        <p><b>Betta Beaut, 2023.</b> Salon technology infrastructure. The right problem
+          and the wrong buyer &mdash; the people feeling the pain weren&rsquo;t the ones
+          holding the budget. Eighteen months, no second round.</p>
+        <p><b>Folding Wall Table, 2022.</b> A wall-mounted drop-leaf for a small flat.
+          The hinge geometry was wrong under load and it sagged within a month.
+          Rebuilt twice, then abandoned.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ 06 ══ -->
+<section class="field f-ink" id="materials" style="border-top:1px solid rgba(244,242,236,.08)">
+  <div class="wrap mat">
+    <span class="k">05 &mdash; Four benches</span>
+    <div class="mat__rows" id="mats"></div>
+  </div>
+</section>
+
+<!-- ══ 07 ══ -->
+<section class="field f-bone">
+  <div class="wrap rule">
+    <div class="rule__g">
+      <span class="k">06 &mdash; The rule</span>
+      <h2 style="margin-top:28px">You cannot argue a drawer <i>into fitting.</i></h2>
+      <p class="by">Learned at a bench in 2019.<br>Applied to every line of code, every class, and every payroll since.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ══ 08 ══ -->
+<section class="field f-ink" id="contact">
+  <div class="wrap end">
+    <span class="k">07 &mdash; Tell me what&rsquo;s stuck</span>
+    <div class="end__rows">
+      <a class="end__r" href="#contact"><b>ashish.sbs</b><span class="k">Email</span></a>
+      <a class="end__r" href="#contact"><b>Submit an idea</b><span class="k">Public breakdown</span></a>
+      <a class="end__r" href="#contact"><b>Strategy call</b><span class="k tn">20 min &middot; &#8377;1,499</span></a>
+      <a class="end__r" href="#contact"><b>Performance Realty</b><span class="k">Property advisory</span></a>
+    </div>
+    <div class="end__f">
+      <span class="k">&copy; 2026 Ashish Narayan</span>
+      <span class="k">Chandigarh, India</span>
+    </div>
+  </div>
+</section>
+
+<script>
+(function () {
+  "use strict";
+
+  var WORK = [
+    { n:1,  t:"Savison Life",            m:"Companies",  y:2025, s:"Running" },
+    { n:2,  t:"Rikencare Lifesciences",  m:"Code",       y:2025, s:"Shipped" },
+    { n:3,  t:"Indizilla",               m:"Code",       y:2024, s:"Running" },
+    { n:4,  t:"GetPharm",                m:"Companies",  y:2025, s:"Running" },
+    { n:5,  t:"Betta Beaut",             m:"Companies",  y:2023, s:"Gapped"  },
+    { n:6,  t:"Nirmal Kaya",             m:"Companies",  y:2024, s:"Paused"  },
+    { n:7,  t:"Performance Realty",      m:"Companies",  y:2026, s:"Running" },
+    { n:8,  t:"Slab Desk, 2.4m",         m:"Wood",       y:2021, s:"Shipped" },
+    { n:9,  t:"Mortise Bench",           m:"Wood",       y:2020, s:"Shipped" },
+    { n:10, t:"Folding Wall Table",      m:"Wood",       y:2022, s:"Gapped"  },
+    { n:11, t:"Systems Thinking Weekly", m:"Classrooms", y:2023, s:"Shipped" },
+    { n:12, t:"Build-in-Public Clinic",  m:"Classrooms", y:2024, s:"Running" },
+    { n:13, t:"The Monthly Review",      m:"Classrooms", y:2026, s:"Running" },
+    { n:14, t:"Field Kit",               m:"Code",       y:2025, s:"Shipped" }
+  ];
+
+  var MATS = [
+    { t:"Wood",       c:"03", d:"A bench, hand tools, and joints that close or gap. The original teacher — everything after it is the same rule at a different scale." },
+    { t:"Code",       c:"04", d:"Marketplaces, operations platforms, brand systems. It runs or it throws, and the compiler has never once negotiated." },
+    { t:"Classrooms", c:"03", d:"Twelve-week courses and open clinics. Explaining something properly is how you find out you only half understood it." },
+    { t:"Companies",  c:"04", d:"Founded, branded, built, and in one case buried. Payroll remains the most honest test I know of." }
+  ];
+
+  function pad(n){ return (n < 10 ? "0" : "") + n; }
+  function el(t, c, h){ var n = document.createElement(t); if (c) n.className = c; if (h != null) n.innerHTML = h; return n; }
+
+  var rows = document.getElementById("rows");
+  WORK.forEach(function (p) {
+    var a = el("a", "r" + (p.s === "Gapped" ? " r--f" : ""));
+    a.href = "#index";
+    a.innerHTML = "<span class='r__n tn'>" + pad(p.n) + "</span>" +
+      "<span class='r__t'>" + p.t + "</span>" +
+      "<span class='r__s tn'>" + p.m + " &middot; " + p.y + " &middot; " + p.s + "</span>";
+    rows.appendChild(a);
+  });
+
+  var mats = document.getElementById("mats");
+  MATS.forEach(function (m) {
+    mats.appendChild(el("div", "mat__r",
+      "<h3>" + m.t + "</h3><p>" + m.d + "</p><span class='tn'>" + m.c + " entries</span>"));
+  });
+})();
+</script>

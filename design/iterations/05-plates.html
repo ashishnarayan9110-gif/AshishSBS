@@ -1,0 +1,549 @@
+<title>Had To Hold</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Anton&family=Manrope:wght@200;300;400;500;700&family=JetBrains+Mono:wght@400;500&display=swap">
+
+<style>
+/* ──────────────────────────────────────────────────────────────
+   COMPOSITION RULES — taken from the board, applied literally.
+   1. Two or three elements per plate. Never more.
+   2. Anchor them to opposite corners. Leave the middle empty.
+   3. No mid-sized type. Either 11px dense, or large enough that
+      the frame crops it.
+   4. Type and image interleave — the plate sits over the word.
+   5. One rotation carries the page. Red, vertical, cropped.
+   Photography runs a single grade: duotone, horizontal smear,
+   fine grain. Committed light stock.
+   ────────────────────────────────────────────────────────────── */
+:root{
+  --bone:#F5F2ED;
+  --paper:#FFFFFF;
+  --mist:#EBE7E0;
+  --char:#161616;
+  --terra:#D4572A;
+  --red:#E01A1A;
+  --grey:#6E6E6E;
+  --line:rgba(22,22,22,.1);
+
+  --sans:"Manrope","Helvetica Neue",Arial,sans-serif;
+  --cond:"Anton","Haettenschweiler","Arial Narrow",sans-serif;
+  --mono:"JetBrains Mono",ui-monospace,Menlo,monospace;
+
+  --gl:max(22px,env(safe-area-inset-left,0px));
+  --gr:max(22px,env(safe-area-inset-right,0px));
+
+  color-scheme:light;
+}
+*,*::before,*::after{box-sizing:border-box}
+body{
+  margin:0;background:var(--bone);color:var(--char);
+  font-family:var(--sans);font-size:16px;line-height:1.55;
+  overflow-x:hidden;-webkit-font-smoothing:antialiased;
+}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:90;background:var(--bone)}
+h1,h2,h3{margin:0;font-weight:200;letter-spacing:-.03em}
+p{margin:0}ul{margin:0;padding:0;list-style:none}
+a{color:inherit;text-decoration:none}
+:focus-visible{outline:2px solid var(--terra);outline-offset:3px}
+::selection{background:var(--terra);color:var(--bone)}
+
+/* micro type — one of only two sizes on this page */
+.micro{font-family:var(--mono);font-size:10.5px;line-height:1.75;letter-spacing:.04em;color:var(--grey)}
+.micro b{color:var(--char);font-weight:500}
+.caps{font-family:var(--mono);font-size:9.5px;letter-spacing:.24em;text-transform:uppercase;color:var(--grey)}
+
+/* ═══════ PHOTOGRAPHY — one grade, every surface ═══════ */
+.ph{position:relative;overflow:hidden;background:#141110;margin:0;isolation:isolate}
+.ph__src{display:block;width:100%;height:100%;object-fit:cover}
+.ph--smear .ph__src{filter:url(#duo) url(#smear) contrast(1.07)}
+.ph--duo   .ph__src{filter:url(#duo) contrast(1.05)}
+.ph--cool  .ph__src{filter:url(#duoCool) contrast(1.04)}
+.ph::after{
+  content:"";position:absolute;inset:0;pointer-events:none;z-index:3;
+  opacity:.17;mix-blend-mode:overlay;
+  background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='200' height='200'><filter id='g'><feTurbulence type='fractalNoise' baseFrequency='.8' numOctaves='3' stitchTiles='stitch'/><feColorMatrix type='saturate' values='0'/></filter><rect width='200' height='200' filter='url(%23g)' opacity='.85'/></svg>");
+}
+.ph__bloom{position:absolute;inset:0;z-index:2;pointer-events:none;mix-blend-mode:screen;
+  background:radial-gradient(62% 44% at 30% 24%,rgba(255,172,112,.32),transparent 66%)}
+
+/* ═══════ NAV — deliberately almost invisible ═══════ */
+.nav{position:fixed;top:env(safe-area-inset-top,0px);left:0;right:0;z-index:80;
+  display:flex;align-items:center;justify-content:space-between;gap:16px;
+  padding-left:var(--gl);padding-right:var(--gr);padding-block:20px;
+  mix-blend-mode:difference;color:#fff;pointer-events:none}
+.nav *{pointer-events:auto}
+.nav__l{font-family:var(--mono);font-size:10px;letter-spacing:.2em;text-transform:uppercase}
+.nav__r{display:flex;gap:18px}
+.nav__r a{font-family:var(--mono);font-size:10px;letter-spacing:.2em;text-transform:uppercase;opacity:.7;transition:opacity .2s}
+.nav__r a:hover{opacity:1}
+@media (max-width:820px){.nav__r a:not(:last-child){display:none}}
+
+/* ═══════ PLATE — the base composition unit ═══════ */
+.plate{position:relative;overflow:hidden;padding-left:var(--gl);padding-right:var(--gr)}
+
+/* ─── 01 OPENING ─────────────────────────────────────────── */
+.open{min-height:clamp(620px,96svh,1020px);display:flex;flex-direction:column;justify-content:space-between;padding-block:clamp(76px,11vh,132px) clamp(26px,4vh,46px)}
+
+/* the dense block — anchored top-left, tiny, the only reading on the plate */
+.open__block{max-width:30ch;position:relative;z-index:3}
+.open__block .micro{font-size:11px;line-height:1.8}
+
+/* the vertical statement — cropped by the frame, top and bottom */
+.open__vert{
+  position:absolute;right:clamp(-10px,-.5vw,0px);top:-3vh;bottom:-3vh;z-index:2;
+  writing-mode:vertical-rl;
+  font-family:var(--cond);text-transform:uppercase;
+  font-size:clamp(84px,19vw,260px);line-height:.82;letter-spacing:-.02em;
+  color:var(--red);pointer-events:none;
+  display:flex;align-items:center;
+}
+@media (max-width:760px){
+  .open__vert{writing-mode:horizontal-tb;right:auto;left:var(--gl);top:auto;bottom:clamp(96px,16vh,150px);
+    font-size:clamp(62px,23vw,120px);display:block;line-height:.8}
+}
+
+/* the plate — overlapping, cropped by the left edge */
+.open__ph{
+  position:absolute;left:clamp(-70px,-6vw,-20px);bottom:clamp(74px,13vh,170px);z-index:1;
+  width:clamp(230px,34vw,520px);aspect-ratio:5/4;
+}
+@media (max-width:760px){.open__ph{width:74%;bottom:auto;top:clamp(220px,34vh,330px);left:-14%;opacity:.95}}
+
+.open__foot{position:relative;z-index:3;display:flex;justify-content:space-between;align-items:flex-end;gap:18px;flex-wrap:wrap}
+
+/* ─── 02 THE WORD (kinetic treatment) ────────────────────── */
+.word{background:var(--mist);min-height:clamp(480px,78svh,820px);display:flex;flex-direction:column;justify-content:space-between;padding-block:clamp(44px,7vh,86px) 0}
+.word__head{max-width:26ch;position:relative;z-index:3}
+.word__head h2{font-size:clamp(21px,2.5vw,30px);line-height:1.18;font-weight:200}
+.word__head h2 b{font-weight:500}
+.word__stage{position:relative;flex:1;min-height:clamp(230px,40vh,460px)}
+.word__big{
+  position:absolute;left:0;bottom:clamp(-12px,-1vw,-4px);z-index:1;
+  font-size:clamp(90px,25.5vw,350px);line-height:.72;font-weight:200;letter-spacing:-.055em;
+  color:#D8D3CA;white-space:nowrap;pointer-events:none;
+}
+.word__ph{
+  position:absolute;right:clamp(2px,6vw,110px);bottom:clamp(20px,5vh,76px);z-index:2;
+  width:clamp(170px,27vw,400px);aspect-ratio:3/4;
+}
+@media (max-width:700px){.word__ph{width:52%;right:0}}
+
+/* ─── 03 FEATURED — image with the title overflowing it ──── */
+.feat{position:relative;padding-block:clamp(50px,9vh,120px)}
+.feat__ph{position:relative;width:100%;aspect-ratio:16/9;z-index:1}
+@media (max-width:700px){.feat__ph{aspect-ratio:4/5}}
+.feat__t{
+  position:absolute;z-index:3;left:calc(var(--gl) - .04em);right:var(--gr);
+  bottom:clamp(26px,6vh,86px);
+  font-family:var(--cond);text-transform:uppercase;
+  font-size:clamp(46px,11.5vw,168px);line-height:.8;letter-spacing:-.02em;
+  color:var(--bone);mix-blend-mode:exclusion;pointer-events:none;
+}
+.feat--r .feat__t{text-align:right}
+.feat__meta{position:relative;z-index:4;display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;margin-top:14px}
+.feat__meta .micro{max-width:46ch}
+
+/* ─── 04 INDEX — the dense block, every entry, tiny ──────── */
+.index{padding-block:clamp(56px,9vh,120px)}
+.index__grid{display:grid;grid-template-columns:1fr;gap:clamp(30px,5vw,70px);margin-top:clamp(28px,5vh,58px)}
+@media (min-width:900px){.index__grid{grid-template-columns:22ch 1fr}}
+.index__rows{border-top:1px solid var(--line)}
+.row{
+  display:grid;grid-template-columns:2.6ch 1fr auto;gap:12px;align-items:baseline;
+  padding-block:11px;border-bottom:1px solid var(--line);
+  font-family:var(--mono);font-size:11px;letter-spacing:.02em;color:var(--grey);
+  transition:color .18s,padding-left .22s;
+}
+.row:hover{color:var(--char);padding-left:7px}
+.row b{font-weight:500;color:var(--char);font-family:var(--sans);font-size:13.5px;letter-spacing:-.01em;min-width:0;overflow-wrap:anywhere}
+.row span{white-space:nowrap}
+.row--failed b,.row--failed span{color:var(--red)}
+.row--failed:hover{color:var(--red)}
+
+/* ─── 05 MARK — one element, nothing else ────────────────── */
+.mark{
+  min-height:clamp(380px,62svh,640px);display:grid;place-items:center;position:relative;overflow:hidden;
+  background:linear-gradient(152deg,#F0A074 0%,#E01A1A 44%,#9E1410 100%);
+}
+.mark__blur{position:absolute;inset:-25%;filter:blur(72px);opacity:.85;pointer-events:none}
+.mark__blur b{position:absolute;display:block;border-radius:50%}
+.mark__blur b:nth-child(1){width:58%;height:70%;left:6%;top:-10%;background:radial-gradient(circle,rgba(255,190,140,.9),transparent 66%)}
+.mark__blur b:nth-child(2){width:54%;height:66%;right:-4%;bottom:-12%;background:radial-gradient(circle,rgba(130,12,10,.95),transparent 68%)}
+.mark__svg{position:relative;z-index:2;width:clamp(72px,11vw,128px);height:auto;color:var(--bone)}
+.mark__cap{position:absolute;left:var(--gl);bottom:clamp(20px,4vh,38px);z-index:2;color:rgba(245,242,237,.82)}
+
+/* ─── 06 DARK CHAPTER ────────────────────────────────────── */
+.dark{position:relative;overflow:hidden;background:var(--char);color:var(--bone);
+  min-height:clamp(470px,80svh,860px);display:flex;flex-direction:column;justify-content:flex-end;
+  padding-block:clamp(44px,7vh,92px)}
+.dark__ph{position:absolute;inset:0;z-index:0}
+.dark__ph::after{opacity:.1}
+.dark__scrim{position:absolute;inset:0;z-index:1;background:linear-gradient(10deg,rgba(22,22,22,.96) 18%,rgba(22,22,22,.5) 62%,rgba(22,22,22,.18))}
+.dark__in{position:relative;z-index:2;display:flex;justify-content:space-between;align-items:flex-end;gap:26px;flex-wrap:wrap}
+.dark__q{font-size:clamp(27px,5.4vw,78px);line-height:1.02;font-weight:200;letter-spacing:-.038em;max-width:17ch}
+.dark__q em{font-style:normal;color:var(--terra)}
+.dark .caps{color:rgba(245,242,237,.55)}
+.dark .micro{color:rgba(245,242,237,.6)}
+.dark .micro b{color:var(--bone)}
+
+/* ─── 07 SOCIAL ──────────────────────────────────────────── */
+.soc{padding-block:clamp(56px,9vh,120px)}
+.posts{display:grid;grid-template-columns:repeat(auto-fill,minmax(208px,1fr));gap:10px;margin-top:clamp(26px,5vh,54px)}
+.post{position:relative;overflow:hidden;aspect-ratio:4/5;isolation:isolate;background:var(--paper);border:1px solid var(--line)}
+.post--t{aspect-ratio:9/16}
+.post__bg{position:absolute;inset:0;z-index:0}
+.post__sc{position:absolute;inset:0;z-index:1;background:linear-gradient(180deg,rgba(18,15,14,.1),rgba(18,15,14,.82))}
+.post__in{position:absolute;inset:0;z-index:2;padding:18px;display:flex;flex-direction:column;justify-content:space-between;gap:12px}
+.post__k{font-family:var(--mono);font-size:9px;letter-spacing:.2em;text-transform:uppercase;opacity:.62}
+.post__big{font-family:var(--cond);text-transform:uppercase;font-size:clamp(26px,3.6vw,42px);line-height:.84;letter-spacing:-.015em}
+.post__lt{font-size:clamp(19px,2.5vw,26px);line-height:1.08;font-weight:200;letter-spacing:-.03em}
+.post__n{font-size:clamp(46px,6.4vw,74px);line-height:.86;font-weight:200;letter-spacing:-.045em}
+.post__s{font-size:11.5px;line-height:1.45;opacity:.76}
+.post--photo .post__in{color:var(--bone)}
+.post--red{background:var(--red);border-color:var(--red);color:var(--bone)}
+.post--dark{background:var(--char);border-color:var(--char);color:var(--bone)}
+.post--warm{background:linear-gradient(150deg,#F0A074,#D4572A 56%,#A83516);border-color:transparent;color:var(--bone)}
+.post__mk{align-self:flex-start;display:inline-flex;align-items:center;gap:6px;padding:5px 11px;border:1px solid currentColor;border-radius:999px;font-family:var(--mono);font-size:9.5px;letter-spacing:.14em;text-transform:uppercase}
+.post__mk i{width:5px;height:5px;border-radius:50%;background:currentColor;display:block}
+.post__vert{position:absolute;right:12px;top:16px;writing-mode:vertical-rl;font-family:var(--mono);font-size:8.5px;letter-spacing:.3em;text-transform:uppercase;opacity:.5}
+
+/* ─── 08 CLOSE ───────────────────────────────────────────── */
+.close{padding-block:clamp(60px,10vh,130px) clamp(34px,5vh,60px);position:relative;overflow:hidden}
+.close__big{
+  font-family:var(--cond);text-transform:uppercase;
+  font-size:clamp(54px,15.5vw,230px);line-height:.78;letter-spacing:-.025em;
+  color:var(--char);white-space:nowrap;margin-left:-.045em;
+}
+.close__rows{display:grid;grid-template-columns:1fr;gap:0;margin-top:clamp(30px,5vh,56px);border-top:1px solid var(--line)}
+@media (min-width:760px){.close__rows{grid-template-columns:1fr 1fr}}
+.close__r{display:flex;align-items:baseline;justify-content:space-between;gap:14px;padding-block:17px;border-bottom:1px solid var(--line);transition:padding-left .22s,color .2s}
+.close__r:hover{padding-left:8px;color:var(--terra)}
+.close__v{font-size:clamp(17px,2.1vw,22px);font-weight:300;letter-spacing:-.025em}
+.foot{display:flex;flex-wrap:wrap;gap:10px 26px;justify-content:space-between;margin-top:clamp(34px,5vh,60px)}
+
+@media (prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;transition-duration:.01ms!important}}
+</style>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false"><defs>
+  <filter id="duo" color-interpolation-filters="sRGB">
+    <feColorMatrix type="matrix" values="0.34 0.5 0.16 0 0  0.34 0.5 0.16 0 0  0.34 0.5 0.16 0 0  0 0 0 1 0"/>
+    <feComponentTransfer>
+      <feFuncR type="table" tableValues="0.06 0.87 1"/>
+      <feFuncG type="table" tableValues="0.05 0.33 0.80"/>
+      <feFuncB type="table" tableValues="0.07 0.15 0.61"/>
+    </feComponentTransfer>
+  </filter>
+  <filter id="duoCool" color-interpolation-filters="sRGB">
+    <feColorMatrix type="matrix" values="0.34 0.5 0.16 0 0  0.34 0.5 0.16 0 0  0.34 0.5 0.16 0 0  0 0 0 1 0"/>
+    <feComponentTransfer>
+      <feFuncR type="table" tableValues="0.07 0.40 0.93"/>
+      <feFuncG type="table" tableValues="0.08 0.41 0.90"/>
+      <feFuncB type="table" tableValues="0.10 0.43 0.86"/>
+    </feComponentTransfer>
+  </filter>
+  <filter id="smear" x="-14%" y="-14%" width="128%" height="128%" color-interpolation-filters="sRGB">
+    <feGaussianBlur stdDeviation="19 0.7" result="drag"/>
+    <feMerge><feMergeNode in="drag"/><feMergeNode in="SourceGraphic"/></feMerge>
+  </filter>
+</defs></svg>
+
+<nav class="nav">
+  <span class="nav__l">Ashish Narayan</span>
+  <span class="nav__r">
+    <a href="#index">Index</a><a href="#social">Social</a><a href="#close">Contact</a>
+  </span>
+</nav>
+
+<!-- ═══ 01 ═══ -->
+<section class="plate open">
+  <div class="open__block">
+    <p class="micro">
+      <b>A record of work that had to hold.</b><br>
+      Fourteen entries across four benches &mdash; wood, code,
+      classrooms, companies. Seven years. Two of them failed,
+      and those two are written up as carefully as the rest,
+      because that is the part that makes the others believable.
+    </p>
+  </div>
+
+  <span class="open__vert" aria-hidden="true">Had to hold</span>
+
+  <figure class="ph ph--smear open__ph">
+    <canvas class="ph__src" data-paint="warm" data-seed="7"></canvas>
+    <span class="ph__bloom"></span>
+  </figure>
+
+  <div class="open__foot">
+    <span class="caps">Chandigarh &middot; 30.73&deg;N 76.77&deg;E</span>
+    <span class="caps">Est. 2019 &mdash; 14 entries</span>
+  </div>
+</section>
+
+<!-- ═══ 02 ═══ -->
+<section class="plate word">
+  <div class="word__head">
+    <h2>A joint either <b>closes</b>,<br>or it doesn&rsquo;t.</h2>
+  </div>
+  <div class="word__stage">
+    <span class="word__big" aria-hidden="true">closes</span>
+    <figure class="ph ph--smear word__ph">
+      <canvas class="ph__src" data-paint="ember" data-seed="23"></canvas>
+      <span class="ph__bloom"></span>
+    </figure>
+  </div>
+</section>
+
+<!-- ═══ 03 — three featured, title overflowing the image ═══ -->
+<section class="plate feat">
+  <figure class="ph ph--smear feat__ph">
+    <canvas class="ph__src" data-paint="warm" data-seed="41"></canvas>
+    <span class="ph__bloom"></span>
+  </figure>
+  <h3 class="feat__t">Savison Life</h3>
+  <div class="feat__meta">
+    <p class="micro"><b>Companies &middot; 2025 &middot; Running.</b> India&rsquo;s compliance-gated marketplace for third-party pharmaceutical manufacturing. Founded, branded and built from zero.</p>
+    <span class="caps">No. 01</span>
+  </div>
+</section>
+
+<section class="plate feat feat--r" style="padding-top:0">
+  <figure class="ph ph--cool feat__ph">
+    <canvas class="ph__src" data-paint="cool" data-seed="58"></canvas>
+  </figure>
+  <h3 class="feat__t">Mortise Bench</h3>
+  <div class="feat__meta">
+    <span class="caps">No. 09</span>
+    <p class="micro" style="text-align:right"><b>Wood &middot; 2020 &middot; Shipped.</b> Hand-cut mortise and tenon workbench, built to make the rest of the furniture possible. The tool that makes the tools.</p>
+  </div>
+</section>
+
+<section class="plate feat" style="padding-top:0">
+  <figure class="ph ph--duo feat__ph">
+    <canvas class="ph__src" data-paint="ember" data-seed="77"></canvas>
+    <span class="ph__bloom"></span>
+  </figure>
+  <h3 class="feat__t" style="color:var(--red);mix-blend-mode:normal">Betta Beaut</h3>
+  <div class="feat__meta">
+    <p class="micro"><b style="color:var(--red)">Companies &middot; 2023 &middot; Failed.</b> Salon technology infrastructure. The right problem and the wrong buyer &mdash; the people feeling the pain weren&rsquo;t the ones holding the budget. Eighteen months.</p>
+    <span class="caps">No. 05</span>
+  </div>
+</section>
+
+<!-- ═══ 04 — the dense index ═══ -->
+<section class="plate index" id="index">
+  <div class="index__grid">
+    <div>
+      <span class="caps">The index</span>
+      <p class="micro" style="margin-top:14px">
+        Everything, in order. Material, year, and how it ended.
+        Nothing is removed from this list because it stopped working.
+      </p>
+    </div>
+    <div class="index__rows" id="rows"></div>
+  </div>
+</section>
+
+<!-- ═══ 05 — one mark, nothing else ═══ -->
+<section class="plate mark">
+  <div class="mark__blur" aria-hidden="true"><b></b><b></b></div>
+  <svg class="mark__svg" viewBox="0 0 100 100" fill="none" aria-hidden="true">
+    <g stroke="currentColor" stroke-width="3.4" stroke-linecap="round">
+      <path d="M50 8v84M8 50h84M20 20l60 60M80 20L20 80"/>
+    </g>
+    <circle cx="50" cy="50" r="12.5" fill="currentColor"/>
+  </svg>
+  <span class="mark__cap caps">The mark &mdash; four benches, one centre</span>
+</section>
+
+<!-- ═══ 06 ═══ -->
+<section class="plate dark">
+  <figure class="ph ph--smear dark__ph">
+    <canvas class="ph__src" data-paint="ember" data-seed="95"></canvas>
+  </figure>
+  <span class="dark__scrim" aria-hidden="true"></span>
+  <div class="dark__in">
+    <blockquote class="dark__q">You cannot <em>argue a drawer</em> into fitting.</blockquote>
+    <p class="micro" style="max-width:26ch"><b>Learned at a bench, 2019.</b> Applied to every line of code, every class, and every payroll since.</p>
+  </div>
+</section>
+
+<!-- ═══ 07 ═══ -->
+<section class="plate soc" id="social">
+  <span class="caps">Social &mdash; six templates, one roll</span>
+  <div class="posts">
+
+    <article class="post post--photo">
+      <figure class="ph ph--smear post__bg"><canvas class="ph__src" data-paint="warm" data-seed="12"></canvas></figure>
+      <span class="post__sc"></span>
+      <div class="post__in">
+        <span class="post__k">01 &middot; Thesis</span>
+        <div class="post__big">Had to<br>hold</div>
+        <span class="post__k">ashish.sbs</span>
+      </div>
+    </article>
+
+    <article class="post post--warm">
+      <div class="post__in">
+        <span class="post__k">02 &middot; Milestone</span>
+        <div><div class="post__n">06</div><div class="post__s" style="margin-top:7px">still running</div></div>
+        <span class="post__k">Wood / Code / Class / Co.</span>
+      </div>
+    </article>
+
+    <article class="post">
+      <div class="post__in">
+        <span class="post__k">03 &middot; Quote</span>
+        <div class="post__lt">You cannot argue a drawer into fitting.</div>
+        <span class="post__k" style="color:var(--terra);opacity:1">Ashish Narayan</span>
+      </div>
+    </article>
+
+    <article class="post post--red">
+      <div class="post__in">
+        <span class="post__k">04 &middot; Post-mortem</span>
+        <span class="post__mk"><i></i>Failed</span>
+        <div><div class="post__big" style="font-size:clamp(23px,3vw,32px)">Betta<br>Beaut</div>
+          <div class="post__s" style="margin-top:8px">Right problem, wrong buyer. Full teardown on the site.</div></div>
+      </div>
+    </article>
+
+    <article class="post post--photo post--t">
+      <figure class="ph ph--smear post__bg"><canvas class="ph__src" data-paint="ember" data-seed="33"></canvas></figure>
+      <span class="post__sc"></span>
+      <span class="post__vert">Story 9:16</span>
+      <div class="post__in">
+        <span class="post__k">05 &middot; Build log</span>
+        <div><div class="post__lt">Day 41.<br>The joint closed.</div>
+          <div class="post__s" style="margin-top:9px">Cut list next frame.</div></div>
+        <span class="post__k">Swipe &rarr;</span>
+      </div>
+    </article>
+
+    <article class="post post--dark post--t">
+      <span class="post__vert">Carousel 9:16</span>
+      <div class="post__in">
+        <span class="post__k">06 &middot; Teardown</span>
+        <div><div class="post__lt">What I&rsquo;d do<br>differently now</div>
+          <div class="post__s" style="margin-top:9px">Three frames. One admission each.</div></div>
+        <span class="post__k">01 / 03</span>
+      </div>
+    </article>
+
+  </div>
+</section>
+
+<!-- ═══ 08 ═══ -->
+<section class="plate close" id="close">
+  <h2 class="close__big">Tell me<br>what&rsquo;s stuck</h2>
+  <div class="close__rows">
+    <a class="close__r" href="#close"><span class="caps">Email</span><span class="close__v">ashish.sbs</span></a>
+    <a class="close__r" href="#close"><span class="caps">Submit an idea</span><span class="close__v">Public breakdown</span></a>
+    <a class="close__r" href="#close"><span class="caps">Strategy call</span><span class="close__v">20 min &middot; &#8377;1,499</span></a>
+    <a class="close__r" href="#close"><span class="caps">Property</span><span class="close__v">Performance Realty</span></a>
+  </div>
+  <div class="foot">
+    <span class="caps">&copy; 2026 Ashish Narayan</span>
+    <span class="caps">Anton &middot; Manrope &middot; JetBrains Mono</span>
+    <span class="caps">Chandigarh, India</span>
+  </div>
+</section>
+
+<script>
+(function () {
+  "use strict";
+
+  /* Placeholder plates — long-exposure light studies standing in for
+     photography, so the grade can be judged before the shoot. Replace
+     any <canvas class="ph__src"> with <img class="ph__src" src="…">
+     and every filter, scrim and caption keeps working. */
+  var PAL = {
+    warm:  { base:"#17100E", c:[[224,26,26],[212,87,42],[255,164,96],[255,212,164]] },
+    ember: { base:"#140F0D", c:[[176,38,18],[212,87,42],[242,142,72],[255,192,134]] },
+    cool:  { base:"#121214", c:[[68,70,78],[118,118,126],[198,118,78],[222,216,208]] }
+  };
+
+  function rng(s){ var x = s * 9301 + 49297; return function(){ x = (x * 9301 + 49297) % 233280; return x / 233280; }; }
+
+  function paint(cv) {
+    var p = PAL[cv.getAttribute("data-paint") || "warm"] || PAL.warm;
+    var r = rng(parseInt(cv.getAttribute("data-seed") || "1", 10));
+    var b = cv.getBoundingClientRect();
+    var w = Math.max(320, Math.round(b.width || 800));
+    var h = Math.max(220, Math.round(b.height || 500));
+    cv.width = w; cv.height = h;
+    var c = cv.getContext("2d");
+
+    function col(i, a) { var k = p.c[i % p.c.length]; return "rgba(" + k[0] + "," + k[1] + "," + k[2] + "," + a + ")"; }
+
+    c.fillStyle = p.base; c.fillRect(0, 0, w, h);
+
+    for (var i = 0; i < 7; i++) {
+      var cx = r() * w, cy = r() * h, rad = (0.22 + r() * 0.44) * Math.max(w, h);
+      var g = c.createRadialGradient(cx, cy, 0, cx, cy, rad);
+      g.addColorStop(0, col(i, 0.5 + r() * 0.3));
+      g.addColorStop(1, col(i, 0));
+      c.fillStyle = g; c.fillRect(0, 0, w, h);
+    }
+
+    var n = 26 + Math.floor(r() * 16);
+    for (var t = 0; t < n; t++) {
+      var y = r() * h, th = 1 + r() * (h * 0.055);
+      var x0 = -w * 0.15 + r() * w * 0.5, len = w * (0.4 + r() * 0.8);
+      var a = 0.05 + r() * 0.3;
+      var lg = c.createLinearGradient(x0, 0, x0 + len, 0);
+      lg.addColorStop(0, col(t + 1, 0));
+      lg.addColorStop(0.4, col(t + 1, a));
+      lg.addColorStop(0.66, col(t + 2, a * 0.78));
+      lg.addColorStop(1, col(t + 1, 0));
+      c.fillStyle = lg; c.fillRect(x0, y, len, th);
+    }
+
+    for (var k2 = 0; k2 < 5; k2++) {
+      var by = r() * h, bx = r() * w * 0.5, bl = w * (0.3 + r() * 0.5);
+      var bg = c.createLinearGradient(bx, 0, bx + bl, 0);
+      bg.addColorStop(0, "rgba(255,236,216,0)");
+      bg.addColorStop(0.5, "rgba(255,236,216," + (0.15 + r() * 0.3) + ")");
+      bg.addColorStop(1, "rgba(255,236,216,0)");
+      c.fillStyle = bg; c.fillRect(bx, by, bl, 0.8 + r() * 2.4);
+    }
+
+    var v = c.createRadialGradient(w / 2, h * 0.42, 0, w / 2, h * 0.42, Math.max(w, h) * 0.78);
+    v.addColorStop(0, "rgba(0,0,0,0)"); v.addColorStop(1, "rgba(0,0,0,0.6)");
+    c.fillStyle = v; c.fillRect(0, 0, w, h);
+  }
+
+  var WORK = [
+    { n:1,  t:"Savison Life",            m:"Companies",  y:2025, s:"Running" },
+    { n:2,  t:"Rikencare Lifesciences",  m:"Code",       y:2025, s:"Shipped" },
+    { n:3,  t:"Indizilla",               m:"Code",       y:2024, s:"Running" },
+    { n:4,  t:"GetPharm",                m:"Companies",  y:2025, s:"Running" },
+    { n:5,  t:"Betta Beaut",             m:"Companies",  y:2023, s:"Failed"  },
+    { n:6,  t:"Nirmal Kaya",             m:"Companies",  y:2024, s:"Paused"  },
+    { n:7,  t:"Performance Realty",      m:"Companies",  y:2026, s:"Running" },
+    { n:8,  t:"Slab Desk, 2.4m",         m:"Wood",       y:2021, s:"Shipped" },
+    { n:9,  t:"Mortise Bench",           m:"Wood",       y:2020, s:"Shipped" },
+    { n:10, t:"Folding Wall Table",      m:"Wood",       y:2022, s:"Failed"  },
+    { n:11, t:"Systems Thinking Weekly", m:"Classrooms", y:2023, s:"Shipped" },
+    { n:12, t:"Build-in-Public Clinic",  m:"Classrooms", y:2024, s:"Running" },
+    { n:13, t:"The Monthly Review",      m:"Classrooms", y:2026, s:"Running" },
+    { n:14, t:"Field Kit",               m:"Code",       y:2025, s:"Shipped" }
+  ];
+
+  var rows = document.getElementById("rows");
+  WORK.forEach(function (p) {
+    var a = document.createElement("a");
+    a.className = "row" + (p.s === "Failed" ? " row--failed" : "");
+    a.href = "#index";
+    a.innerHTML =
+      "<span>" + (p.n < 10 ? "0" : "") + p.n + "</span>" +
+      "<b>" + p.t + "</b>" +
+      "<span>" + p.m + " &middot; " + p.y + " &middot; " + p.s + "</span>";
+    rows.appendChild(a);
+  });
+
+  function all() { Array.prototype.forEach.call(document.querySelectorAll("canvas.ph__src"), paint); }
+  all();
+  var rt; window.addEventListener("resize", function () { clearTimeout(rt); rt = setTimeout(all, 240); });
+})();
+</script>

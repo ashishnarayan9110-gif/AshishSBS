@@ -1,67 +1,50 @@
 import Link from "next/link";
 
-const FOOTER_GROUPS = [
-  {
-    title: "Reach out",
-    links: [
-      { href: "/contact", label: "Get in touch" },
-      { href: "/submit-idea", label: "Bring me an idea" },
-      { href: "/strategy-call", label: "Book a call" },
-    ],
-  },
-  {
-    title: "Archive",
-    links: [
-      { href: "/ventures", label: "Ventures" },
-      { href: "/projects", label: "Projects" },
-      { href: "/lab", label: "Sandbox" },
-      { href: "/resources", label: "Field Kit" },
-      { href: "/services", label: "Services" },
-    ],
-  },
-  {
-    title: "Elsewhere",
-    links: [
-      { href: "/about", label: "About" },
-      { href: "/career", label: "Career archive" },
-      { href: "/monthly", label: "Monthly review" },
-      { href: "/privacy", label: "Privacy" },
-      { href: "/terms", label: "Terms" },
-    ],
-  },
-] as const;
+const COLS = [
+  [
+    { href: "/ventures", label: "Ventures" },
+    { href: "/projects", label: "Projects" },
+    { href: "/lab", label: "Sandbox" },
+    { href: "/crew", label: "Crew" },
+    { href: "/monthly", label: "Monthly review" },
+  ],
+  [
+    { href: "/services", label: "Services" },
+    { href: "/about", label: "About" },
+    { href: "/resources", label: "Field kit" },
+    { href: "/contact", label: "Contact" },
+    { href: "/strategy-call", label: "Strategy call" },
+  ],
+];
 
 export function SiteFooter() {
   return (
-    <footer className="border-border dot-grid mt-auto border-t">
-      <div className="mx-auto max-w-(--layout-max-width) px-6 pt-20 pb-12">
-        <h2 className="font-display text-[clamp(48px,9vw,120px)] leading-[0.9]">
-          Let&apos;s
-          <br />
-          build. <span className="text-accent">↗</span>
-        </h2>
-
-        <div className="border-border font-meta text-muted mt-10 grid grid-cols-1 gap-10 border-t pt-10 text-xs sm:grid-cols-3">
-          {FOOTER_GROUPS.map((group) => (
-            <div key={group.title} className="flex flex-col gap-2.5">
-              <span className="text-foreground uppercase">{group.title}</span>
-              {group.links.map((link) => (
-                <Link
-                  key={link.href}
-                  href={link.href}
-                  className="hover:text-foreground w-fit transition-colors"
-                >
-                  {link.label}
-                </Link>
-              ))}
-            </div>
-          ))}
+    <footer className="wrap ftr">
+      <div className="ftr__g">
+        <div>
+          <span className="m">Ashish Narayan &plusmn;</span>
+          <p className="hero__p" style={{ marginTop: 12, fontSize: 15 }}>
+            A build log for work in wood, code, classrooms and companies.
+            The gap is the information.
+          </p>
         </div>
-
-        <div className="font-meta text-muted mt-14 flex flex-wrap items-center justify-between gap-4 text-[11px] uppercase">
-          <span>© {new Date().getFullYear()} ashish.sbs</span>
-          <span>Status: Building</span>
-        </div>
+        {COLS.map((col, i) => (
+          <nav key={i} className="ftr__c" aria-label={i === 0 ? "Sections" : "More"}>
+            {col.map((l) => (
+              <Link key={l.href} href={l.href}>
+                {l.label}
+              </Link>
+            ))}
+          </nav>
+        ))}
+      </div>
+      <div className="ftr__n">
+        <span className="m">&copy; {new Date().getFullYear()} Ashish Narayan</span>
+        <span className="m tn">30.7333&deg;N 76.7794&deg;E</span>
+        <span className="m">
+          <Link href="/privacy">Privacy</Link> &middot;{" "}
+          <Link href="/terms">Terms</Link>
+        </span>
       </div>
     </footer>
   );

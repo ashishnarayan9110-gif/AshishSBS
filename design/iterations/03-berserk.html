@@ -1,0 +1,689 @@
+<title>It Either Closes</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Anton&family=Archivo:ital,wght@0,400;0,500;0,600;0,800;1,400&family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@400;700&display=swap">
+
+<style>
+/* ──────────────────────────────────────────────────────────────
+   CONCEPT — collage, not grid. Everything overlaps: type runs over
+   plates, plates bleed over type, chips float on both. Rotated
+   verticals, violent scale jumps (9px mono beside 240px display),
+   blown light, ink. The thesis is a woodworker's binary — a joint
+   either closes or it doesn't — applied to code, classrooms and
+   companies. Committed dark: this is a darkroom, not a theme.
+   ────────────────────────────────────────────────────────────── */
+:root{
+  --black:#121212;
+  --black-2:#191919;
+  --black-3:#212121;
+  --bone:#F5F2ED;
+  --red:#E01A1A;
+  --ember:#D4572A;
+  --ash:#6E6E6E;
+
+  --disp:"Anton","Haettenschweiler","Arial Narrow",sans-serif;
+  --serif:"Instrument Serif",Georgia,"Times New Roman",serif;
+  --body:"Archivo","Helvetica Neue",Arial,sans-serif;
+  --mono:"JetBrains Mono",ui-monospace,"SF Mono",Menlo,monospace;
+
+  --gl:max(16px,env(safe-area-inset-left,0px));
+  --gr:max(16px,env(safe-area-inset-right,0px));
+  --hair:1px solid rgba(245,242,237,.15);
+
+  color-scheme:dark;
+}
+*,*::before,*::after{box-sizing:border-box}
+body{
+  margin:0;background:var(--black);color:var(--bone);
+  font-family:var(--body);font-size:16px;line-height:1.5;
+  overflow-x:hidden;-webkit-font-smoothing:antialiased;
+}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:70;background:var(--black)}
+h1,h2,h3{margin:0;text-wrap:balance}
+p{margin:0}ul{margin:0;padding:0;list-style:none}
+a{color:inherit;text-decoration:none}
+:focus-visible{outline:2px solid var(--ember);outline-offset:3px}
+::selection{background:var(--red);color:var(--bone)}
+.mono{font-family:var(--mono);font-variant-numeric:tabular-nums}
+
+/* ── film ────────────────────────────────────────────────── */
+.film{position:fixed;inset:0;z-index:60;pointer-events:none}
+.film__g{
+  position:absolute;inset:-70px;opacity:.55;mix-blend-mode:overlay;
+  background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='220' height='220'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.92' numOctaves='4' stitchTiles='stitch'/><feColorMatrix type='saturate' values='0'/></filter><rect width='220' height='220' filter='url(%23n)' opacity='.7'/></svg>");
+  animation:gr 700ms steps(3) infinite;
+}
+@keyframes gr{0%{transform:translate(0,0)}33%{transform:translate(-16px,10px)}66%{transform:translate(13px,-14px)}100%{transform:translate(0,0)}}
+.film__s{position:absolute;inset:0;opacity:.26;background:repeating-linear-gradient(to bottom,transparent 0 2px,rgba(0,0,0,.6) 2px 3px)}
+.film__v{position:absolute;inset:0;background:radial-gradient(135% 100% at 50% 40%,transparent 40%,rgba(0,0,0,.85) 100%)}
+
+/* ── bar ─────────────────────────────────────────────────── */
+.bar{
+  position:sticky;top:env(safe-area-inset-top,0px);z-index:55;
+  background:rgba(18,18,18,.78);backdrop-filter:blur(16px);border-bottom:var(--hair);
+  padding-left:var(--gl);padding-right:var(--gr);padding-block:11px;
+  display:flex;align-items:center;justify-content:space-between;gap:12px;
+}
+.bar__id{display:flex;align-items:center;gap:8px;font-family:var(--mono);font-size:10.5px;letter-spacing:.22em;text-transform:uppercase}
+.dot{width:7px;height:7px;border-radius:50%;background:var(--red);flex:none;animation:dot 1.6s ease-in-out infinite}
+@keyframes dot{0%,100%{opacity:1;box-shadow:0 0 0 0 rgba(224,26,26,.55)}50%{opacity:.3;box-shadow:0 0 0 8px rgba(224,26,26,0)}}
+.bar__nav{display:flex;gap:1px;flex-wrap:wrap;justify-content:flex-end}
+.bar__nav a{font-family:var(--mono);font-size:9.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--ash);padding:5px 8px;transition:color .2s,background .2s}
+.bar__nav a:hover{color:var(--black);background:var(--bone)}
+@media (max-width:900px){.bar__nav{display:none}}
+
+/* ════════════ HERO — the collage ════════════ */
+.hero{
+  position:relative;overflow:hidden;isolation:isolate;
+  padding-left:var(--gl);padding-right:var(--gr);
+  padding-block:clamp(34px,5vw,64px) clamp(40px,6vw,88px);
+  border-bottom:3px solid var(--red);
+}
+/* L0 — blown light */
+.glow{position:absolute;inset:-30%;z-index:0;pointer-events:none;filter:blur(70px);opacity:.85}
+.glow b{position:absolute;display:block;border-radius:50%}
+.glow b:nth-child(1){width:70%;height:46%;left:-12%;top:4%;background:radial-gradient(circle,rgba(224,26,26,.95),transparent 68%);animation:drift 19s ease-in-out infinite}
+.glow b:nth-child(2){width:58%;height:40%;right:-10%;top:30%;background:radial-gradient(circle,rgba(212,87,42,.9),transparent 66%);animation:drift 25s ease-in-out infinite reverse}
+.glow b:nth-child(3){width:46%;height:26%;left:22%;bottom:-6%;background:radial-gradient(circle,rgba(255,120,50,.7),transparent 70%);animation:drift 31s ease-in-out infinite}
+@keyframes drift{0%,100%{transform:translate(0,0) scale(1)}50%{transform:translate(7%,-5%) scale(1.14)}}
+
+/* L1 — name texture, repeated outline, rotated */
+.wall{
+  position:absolute;inset:-18%;z-index:1;pointer-events:none;
+  transform:rotate(-7deg);opacity:.085;
+  display:flex;flex-direction:column;gap:.04em;justify-content:center;
+}
+.wall span{
+  font-family:var(--disp);font-size:clamp(50px,9vw,120px);line-height:.82;white-space:nowrap;
+  text-transform:uppercase;color:transparent;-webkit-text-stroke:1.4px var(--bone);
+}
+.wall span:nth-child(even){transform:translateX(-9%)}
+
+/* L2 — the plate (graded crop, tilted) */
+.plate{
+  position:absolute;z-index:2;right:clamp(-40px,-3vw,0px);top:clamp(70px,13vw,140px);
+  width:clamp(190px,30vw,400px);aspect-ratio:3/4;max-width:52%;
+  transform:rotate(5.5deg);
+  background:
+    linear-gradient(160deg,rgba(224,26,26,.95) 0%,rgba(212,87,42,.85) 42%,rgba(18,18,18,.96) 86%),
+    radial-gradient(70% 50% at 32% 24%,rgba(255,180,120,.85),transparent 62%);
+  filter:saturate(1.25) contrast(1.12);
+  box-shadow:0 40px 90px rgba(0,0,0,.6);
+}
+.plate::after{
+  content:"";position:absolute;inset:0;
+  background:repeating-linear-gradient(to bottom,transparent 0 3px,rgba(0,0,0,.4) 3px 5px);
+  mix-blend-mode:multiply;opacity:.7;
+}
+.plate__br{position:absolute;width:20px;height:20px;border:2px solid var(--bone);z-index:3}
+.plate__br--a{top:-9px;left:-9px;border-right:0;border-bottom:0}
+.plate__br--b{bottom:-9px;right:-9px;border-left:0;border-top:0}
+.plate__tag{
+  position:absolute;bottom:-11px;left:-10px;z-index:4;
+  background:var(--bone);color:var(--black);
+  font-family:var(--mono);font-weight:700;font-size:8.5px;letter-spacing:.2em;text-transform:uppercase;
+  padding:5px 9px;white-space:nowrap;
+}
+@media (max-width:700px){.plate{opacity:.5;right:-18%;top:40%;width:62%}}
+
+/* L3 — headline */
+.hero__in{position:relative;z-index:4}
+.kicker{
+  display:flex;flex-wrap:wrap;gap:7px 20px;align-items:center;
+  font-family:var(--mono);font-size:9.5px;letter-spacing:.26em;text-transform:uppercase;
+  color:rgba(245,242,237,.58);margin-bottom:clamp(22px,3.5vw,44px);
+}
+.kicker b{color:var(--red);font-weight:700}
+.kicker s{text-decoration:none;color:var(--ember)}
+
+.head{font-family:var(--disp);text-transform:uppercase;line-height:.76;letter-spacing:-.022em;position:relative}
+.head__l1{font-size:clamp(44px,13.2vw,172px);display:block;color:var(--bone)}
+.head__l2{
+  font-size:clamp(62px,19.5vw,258px);display:block;color:var(--red);
+  position:relative;margin-left:clamp(0px,3vw,52px);
+}
+.head__l2 em{
+  position:absolute;inset:0;font-style:normal;color:var(--ember);
+  filter:blur(13px);opacity:.75;transform:translateX(-11px);
+}
+.head__l3{
+  font-family:var(--serif);font-style:italic;text-transform:none;
+  font-size:clamp(26px,6.4vw,82px);line-height:.98;letter-spacing:-.01em;
+  color:var(--bone);display:block;margin-top:clamp(4px,1vw,14px);
+}
+.head__l3 u{text-decoration:none;color:var(--red)}
+
+/* L4 — floating chips */
+.chip-f{
+  position:absolute;z-index:5;
+  background:rgba(18,18,18,.86);border:1px solid rgba(245,242,237,.3);
+  backdrop-filter:blur(8px);padding:10px 13px;
+  font-family:var(--mono);font-size:9px;letter-spacing:.16em;text-transform:uppercase;color:var(--bone);
+  white-space:nowrap;
+}
+.chip-f b{display:block;font-family:var(--disp);font-size:26px;letter-spacing:0;color:var(--ember);line-height:1;margin-bottom:3px;font-weight:400}
+.chip-f--1{top:clamp(96px,16vw,190px);left:clamp(4px,2vw,30px);transform:rotate(-4deg)}
+.chip-f--2{bottom:clamp(100px,13vw,170px);right:clamp(6px,8vw,110px);transform:rotate(3.5deg);border-color:var(--red)}
+.chip-f--2 b{color:var(--red)}
+@media (max-width:760px){.chip-f--1,.chip-f--2{display:none}}
+
+.hero__foot{
+  position:relative;z-index:4;margin-top:clamp(28px,4.5vw,56px);
+  padding-top:20px;border-top:var(--hair);
+  display:grid;grid-template-columns:1fr;gap:22px;
+}
+.hero__lede{font-size:clamp(14.5px,1.5vw,17.5px);line-height:1.58;max-width:50ch;color:rgba(245,242,237,.84)}
+.hero__lede b{color:var(--bone)}
+.hero__btns{display:flex;flex-wrap:wrap;gap:9px;align-items:flex-start}
+.btn{font-family:var(--mono);font-size:10.5px;letter-spacing:.2em;text-transform:uppercase;padding:14px 20px;border:1px solid var(--bone);color:var(--bone);transition:all .2s}
+.btn:hover{background:var(--bone);color:var(--black);transform:translate(-2px,-2px)}
+.btn--r{background:var(--red);border-color:var(--red)}
+.btn--r:hover{background:var(--bone);border-color:var(--bone)}
+@media (min-width:900px){.hero__foot{grid-template-columns:1.4fr .6fr;align-items:end}}
+
+/* ── vertical rail ───────────────────────────────────────── */
+.rail{
+  position:fixed;left:calc(6px + env(safe-area-inset-left,0px));top:50%;z-index:50;
+  transform:translateY(-50%) rotate(180deg);writing-mode:vertical-rl;
+  font-family:var(--disp);font-size:11px;letter-spacing:.44em;text-transform:uppercase;
+  color:rgba(245,242,237,.26);pointer-events:none;
+}
+@media (max-width:1100px){.rail{display:none}}
+
+/* ── tickers ─────────────────────────────────────────────── */
+.tick{overflow:hidden;white-space:nowrap;padding-block:12px;border-block:var(--hair);background:var(--black-2)}
+.tick--r{background:var(--red);border-color:var(--red)}
+.tick__i{display:inline-block;animation:run 30s linear infinite;will-change:transform}
+.tick--rev .tick__i{animation-direction:reverse}
+.tick__i span{font-family:var(--disp);text-transform:uppercase;font-size:clamp(16px,2.3vw,28px);padding-inline:16px}
+.tick__i i{font-style:normal;color:var(--ember)}
+.tick--r .tick__i i{color:var(--black)}
+@keyframes run{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+
+/* ── section shell ───────────────────────────────────────── */
+.sec{padding-left:var(--gl);padding-right:var(--gr);padding-block:clamp(54px,8vw,110px);position:relative}
+.eyebrow{display:flex;align-items:center;gap:13px;font-family:var(--mono);font-size:9.5px;letter-spacing:.3em;text-transform:uppercase;color:var(--ash);margin-bottom:14px}
+.eyebrow b{color:var(--red)}
+.eyebrow i{flex:1;height:1px;background:rgba(245,242,237,.15);font-style:normal}
+.h2{font-family:var(--disp);text-transform:uppercase;font-size:clamp(36px,8.6vw,112px);line-height:.82;letter-spacing:-.018em;margin-bottom:14px}
+.h2 em{font-family:var(--serif);font-style:italic;text-transform:none;color:var(--ember)}
+.sub{color:var(--ash);font-size:14px;max-width:54ch;margin-bottom:30px}
+
+/* ── THE FOUR — giant alternating slabs ──────────────────── */
+.four{display:flex;flex-direction:column;border-top:var(--hair)}
+.mat{
+  position:relative;overflow:hidden;border-bottom:var(--hair);
+  padding-block:clamp(26px,4vw,52px);
+  display:flex;align-items:center;gap:clamp(14px,3vw,40px);flex-wrap:wrap;
+  transition:background .3s;
+}
+.mat:hover{background:var(--black-2)}
+.mat__n{font-family:var(--mono);font-size:10px;color:var(--ash);flex:none;width:34px}
+.mat__t{
+  font-family:var(--disp);text-transform:uppercase;line-height:.8;letter-spacing:-.02em;
+  font-size:clamp(38px,11vw,146px);flex:none;transition:color .3s;
+}
+.mat:hover .mat__t{color:var(--red)}
+.mat__d{font-size:13.5px;line-height:1.5;color:rgba(245,242,237,.6);max-width:40ch;min-width:200px;flex:1}
+.mat__c{font-family:var(--disp);font-size:clamp(26px,4vw,52px);color:var(--ember);flex:none;line-height:1}
+@media (max-width:620px){.mat__n{display:none}.mat__c{font-size:30px}}
+
+/* ── WORK — asymmetric collage ───────────────────────────── */
+.filters{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:24px}
+.chip{font-family:var(--mono);font-size:9.5px;letter-spacing:.16em;text-transform:uppercase;padding:8px 12px;border:1px solid rgba(245,242,237,.24);background:none;color:var(--ash);cursor:pointer;transition:all .18s}
+.chip:hover{color:var(--bone);border-color:var(--bone)}
+.chip[aria-pressed="true"]{background:var(--red);border-color:var(--red);color:var(--bone)}
+
+.collage{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:12px}
+.item{
+  position:relative;overflow:hidden;background:var(--black-2);border:var(--hair);
+  padding:18px 16px 16px;display:flex;flex-direction:column;gap:11px;min-width:0;min-height:198px;
+  transition:transform .3s cubic-bezier(.2,.8,.3,1),background .3s,border-color .3s;
+}
+.item:nth-child(4n+1){transform:rotate(-.5deg)}
+.item:nth-child(4n+3){transform:rotate(.5deg)}
+.item:hover{transform:rotate(0) translateY(-5px);background:var(--black-3);border-color:rgba(245,242,237,.4)}
+.item--big{grid-column:span 2;min-height:252px}
+@media (max-width:560px){.item--big{grid-column:span 1}}
+.item__ghost{
+  position:absolute;right:-8px;bottom:-32px;z-index:0;font-family:var(--disp);
+  font-size:126px;line-height:1;color:rgba(245,242,237,.055);font-variant-numeric:tabular-nums;
+  transition:color .3s,transform .4s;
+}
+.item:hover .item__ghost{color:rgba(224,26,26,.26);transform:translate(-8px,-8px)}
+.item>*:not(.item__ghost){position:relative;z-index:1}
+.item__top{display:flex;justify-content:space-between;gap:10px;font-family:var(--mono);font-size:9px;letter-spacing:.16em;text-transform:uppercase;color:var(--ash)}
+.item__t{font-family:var(--disp);text-transform:uppercase;font-size:clamp(19px,2.4vw,26px);line-height:.92;overflow-wrap:anywhere}
+.item--big .item__t{font-size:clamp(24px,3.6vw,40px)}
+.item__d{font-size:12.5px;line-height:1.5;color:rgba(245,242,237,.58)}
+.item__f{margin-top:auto;display:flex;align-items:center;justify-content:space-between;gap:10px}
+.item__y{font-family:var(--mono);font-size:9.5px;color:var(--ash)}
+.stamp{font-family:var(--mono);font-weight:700;font-size:8.5px;letter-spacing:.18em;text-transform:uppercase;padding:4px 8px;border:1px solid currentColor;white-space:nowrap}
+.stamp--shipped{color:var(--bone)}
+.stamp--running{color:var(--ember)}
+.stamp--paused{color:var(--ash)}
+.stamp--failed{color:var(--red);background:rgba(224,26,26,.14)}
+
+/* ── SLOGAN BAND — SILENT POWER treatment ────────────────── */
+.slab{
+  position:relative;overflow:hidden;background:var(--bone);color:var(--black);
+  padding-left:var(--gl);padding-right:var(--gr);padding-block:clamp(54px,8vw,110px);
+  display:flex;align-items:center;gap:clamp(18px,4vw,60px);flex-wrap:wrap;
+}
+.slab__v{
+  font-family:var(--disp);text-transform:uppercase;color:var(--red);
+  writing-mode:vertical-rl;font-size:clamp(50px,13vw,150px);line-height:.84;letter-spacing:-.02em;
+  flex:none;
+}
+.slab__r{flex:1;min-width:230px}
+.slab__q{font-family:var(--serif);font-size:clamp(23px,4vw,50px);line-height:1.06;max-width:21ch}
+.slab__m{font-family:var(--mono);font-size:9.5px;letter-spacing:.24em;text-transform:uppercase;color:#555;margin-top:20px}
+.ink{position:absolute;right:-4%;bottom:-16%;width:clamp(160px,30vw,380px);opacity:.92;pointer-events:none}
+
+/* ── SYSTEM — palette + type ─────────────────────────────── */
+.swatches{display:grid;grid-template-columns:repeat(auto-fit,minmax(128px,1fr));gap:1px;background:rgba(245,242,237,.15);border:var(--hair);margin-bottom:34px}
+.sw{background:var(--black);padding:0}
+.sw__c{height:92px}
+.sw__m{padding:11px 13px;font-family:var(--mono);font-size:9px;letter-spacing:.14em;text-transform:uppercase;color:var(--ash)}
+.sw__m b{display:block;color:var(--bone);font-size:10.5px;margin-bottom:3px;letter-spacing:.1em}
+
+.specs{display:grid;grid-template-columns:1fr;gap:1px;background:rgba(245,242,237,.15);border:var(--hair)}
+@media (min-width:760px){.specs{grid-template-columns:1fr 1fr}}
+.spec{background:var(--black);padding:20px 18px}
+.spec__l{font-family:var(--mono);font-size:9px;letter-spacing:.2em;text-transform:uppercase;color:var(--ash);margin-bottom:12px}
+.spec__a{font-family:var(--disp);text-transform:uppercase;font-size:clamp(34px,5.5vw,62px);line-height:.84}
+.spec__b{font-family:var(--serif);font-style:italic;font-size:clamp(26px,4.4vw,48px);line-height:1}
+.spec__c{font-family:var(--body);font-weight:800;font-size:22px}
+.spec__d{font-family:var(--mono);font-size:15px}
+.spec__n{font-family:var(--mono);font-size:9.5px;color:var(--ash);margin-top:10px}
+
+/* ── SOCIAL — post templates ─────────────────────────────── */
+.posts{display:grid;grid-template-columns:repeat(auto-fill,minmax(212px,1fr));gap:14px}
+.post{position:relative;overflow:hidden;border:var(--hair);display:flex;flex-direction:column;justify-content:space-between;padding:16px;aspect-ratio:1/1}
+.post--tall{aspect-ratio:9/16}
+.post__k{font-family:var(--mono);font-size:8px;letter-spacing:.2em;text-transform:uppercase;opacity:.65}
+.post__big{font-family:var(--disp);text-transform:uppercase;line-height:.82;font-size:clamp(28px,4.4vw,44px);letter-spacing:-.015em}
+.post__ser{font-family:var(--serif);font-style:italic;font-size:clamp(20px,3vw,30px);line-height:1.05}
+.post__num{font-family:var(--disp);font-size:clamp(54px,9vw,94px);line-height:.78}
+.post__sm{font-size:11px;line-height:1.42;opacity:.8}
+
+.post--red{background:var(--red);color:var(--bone)}
+.post--bone{background:var(--bone);color:var(--black)}
+.post--dark{background:var(--black-2)}
+.post--grad{background:linear-gradient(165deg,var(--red) 0%,var(--ember) 48%,var(--black) 100%)}
+.post--fail{background:var(--black-2);border-color:var(--red)}
+.post__stamp{align-self:flex-start;font-family:var(--mono);font-weight:700;font-size:9px;letter-spacing:.2em;text-transform:uppercase;color:var(--red);border:1.5px solid var(--red);padding:5px 9px;transform:rotate(-3deg)}
+.post__v{
+  position:absolute;right:10px;top:14px;writing-mode:vertical-rl;
+  font-family:var(--mono);font-size:8px;letter-spacing:.3em;text-transform:uppercase;opacity:.5;
+}
+.post__scan{position:absolute;inset:0;background:repeating-linear-gradient(to bottom,transparent 0 3px,rgba(0,0,0,.26) 3px 4px);pointer-events:none}
+
+/* ── OPERATOR ────────────────────────────────────────────── */
+.op{display:grid;grid-template-columns:1fr;gap:28px}
+@media (min-width:920px){.op{grid-template-columns:1.15fr .85fr;gap:48px}}
+.op p{font-size:15.5px;line-height:1.68;max-width:60ch;color:rgba(245,242,237,.82);margin-bottom:15px}
+.op p:last-child{margin-bottom:0}
+.op strong{color:var(--bone)}
+.opcard{border:var(--hair);padding:20px;align-self:start;background:var(--black-2)}
+.opcard dt{font-family:var(--mono);font-size:9px;letter-spacing:.2em;text-transform:uppercase;color:var(--ash);margin-top:15px}
+.opcard dt:first-child{margin-top:0}
+.opcard dd{margin:5px 0 0;font-size:14px}
+
+/* ── CTA ─────────────────────────────────────────────────── */
+.cta{display:grid;grid-template-columns:1fr;gap:1px;background:rgba(245,242,237,.15);border:var(--hair)}
+@media (min-width:720px){.cta{grid-template-columns:1fr 1fr}}
+.cta a{background:var(--black);padding:24px 20px;display:flex;align-items:baseline;justify-content:space-between;gap:14px;flex-wrap:wrap;transition:background .2s}
+.cta a:hover{background:var(--red)}
+.cta__k{font-family:var(--mono);font-size:9px;letter-spacing:.2em;text-transform:uppercase;color:var(--ash)}
+.cta a:hover .cta__k{color:rgba(245,242,237,.85)}
+.cta__v{font-family:var(--disp);text-transform:uppercase;font-size:clamp(19px,3vw,32px);line-height:1;overflow-wrap:anywhere}
+
+.colo{padding-left:var(--gl);padding-right:var(--gr);padding-block:24px 40px;border-top:var(--hair);display:flex;flex-wrap:wrap;gap:10px 24px;justify-content:space-between;font-family:var(--mono);font-size:9px;letter-spacing:.18em;text-transform:uppercase;color:var(--ash)}
+
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}
+}
+</style>
+
+<div class="film" aria-hidden="true"><div class="film__g"></div><div class="film__s"></div><div class="film__v"></div></div>
+<div class="rail" aria-hidden="true">Ashish Narayan &mdash; Operator &mdash; Est. 2019</div>
+
+<header class="bar">
+  <span class="bar__id"><span class="dot"></span>A. Narayan</span>
+  <nav class="bar__nav" aria-label="Sections">
+    <a href="#four">Materials</a><a href="#work">Work</a><a href="#system">System</a>
+    <a href="#social">Social</a><a href="#operator">Operator</a><a href="#contact">Contact</a>
+  </nav>
+  <span class="mono" style="font-size:9.5px;color:var(--ember)" id="tc">00:00:00</span>
+</header>
+
+<!-- ════════ HERO ════════ -->
+<section class="hero">
+  <div class="glow" aria-hidden="true"><b></b><b></b><b></b></div>
+  <div class="wall" aria-hidden="true">
+    <span>Ashish Narayan Ashish Narayan</span><span>Ashish Narayan Ashish Narayan</span>
+    <span>Ashish Narayan Ashish Narayan</span><span>Ashish Narayan Ashish Narayan</span>
+    <span>Ashish Narayan Ashish Narayan</span>
+  </div>
+
+  <div class="plate" aria-hidden="true">
+    <span class="plate__br plate__br--a"></span>
+    <span class="plate__br plate__br--b"></span>
+    <span class="plate__tag">Plate 01 &mdash; Exposure &minus;1.3</span>
+  </div>
+
+  <div class="chip-f chip-f--1" aria-hidden="true"><b>14</b>Entries filed</div>
+  <div class="chip-f chip-f--2" aria-hidden="true"><b>02</b>Failed, kept</div>
+
+  <div class="hero__in">
+    <div class="kicker">
+      <span><b>&#9679;</b> Rec</span><span>30.73&deg;N 76.77&deg;E</span>
+      <span>Wood <s>/</s> Code <s>/</s> Classrooms <s>/</s> Companies</span>
+    </div>
+
+    <h1 class="head">
+      <span class="head__l1">It either</span>
+      <span class="head__l2"><em aria-hidden="true">Closes</em>Closes</span>
+      <span class="head__l3">or it <u>doesn&rsquo;t.</u></span>
+    </h1>
+
+    <div class="hero__foot">
+      <p class="hero__lede">
+        A joint closes or it gaps. Code runs or it throws. A class lands or it doesn&rsquo;t.
+        A company makes payroll or it dies. <b>Same binary, four materials</b> &mdash; and I keep
+        the receipts for all of it. Fourteen entries, two of them failures, none of them
+        quietly deleted.
+      </p>
+      <div class="hero__btns">
+        <a class="btn btn--r" href="#work">See the work</a>
+        <a class="btn" href="#system">The system</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="tick" aria-hidden="true"><div class="tick__i" id="t1"></div></div>
+
+<!-- ════════ THE FOUR ════════ -->
+<section class="sec" id="four">
+  <div class="eyebrow"><b>01</b><i></i><span>Materials</span></div>
+  <h2 class="h2">Four things<br>I <em>work in</em></h2>
+  <p class="sub">Different benches, same rule. Each one tells you immediately whether you were right.</p>
+  <div class="four" id="four-list"></div>
+</section>
+
+<!-- ════════ WORK ════════ -->
+<section class="sec" id="work" style="padding-top:0">
+  <div class="eyebrow"><b>02</b><i></i><span>The Work</span></div>
+  <h2 class="h2">Every<br><em>receipt</em></h2>
+  <p class="sub">Filed by material, stamped with how it ended. The failures are in red and they stay on the page.</p>
+  <div class="filters" id="filters" role="group" aria-label="Filter by material"></div>
+  <div class="collage" id="collage"></div>
+</section>
+
+<!-- ════════ SLOGAN SLAB ════════ -->
+<section class="slab">
+  <svg class="ink" viewBox="0 0 200 200" aria-hidden="true">
+    <g fill="#E01A1A">
+      <path d="M96 12c18 6 24 30 18 48-7 21 6 29 22 34 19 6 30 24 24 42-7 20-30 27-50 22-22-6-33 4-40 20-8 17-29 24-45 14-17-11-18-34-6-49 11-14 7-26-6-36-15-12-18-35-5-49 13-13 35-11 48 3 11 12 23 10 31-4 7-13 5-33-1-45z"/>
+      <circle cx="40" cy="22" r="9"/><circle cx="168" cy="52" r="6"/>
+      <circle cx="26" cy="150" r="5"/><circle cx="182" cy="140" r="8"/>
+      <circle cx="120" cy="188" r="4"/>
+    </g>
+  </svg>
+  <div class="slab__v">Silent<br>Proof</div>
+  <div class="slab__r">
+    <blockquote class="slab__q">You cannot argue a drawer into fitting. Either it slides, or you recut it and admit why.</blockquote>
+    <div class="slab__m">Learned at a bench &mdash; applied to every line since</div>
+  </div>
+</section>
+
+<div class="tick tick--r tick--rev" aria-hidden="true"><div class="tick__i" id="t2"></div></div>
+
+<!-- ════════ SYSTEM ════════ -->
+<section class="sec" id="system">
+  <div class="eyebrow"><b>03</b><i></i><span>The System</span></div>
+  <h2 class="h2">One <em>language</em><br>everywhere</h2>
+  <p class="sub">Four colours, four faces. Site, posts, decks and stamps all cut from the same stock.</p>
+  <div class="swatches" id="swatches"></div>
+  <div class="specs">
+    <div class="spec"><div class="spec__l">Display &mdash; Anton</div><div class="spec__a">Closes</div><div class="spec__n">Headlines, stamps, post covers. Set tight, set huge.</div></div>
+    <div class="spec"><div class="spec__l">Voice &mdash; Instrument Serif</div><div class="spec__b">or it doesn&rsquo;t.</div><div class="spec__n">The human line. Used once per surface, never twice.</div></div>
+    <div class="spec"><div class="spec__l">Body &mdash; Archivo</div><div class="spec__c">Built to close, logged either way.</div><div class="spec__n">Everything you actually read.</div></div>
+    <div class="spec"><div class="spec__l">Data &mdash; JetBrains Mono</div><div class="spec__d">30.73&deg;N / 76.77&deg;E / 14 / 02</div><div class="spec__n">Coordinates, codes, timecode, stamps.</div></div>
+  </div>
+</section>
+
+<!-- ════════ SOCIAL ════════ -->
+<section class="sec" id="social" style="padding-top:0">
+  <div class="eyebrow"><b>04</b><i></i><span>Social</span></div>
+  <h2 class="h2">Posts cut<br>from the <em>same stock</em></h2>
+  <p class="sub">Six templates. Drop in the entry and the post builds itself &mdash; including the ones that failed.</p>
+  <div class="posts">
+
+    <article class="post post--red">
+      <span class="post__k">01 &mdash; Thesis &middot; 1:1</span>
+      <div class="post__big">It either<br>closes</div>
+      <span class="post__k">ashish.sbs</span>
+    </article>
+
+    <article class="post post--bone">
+      <span class="post__k">02 &mdash; Quote &middot; 1:1</span>
+      <div class="post__ser">You cannot argue a drawer into fitting.</div>
+      <span class="post__k" style="color:#E01A1A">&mdash; A. Narayan</span>
+    </article>
+
+    <article class="post post--dark">
+      <span class="post__scan" aria-hidden="true"></span>
+      <span class="post__k">03 &mdash; Stat &middot; 1:1</span>
+      <div><div class="post__num" style="color:var(--ember)">14</div><div class="post__sm">entries on the record</div></div>
+      <span class="post__k">Wood / Code / Class / Co.</span>
+    </article>
+
+    <article class="post post--fail">
+      <span class="post__k">04 &mdash; Post-mortem &middot; 1:1</span>
+      <span class="post__stamp">Failed</span>
+      <div class="post__big" style="font-size:clamp(22px,3.4vw,34px)">Betta<br>Beaut</div>
+      <div class="post__sm">Right problem. Wrong buyer. Logged in full.</div>
+    </article>
+
+    <article class="post post--grad post--tall">
+      <span class="post__scan" aria-hidden="true"></span>
+      <span class="post__v">Story &mdash; 9:16</span>
+      <span class="post__k">05 &mdash; Build log</span>
+      <div class="post__big">Day 41<br>the joint<br>closed</div>
+      <span class="post__k">Swipe for the cut list</span>
+    </article>
+
+    <article class="post post--dark post--tall">
+      <span class="post__v">Carousel &mdash; 9:16</span>
+      <span class="post__k">06 &mdash; Teardown</span>
+      <div>
+        <div class="post__ser" style="color:var(--ember)">What I&rsquo;d<br>do differently</div>
+        <div class="post__sm" style="margin-top:9px">Three slides. One admission each.</div>
+      </div>
+      <span class="post__k">1 / 3</span>
+    </article>
+
+  </div>
+</section>
+
+<!-- ════════ OPERATOR ════════ -->
+<section class="sec" id="operator">
+  <div class="eyebrow"><b>05</b><i></i><span>The Operator</span></div>
+  <h2 class="h2">Who&rsquo;s<br><em>holding the chisel</em></h2>
+  <div class="op">
+    <div>
+      <p>I started with furniture. A bench, hand tools, and the unforgiving fact that a joint either closes or it doesn&rsquo;t. <strong>You cannot argue a drawer into fitting.</strong> That taught me more about building software than any framework has.</p>
+      <p>Then classrooms &mdash; explaining a thing properly is the fastest way to find out you only half understood it. Then companies, where the same rule applies at a larger scale, with other people&rsquo;s money attached and much less patience in the room.</p>
+      <p>What carries across all four is one habit: <strong>build the smallest real version, put it in front of reality, write down what happened.</strong> Including when what happened was that it failed. A portfolio of only successes is a sales page. A record of both is evidence.</p>
+    </div>
+    <dl class="opcard">
+      <dt>Based</dt><dd>Chandigarh, working across Himachal</dd>
+      <dt>Materials</dt><dd>Wood, code, classrooms, companies</dd>
+      <dt>Currently</dt><dd>Savison Life &mdash; compliance-gated pharma marketplace</dd>
+      <dt>Method</dt><dd>Smallest real version, in front of reality, written down</dd>
+      <dt>Open to</dt><dd>Systems design, audits, one sharp 20-minute question</dd>
+    </dl>
+  </div>
+</section>
+
+<!-- ════════ CONTACT ════════ -->
+<section class="sec" id="contact" style="padding-top:0">
+  <div class="eyebrow"><b>End</b><i></i><span>Reach out</span></div>
+  <h2 class="h2">Tell me<br>what&rsquo;s <em>stuck</em></h2>
+  <p class="sub">Not a lead form. A specific question gets a specific answer.</p>
+  <div class="cta">
+    <a href="#contact"><span class="cta__k">Email</span><span class="cta__v">ashish.sbs</span></a>
+    <a href="#contact"><span class="cta__k">Submit an idea</span><span class="cta__v">Public breakdown</span></a>
+    <a href="#contact"><span class="cta__k">Strategy call</span><span class="cta__v">20 min &middot; &#8377;1,499</span></a>
+    <a href="#contact"><span class="cta__k">Realty</span><span class="cta__v">Performance Realty</span></a>
+  </div>
+</section>
+
+<footer class="colo">
+  <span>It Either Closes &mdash; Ed. 04</span>
+  <span>Anton / Instrument Serif / Archivo / JetBrains Mono</span>
+  <span>&copy; 2026 Ashish Narayan</span>
+</footer>
+
+<script>
+(function () {
+  "use strict";
+
+  var MATERIALS = [
+    { n:"01", t:"Wood",       c:"03", d:"A bench, hand tools, and joints that either close or gap. The original teacher &mdash; everything else is this rule at a different scale." },
+    { n:"02", t:"Code",       c:"04", d:"Marketplaces, operations platforms, brand systems. It runs or it throws; the compiler does not negotiate." },
+    { n:"03", t:"Classrooms", c:"03", d:"Twelve-week courses and open clinics. Explaining it properly is how you find out you only half understood it." },
+    { n:"04", t:"Companies",  c:"04", d:"Founded, branded, built, and in one case buried. Payroll is the most honest test there is." }
+  ];
+
+  var WORK = [
+    { n:1,  t:"Savison Life",           m:"Companies", y:2025, s:"running", big:true,
+      d:"India's compliance-gated B2B marketplace for third-party pharma manufacturing. Founded, branded and built from zero &mdash; four portals on one schema, live at savisonlife.com." },
+    { n:2,  t:"Rikencare Lifesciences", m:"Code",      y:2025, s:"shipped",
+      d:"Brand system and website for a WHO-GMP, ISO 9001:2015 manufacturer in Himachal." },
+    { n:3,  t:"Indizilla",              m:"Code",      y:2024, s:"running",
+      d:"Client operations platform behind a marketing agency &mdash; orders, jobs, billing, credits, referrals on one database." },
+    { n:4,  t:"Betta Beaut",            m:"Companies", y:2023, s:"failed", big:true,
+      d:"Salon technology infrastructure. Correct problem, wrong buyer &mdash; the people feeling the pain weren't the ones holding the budget. Eighteen months, no second round. The teardown is the useful part." },
+    { n:5,  t:"GetPharm",               m:"Companies", y:2025, s:"running",
+      d:"Public-facing marketplace brand on Savison Life's infrastructure. Same spine, different front door." },
+    { n:6,  t:"Slab Desk, 2.4m",        m:"Wood",      y:2021, s:"shipped",
+      d:"Single-slab sheesham on a welded base. Breadboard ends let the top move; the base does not." },
+    { n:7,  t:"Mortise Bench",          m:"Wood",      y:2020, s:"shipped",
+      d:"Hand-cut mortise and tenon workbench. The tool that makes the tools." },
+    { n:8,  t:"Folding Wall Table",     m:"Wood",      y:2022, s:"failed",
+      d:"Hinge geometry wrong under load; it sagged inside a month. Rebuilt twice, then abandoned." },
+    { n:9,  t:"Systems Thinking, Wkly", m:"Classrooms",y:2023, s:"shipped",
+      d:"Twelve-week evening course for founders. Taught live, notes published after every session." },
+    { n:10, t:"Build-in-Public Clinic", m:"Classrooms",y:2024, s:"running",
+      d:"Monthly open session: someone brings a stuck project, we take it apart on a whiteboard." },
+    { n:11, t:"Nirmal Kaya",            m:"Companies", y:2024, s:"paused",
+      d:"Wellness venture. Parked while pharma took the oxygen &mdash; the record stays up." },
+    { n:12, t:"Performance Realty",     m:"Companies", y:2026, s:"running",
+      d:"Advisory brand, one live listing &mdash; HSIIDC SCO, Barwala. No funnel theatre." },
+    { n:13, t:"The Monthly Review",     m:"Classrooms",y:2026, s:"running",
+      d:"Public progress log. Published whether or not the month went well." },
+    { n:14, t:"Field Kit",              m:"Code",      y:2025, s:"shipped",
+      d:"Templates and checklists built for myself. Rebuilding them each time was the actual mistake." }
+  ];
+
+  var PALETTE = [
+    { h:"#F5F2ED", n:"Bone",  u:"Paper, type, reversals" },
+    { h:"#D4572A", n:"Ember", u:"Data, counts, secondary" },
+    { h:"#E01A1A", n:"Red",   u:"Failure, emphasis, one per surface" },
+    { h:"#6E6E6E", n:"Ash",   u:"Labels, captions, rules" },
+    { h:"#121212", n:"Black", u:"Ground, always" }
+  ];
+
+  var LABEL = { shipped:"Shipped", running:"Running", paused:"Paused", failed:"Failed" };
+
+  function el(t, c, h) { var n = document.createElement(t); if (c) n.className = c; if (h != null) n.innerHTML = h; return n; }
+  function pad(n) { return (n < 10 ? "0" : "") + n; }
+
+  /* materials */
+  var fl = document.getElementById("four-list");
+  MATERIALS.forEach(function (m) {
+    var r = el("article", "mat");
+    r.appendChild(el("span", "mat__n", m.n));
+    r.appendChild(el("h3", "mat__t", m.t));
+    r.appendChild(el("p", "mat__d", m.d));
+    r.appendChild(el("span", "mat__c", m.c));
+    fl.appendChild(r);
+  });
+
+  /* work */
+  var grid = document.getElementById("collage");
+  var active = "All";
+
+  function node(p) {
+    var a = el("article", "item" + (p.big ? " item--big" : ""));
+    a.appendChild(el("span", "item__ghost", pad(p.n)));
+    var top = el("div", "item__top");
+    top.appendChild(el("span", null, "No. " + pad(p.n)));
+    top.appendChild(el("span", null, p.m));
+    a.appendChild(top);
+    a.appendChild(el("h3", "item__t", p.t));
+    a.appendChild(el("p", "item__d", p.d));
+    var f = el("div", "item__f");
+    f.appendChild(el("span", "item__y", p.y));
+    f.appendChild(el("span", "stamp stamp--" + p.s, LABEL[p.s]));
+    a.appendChild(f);
+    return a;
+  }
+  function draw() {
+    grid.textContent = "";
+    WORK.filter(function (p) { return active === "All" || p.m === active; })
+        .forEach(function (p) { grid.appendChild(node(p)); });
+  }
+
+  var mats = ["All"];
+  WORK.forEach(function (p) { if (mats.indexOf(p.m) === -1) mats.push(p.m); });
+  var fEl = document.getElementById("filters");
+  mats.forEach(function (m) {
+    var b = el("button", "chip", m === "All" ? "All &middot; " + WORK.length : m);
+    b.type = "button";
+    b.setAttribute("aria-pressed", m === "All" ? "true" : "false");
+    b.addEventListener("click", function () {
+      active = m;
+      Array.prototype.forEach.call(fEl.children, function (c) { c.setAttribute("aria-pressed", c === b ? "true" : "false"); });
+      draw();
+    });
+    fEl.appendChild(b);
+  });
+  draw();
+
+  /* palette */
+  var sw = document.getElementById("swatches");
+  PALETTE.forEach(function (p) {
+    var d = el("div", "sw");
+    var c = el("div", "sw__c");
+    c.style.background = p.h;
+    if (p.h === "#121212") c.style.boxShadow = "inset 0 0 0 1px rgba(245,242,237,.18)";
+    d.appendChild(c);
+    d.appendChild(el("div", "sw__m", "<b>" + p.n + " &middot; " + p.h + "</b>" + p.u));
+    sw.appendChild(d);
+  });
+
+  /* tickers */
+  function fill(id, arr) {
+    var h = arr.map(function (t) { return "<span>" + t + "</span>"; }).join("");
+    document.getElementById(id).innerHTML = h + h;
+  }
+  fill("t1", WORK.map(function (p) { return p.t + " <i>/</i> " + LABEL[p.s].toUpperCase(); }));
+  fill("t2", ["Wood <i>/</i> Code <i>/</i> Classrooms <i>/</i> Companies",
+              "Smallest real version", "In front of reality", "Written down either way",
+              "Two failures, both still posted"]);
+
+  /* timecode */
+  var tc = document.getElementById("tc"), t0 = Date.now();
+  function tick() {
+    var s = Math.floor((Date.now() - t0) / 1000);
+    tc.textContent = pad(Math.floor(s / 3600)) + ":" + pad(Math.floor(s / 60) % 60) + ":" + pad(s % 60);
+  }
+  tick(); setInterval(tick, 1000);
+})();
+</script>

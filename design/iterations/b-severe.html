@@ -1,0 +1,187 @@
+<title>Tolerance — Edition B</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;700;900&family=Bodoni+Moda:ital,wght@0,400;0,700;1,400&family=JetBrains+Mono:wght@400&display=swap">
+
+<style>
+/* ══ EDITION B — the severe one. Black and white only, no colour at
+   all. Type does every job: repeated as texture, rotated, cropped,
+   stacked. A Didone against a heavy grotesque. Covers alternate
+   white and black down the wall like a shelf of books. ══ */
+:root{
+  --ink:#0A0A0A;
+  --paper:#FAFAF8;
+  --g:"Archivo","Helvetica Neue",Arial,sans-serif;
+  --s:"Bodoni Moda",Didot,Georgia,serif;
+  --m:"JetBrains Mono",ui-monospace,Menlo,monospace;
+  --pl:max(18px,env(safe-area-inset-left,0px));
+  --pr:max(18px,env(safe-area-inset-right,0px));
+  color-scheme:dark;
+}
+*,*::before,*::after{box-sizing:border-box}
+body{margin:0;background:var(--ink);color:var(--paper);font-family:var(--g);font-size:15px;line-height:1.5;
+  overflow-x:hidden;-webkit-font-smoothing:antialiased}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:70;background:var(--ink)}
+h1,h2,h3{margin:0;line-height:.98;letter-spacing:-.03em}
+p{margin:0}a{color:inherit;text-decoration:none}
+:focus-visible{outline:2px solid currentColor;outline-offset:3px}
+::selection{background:var(--paper);color:var(--ink)}
+.m{font-family:var(--m);font-size:9.5px;letter-spacing:.2em;text-transform:uppercase;opacity:.6}
+.tn{font-variant-numeric:tabular-nums}
+.wrap{max-width:1340px;margin-inline:auto;padding-left:var(--pl);padding-right:var(--pr)}
+
+.bar{position:sticky;top:env(safe-area-inset-top,0px);z-index:60;background:var(--ink);
+  border-bottom:1px solid rgba(250,250,248,.18)}
+.bar__in{max-width:1340px;margin-inline:auto;padding-left:var(--pl);padding-right:var(--pr);
+  padding-block:12px;display:flex;justify-content:space-between;gap:14px}
+
+/* masthead */
+.mast{padding-block:clamp(40px,8vh,96px) clamp(26px,4vh,52px);border-bottom:1px solid rgba(250,250,248,.18)}
+.mast__t{font-family:var(--s);font-weight:400;font-size:clamp(66px,19vw,260px);line-height:.78;letter-spacing:-.02em}
+.mast__t sup{font-size:.18em;vertical-align:super;font-family:var(--m);letter-spacing:.1em;opacity:.55}
+.mast__r{display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap;margin-top:clamp(18px,3vh,34px)}
+.mast__r p{max-width:46ch;font-family:var(--m);font-size:11px;line-height:1.9;opacity:.72}
+
+/* the shelf */
+.shelf{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:0;
+  border-left:1px solid rgba(250,250,248,.18)}
+.cov{position:relative;aspect-ratio:3/4;border-right:1px solid rgba(250,250,248,.18);
+  border-bottom:1px solid rgba(250,250,248,.18);overflow:hidden;padding:17px;
+  display:flex;flex-direction:column;justify-content:space-between;
+  transition:background .35s,color .35s}
+.cov--w{background:var(--paper);color:var(--ink)}
+.cov--w .m{opacity:.55}
+.cov:hover{background:var(--paper);color:var(--ink)}
+.cov--w:hover{background:var(--ink);color:var(--paper)}
+.cov__h{display:flex;justify-content:space-between;gap:8px;position:relative;z-index:3}
+.cov__f{display:flex;justify-content:space-between;gap:8px;position:relative;z-index:3}
+.cov__b{position:absolute;inset:0;padding:17px;display:flex;z-index:1;pointer-events:none}
+
+/* cover layouts */
+.l-rep{flex-direction:column;justify-content:center;gap:.01em}
+.l-rep b{font-weight:900;font-size:clamp(17px,2vw,27px);letter-spacing:-.045em;line-height:.9;
+  text-transform:uppercase;white-space:nowrap}
+.l-rep b:nth-child(even){opacity:.3}
+.l-ser{align-items:center;justify-content:center;text-align:center}
+.l-ser b{font-family:var(--s);font-weight:400;font-size:clamp(28px,3.6vw,46px);line-height:.96;display:block}
+.l-ser i{font-style:italic;display:block;opacity:.72}
+.l-rot{align-items:center;justify-content:flex-start}
+.l-rot b{writing-mode:vertical-rl;transform:rotate(180deg);font-weight:900;font-size:clamp(24px,3vw,40px);
+  letter-spacing:-.04em;text-transform:uppercase}
+.l-num{align-items:center;justify-content:center}
+.l-num b{font-family:var(--s);font-weight:400;font-size:clamp(90px,13vw,160px);line-height:.72;font-variant-numeric:tabular-nums}
+.l-crop{align-items:flex-end;overflow:hidden}
+.l-crop b{font-weight:900;font-size:clamp(56px,8vw,112px);letter-spacing:-.06em;line-height:.78;
+  text-transform:uppercase;white-space:nowrap;margin-left:-.06em}
+.l-stack{align-items:flex-end}
+.l-stack b{font-weight:900;font-size:clamp(23px,2.7vw,38px);letter-spacing:-.05em;line-height:.84;
+  text-transform:uppercase;display:block}
+.l-ring{align-items:center;justify-content:center}
+.l-ring b{font-family:var(--s);font-size:clamp(20px,2.3vw,30px);display:block;text-align:center;
+  border:1px solid currentColor;border-radius:50%;width:76%;aspect-ratio:1;display:grid;place-items:center;padding:12px;line-height:1.05}
+
+.g b{text-decoration:line-through;text-decoration-thickness:.06em}
+
+/* index */
+.idx{border-top:1px solid rgba(250,250,248,.18);margin-top:clamp(40px,7vh,86px)}
+.row{display:grid;grid-template-columns:3ch 1fr auto;gap:16px;align-items:baseline;padding-block:13px;
+  border-bottom:1px solid rgba(250,250,248,.1);transition:padding-left .35s cubic-bezier(.2,.9,.25,1),background .25s,color .25s}
+.row:hover{padding-left:10px;background:var(--paper);color:var(--ink)}
+.row b{font-family:var(--s);font-weight:400;font-size:20px;letter-spacing:-.006em}
+.row--g b{text-decoration:line-through;text-decoration-thickness:.05em}
+
+/* rule */
+.rule{padding-block:clamp(50px,9vh,120px);border-top:1px solid rgba(250,250,248,.18);margin-top:clamp(40px,7vh,86px)}
+.rule h2{font-family:var(--s);font-weight:400;font-size:clamp(28px,6vw,92px);line-height:1.04;letter-spacing:-.015em;max-width:16ch}
+.rule h2 i{font-style:italic}
+.rule .by{margin-top:clamp(22px,4vh,44px);font-family:var(--m);font-size:11px;line-height:1.9;opacity:.6}
+
+.foot{border-top:1px solid rgba(250,250,248,.18)}
+.foot__in{display:flex;justify-content:space-between;gap:12px 28px;flex-wrap:wrap;padding-block:22px 40px}
+
+@media (prefers-reduced-motion:reduce){*{transition-duration:.01ms!important}}
+</style>
+
+<div class="bar"><div class="bar__in">
+  <span class="m">Tolerance &plusmn; &mdash; permissible variation</span>
+  <span class="m tn">Vol. 01 &mdash; MMXXVI</span>
+</div></div>
+
+<div class="wrap mast">
+  <h1 class="mast__t">Tolerance<sup>&plusmn;</sup></h1>
+  <div class="mast__r">
+    <p>The permissible limit of variation before a fit fails. Fourteen entries
+      across four benches &mdash; wood, code, classrooms, companies. Two of them
+      went out of true and are struck through rather than removed.</p>
+    <span class="m tn" style="align-self:flex-end">14 entries &middot; 02 struck &middot; est. 2019</span>
+  </div>
+</div>
+
+<div class="wrap" style="padding-left:0;padding-right:0">
+  <div class="shelf" id="shelf"></div>
+</div>
+
+<div class="wrap">
+  <div class="idx" id="rows"></div>
+
+  <div class="rule">
+    <span class="m">The rule</span>
+    <h2 style="margin-top:20px">You cannot argue a drawer <i>into fitting.</i></h2>
+    <p class="by">Learned at a bench in 2019.<br>Applied to every line of code, every class, and every payroll since.</p>
+  </div>
+</div>
+
+<div class="foot"><div class="wrap foot__in">
+  <span class="m">Tolerance &plusmn;</span><span class="m">Chandigarh</span><span class="m tn">MMXXVI</span>
+</div></div>
+
+<script>
+(function(){
+  "use strict";
+  var W=[
+    {n:1,t:"Savison Life",m:"Companies",y:2025,s:"Running",l:"ser",w:1},
+    {n:2,t:"Rikencare",m:"Code",y:2025,s:"Shipped",l:"rep"},
+    {n:3,t:"Indizilla",m:"Code",y:2024,s:"Running",l:"crop",w:1},
+    {n:4,t:"GetPharm",m:"Companies",y:2025,s:"Running",l:"rot"},
+    {n:5,t:"Betta Beaut",m:"Companies",y:2023,s:"Gapped",l:"stack",w:1,g:1},
+    {n:6,t:"Nirmal Kaya",m:"Companies",y:2024,s:"Paused",l:"num"},
+    {n:7,t:"Performance Realty",m:"Companies",y:2026,s:"Running",l:"ring",w:1},
+    {n:8,t:"Slab Desk",m:"Wood",y:2021,s:"Shipped",l:"crop"},
+    {n:9,t:"Mortise Bench",m:"Wood",y:2020,s:"Shipped",l:"ser",w:1},
+    {n:10,t:"Folding Wall Table",m:"Wood",y:2022,s:"Gapped",l:"rot",g:1},
+    {n:11,t:"Systems Thinking",m:"Classrooms",y:2023,s:"Shipped",l:"rep",w:1},
+    {n:12,t:"Build-in-Public",m:"Classrooms",y:2024,s:"Running",l:"stack"},
+    {n:13,t:"Monthly Review",m:"Classrooms",y:2026,s:"Running",l:"num",w:1},
+    {n:14,t:"Field Kit",m:"Code",y:2025,s:"Shipped",l:"ring"}
+  ];
+  function pad(n){return (n<10?"0":"")+n}
+
+  var sh=document.getElementById("shelf");
+  W.forEach(function(p){
+    var a=document.createElement("article");
+    a.className="cov"+(p.w?" cov--w":"")+(p.g?" g":"");
+    var words=p.t.split(" "), body="";
+    if(p.l==="rep"){var r="";for(var i=0;i<8;i++)r+="<b>"+words[0]+"</b>";body=r}
+    else if(p.l==="ser")body="<b>"+words[0]+(words[1]?"<i>"+words.slice(1).join(" ")+"</i>":"")+"</b>";
+    else if(p.l==="rot")body="<b>"+p.t+"</b>";
+    else if(p.l==="num")body="<b>"+pad(p.n)+"</b>";
+    else if(p.l==="crop")body="<b>"+words[0]+"</b>";
+    else if(p.l==="ring")body="<b>"+p.t+"</b>";
+    else body="<b>"+words.join("</b><b>")+"</b>";
+    a.innerHTML="<div class='cov__h'><span class='m tn'>"+pad(p.n)+"</span><span class='m'>"+p.m+"</span></div>"+
+      "<div class='cov__b l-"+p.l+"'>"+body+"</div>"+
+      "<div class='cov__f'><span class='m tn'>"+p.y+"</span><span class='m'>"+p.s+"</span></div>";
+    sh.appendChild(a);
+  });
+
+  var rows=document.getElementById("rows");
+  W.forEach(function(p){
+    var a=document.createElement("a");
+    a.href="#"; a.className="row"+(p.g?" row--g":"");
+    a.innerHTML="<span class='m tn'>"+pad(p.n)+"</span><b>"+p.t+"</b>"+
+      "<span class='m tn'>"+p.m+" &middot; "+p.y+" &middot; "+p.s+"</span>";
+    rows.appendChild(a);
+  });
+})();
+</script>
